@@ -18,17 +18,6 @@
         <artifactId>slf4j-ext</artifactId>
         <version>1.7.1</version>
       </dependency>
-      <!-- Until the BOM is updated, force 5.2.10.Final of ISPN -->
-      <dependency>
-        <groupId>org.infinispan</groupId>
-        <artifactId>infinispan-core</artifactId>
-        <version>5.2.10.Final</version>
-      </dependency>
-      <dependency>
-        <groupId>org.infinispan</groupId>
-        <artifactId>infinispan-cachestore-jdbc</artifactId>
-        <version>5.2.10.Final</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -135,7 +124,7 @@
     <dependency>
       <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
       <artifactId>jboss-jsp-api_2.2_spec</artifactId>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
@@ -215,13 +204,13 @@
       <artifactId>infinispan-cachestore-jdbc</artifactId>
     </dependency>
     <dependency>
-	    <groupId>commons-dbcp</groupId>
-	    <artifactId>commons-dbcp</artifactId>
-	</dependency>
-	<dependency>
-	    <groupId>com.h2database</groupId>
-	    <artifactId>h2</artifactId>
-	</dependency>
+<groupId>commons-dbcp</groupId>
+<artifactId>commons-dbcp</artifactId>
+</dependency>
+<dependency>
+<groupId>com.h2database</groupId>
+<artifactId>h2</artifactId>
+</dependency>
     <dependency>
       <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-osgi-weld</artifactId>
@@ -229,11 +218,7 @@
     <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric-api</artifactId>
-     </dependency> 
-     <dependency>
-		<groupId>org.overlord.sramp</groupId>
-		<artifactId>s-ramp-installer</artifactId>
-	 </dependency>
+     </dependency>
   </dependencies>
 
   <build>
@@ -277,7 +262,7 @@
                     <exclude>org.overlord:overlord-commons-*:*</exclude>
                   </excludes>
                   <bundles>
-                    <!-- TODO: overlord-commons-maven-plugin isn't picking this up.  For now, be explicit. -->
+                    <!-- TODO: overlord-commons-maven-plugin isn't picking this up. For now, be explicit. -->
                     <bundle>mvn:org.overlord.sramp/s-ramp-distro-fuse61/${project.version}</bundle>
                   </bundles>
                 </feature>
@@ -388,69 +373,6 @@
             <Bundle-Version>${project.version}</Bundle-Version>
           </instructions>
         </configuration>
-      </plugin>
-      <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.7</version>
-            <dependencies>
-              <dependency>
-                <groupId>ant</groupId>
-                <artifactId>ant-trax</artifactId>
-                <version>1.6.5</version>
-              </dependency>
-            </dependencies>
-            <executions>
-              <execution>
-                <id>install-fuse</id>
-                <phase>package</phase>
-                <configuration>
-                  <escapeString>\</escapeString>
-                  <tasks>
-                    <property name="s-ramp-distro.tempdir" location="target/.temp" />
-                    <property name="s-ramp.appserver.dir" location="${s-ramp-distro.tempdir}/properties"/>
-                    <property name="server.host" value="${container&#58;httpUrl}"/>
-					<mkdir dir="${s-ramp-distro.tempdir}"/>
-					<mkdir dir="${s-ramp.appserver.dir}"/>
-                  	<mkdir dir="${s-ramp.appserver.dir}/etc" />
-				    <!-- Unpack the s-ramp installer into the temp directory -->
-				    <property name="s-ramp-distro.s-ramp-installer.dir" location="${s-ramp-distro.tempdir}/s-ramp-installer" />
-				    <property name="s-ramp-distro.s-ramp-installer.jar" value="${maven.dependency.org.overlord.sramp.s-ramp-installer.jar.path}" />
-				    <unzip src="${s-ramp-distro.s-ramp-installer.jar}" dest="${s-ramp-distro.s-ramp-installer.dir}" overwrite="false" />
-                    <ant dir="${s-ramp-distro.s-ramp-installer.dir}" antfile="${s-ramp-distro.s-ramp-installer.dir}/scripts/fuse-fabric-6.1.xml">
-                      <target name="copy-files" />
-                    </ant>
-                  </tasks>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
- 	  <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>make-dist</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <finalName>s-ramp-profile-${project.version}</finalName>
-              <attach>true</attach>
-              <descriptors>
-                <descriptor>src/main/assembly/dist.xml</descriptor>
-              </descriptors>
-              <tarLongFileMode>gnu</tarLongFileMode>
-              <appendAssemblyId>false</appendAssemblyId>
-              <archiverConfig>
-                <defaultDirectoryMode>0755</defaultDirectoryMode>
-              </archiverConfig>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
