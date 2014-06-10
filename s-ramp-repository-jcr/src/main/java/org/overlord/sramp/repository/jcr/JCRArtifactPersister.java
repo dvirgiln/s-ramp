@@ -123,8 +123,9 @@ public final class JCRArtifactPersister {
         if (DocumentArtifactType.class.isAssignableFrom(artifactType.getArtifactType().getTypeClass())) {
             artifactNode.setProperty(JCRConstants.SRAMP_CONTENT_TYPE, artifactType.getMimeType());
             artifactNode.setProperty(JCRConstants.SRAMP_CONTENT_SIZE, artifactNode.getProperty("jcr:content/jcr:data").getLength()); //$NON-NLS-1$
-            String shaHex = DigestUtils.shaHex(artifactNode.getProperty("jcr:content/jcr:data").getBinary().getStream()); //$NON-NLS-1$
-            artifactNode.setProperty(JCRConstants.SRAMP_CONTENT_HASH, shaHex);
+            String sha1Hash = JCRExtensions.getInstance().getSha1Hash(
+                    artifactNode.getProperty("jcr:content/jcr:data").getBinary()); //$NON-NLS-1$
+            artifactNode.setProperty(JCRConstants.SRAMP_CONTENT_HASH, sha1Hash);
         }
         // XMLDocument
         if (XmlDocument.class.isAssignableFrom(artifactType.getArtifactType().getTypeClass())) {
