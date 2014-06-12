@@ -3,7 +3,7 @@
   <parent>
     <artifactId>s-ramp</artifactId>
     <groupId>org.overlord.sramp</groupId>
-    <version>0.5.0.Alpha1</version>
+    <version>0.5.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -90,6 +90,11 @@
       <groupId>org.overlord.sramp</groupId>
       <artifactId>s-ramp-server</artifactId>
       <classifier>classes</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.overlord.sramp</groupId>
+      <artifactId>s-ramp-integration-switchyard</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
