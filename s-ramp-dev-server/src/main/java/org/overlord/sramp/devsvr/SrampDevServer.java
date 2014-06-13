@@ -63,6 +63,7 @@ import org.overlord.sramp.repository.jcr.JCRRepository;
 import org.overlord.sramp.repository.jcr.modeshape.filters.ServletCredentialsFilter;
 import org.overlord.sramp.server.atom.services.SRAMPApplication;
 import org.overlord.sramp.server.filters.LocaleFilter;
+import org.overlord.sramp.server.servlet.MavenRepositoryServlet;
 import org.overlord.sramp.ui.client.shared.beans.ArtifactSummaryBean;
 import org.overlord.sramp.ui.server.api.SAMLBearerTokenAuthenticationProvider;
 import org.overlord.sramp.ui.server.servlets.ArtifactDownloadServlet;
@@ -109,7 +110,7 @@ public class SrampDevServer extends ErraiDevServer {
         // Use an in-memory config for s-ramp
         System.setProperty("sramp.modeshape.config.url", "classpath://" + JCRRepository.class.getName()
                 + "/META-INF/modeshape-configs/inmemory-sramp-config.json");
-        
+
         // Authentication provider
 //        System.setProperty("s-ramp-ui.atom-api.authentication.provider", BasicAuthenticationProvider.class.getName());
 //        System.setProperty("s-ramp-ui.atom-api.authentication.basic.user", "ui");
@@ -118,10 +119,6 @@ public class SrampDevServer extends ErraiDevServer {
         System.setProperty("s-ramp-ui.atom-api.authentication.saml.issuer", "/s-ramp-ui");
         System.setProperty("s-ramp-ui.atom-api.authentication.saml.service", "/s-ramp-server");
         System.setProperty("s-ramp-ui.atom-api.authentication.saml.sign-assertions", "false");
-
-        
-        // Don't do any resource caching!
-        System.setProperty("overlord.resource-caching.disabled", "true");
     }
 
     /**
@@ -167,6 +164,8 @@ public class SrampDevServer extends ErraiDevServer {
         srampUI.addEventListener(new BeanManagerResourceBindingListener());
         srampUI.addFilter(HttpRequestThreadLocalFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
         srampUI.addFilter(GWTCacheControlFilter.class, "/app/*", EnumSet.of(DispatcherType.REQUEST));
+        srampUI.addFilter(GWTCacheControlFilter.class, "/", EnumSet.of(DispatcherType.REQUEST));
+        srampUI.addFilter(GWTCacheControlFilter.class, "*.html", EnumSet.of(DispatcherType.REQUEST));
         srampUI.addFilter(ResourceCacheControlFilter.class, "/css/*", EnumSet.of(DispatcherType.REQUEST));
         srampUI.addFilter(ResourceCacheControlFilter.class, "/images/*", EnumSet.of(DispatcherType.REQUEST));
         srampUI.addFilter(ResourceCacheControlFilter.class, "/js/*", EnumSet.of(DispatcherType.REQUEST));
@@ -202,7 +201,13 @@ public class SrampDevServer extends ErraiDevServer {
         srampServer.setContextPath("/s-ramp-server");
         ServletHolder resteasyServlet = new ServletHolder(new HttpServletDispatcher());
         resteasyServlet.setInitParameter("javax.ws.rs.Application", SRAMPApplication.class.getName());
-        srampServer.addServlet(resteasyServlet, "/*");
+        srampServer.addServlet(resteasyServlet, "/s-ramp/*");
+        //maven repository servlet:
+        ServletHolder mvnServlet = new ServletHolder(new MavenRepositoryServlet());
+        srampServer.addServlet(mvnServlet, "/maven/repository/*");
+        srampServer.addServlet(mvnServlet, "/maven/repository");
+        // TODO enable JSP support to test the repository listing
+        
         srampServer.addFilter(SamlBearerTokenAuthFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST))
             .setInitParameter("allowedIssuers", "/s-ramp-ui,/dtgov,/dtgov-ui");
         srampServer.addFilter(LocaleFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
