@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+ 
+<suite name="manageArtifacts" preserve-order="true" >
+  <test name="Artifacts"   >
+  <classes>
+    <class name="org.overlord.sramp.test.ui.suites.SrampTestSuite"></class>
+  	<class name="org.overlord.commons.test.ui.cases.LoginTestCase"/>
+  	  	<class name="org.overlord.commons.test.ui.cases.LogoutTestCase"/>
+  </classes>
+ </test>
+ 
+</suite>

@@ -688,7 +688,11 @@
         <artifactId>overlord-commons-dev</artifactId>
         <version>${overlord-commons.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>org.overlord</groupId>
+        <artifactId>overlord-commons-test-ui</artifactId>
+        <version>${overlord-commons.version}</version>
+      </dependency>
       <!-- Apache Commons -->
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -883,6 +887,16 @@
         <artifactId>jstl</artifactId>
         <version>1.2</version>
       </dependency>
+	 <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+              <version>6.8.8</version>
+        </dependency>      
+      <dependency>
+	<groupId>org.seleniumhq.selenium</groupId>
+	<artifactId>selenium-java</artifactId>
+	<version>2.42.2</version>
+      </dependency>          
     </dependencies>
   </dependencyManagement>
 
@@ -993,6 +1007,7 @@
     <module>s-ramp-shell-api</module>
     <module>s-ramp-ui</module>
     <module>s-ramp-wagon</module>
+    <module>s-ramp-test</module>
     <module>s-ramp-dev-server</module>
   </modules>
 
