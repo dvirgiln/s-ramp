@@ -63,7 +63,8 @@ import org.overlord.sramp.repository.jcr.JCRRepository;
 import org.overlord.sramp.repository.jcr.modeshape.filters.ServletCredentialsFilter;
 import org.overlord.sramp.server.atom.services.SRAMPApplication;
 import org.overlord.sramp.server.filters.LocaleFilter;
-import org.overlord.sramp.server.servlet.MavenRepositoryServlet;
+import org.overlord.sramp.server.filters.MavenRepositoryAuthFilter;
+import org.overlord.sramp.server.servlets.MavenRepositoryServlet;
 import org.overlord.sramp.ui.client.shared.beans.ArtifactSummaryBean;
 import org.overlord.sramp.ui.server.api.SAMLBearerTokenAuthenticationProvider;
 import org.overlord.sramp.ui.server.servlets.ArtifactDownloadServlet;
@@ -112,13 +113,13 @@ public class SrampDevServer extends ErraiDevServer {
                 + "/META-INF/modeshape-configs/inmemory-sramp-config.json");
 
         // Authentication provider
-//        System.setProperty("s-ramp-ui.atom-api.authentication.provider", BasicAuthenticationProvider.class.getName());
-//        System.setProperty("s-ramp-ui.atom-api.authentication.basic.user", "ui");
-//        System.setProperty("s-ramp-ui.atom-api.authentication.basic.password", "ui");
         System.setProperty("s-ramp-ui.atom-api.authentication.provider", SAMLBearerTokenAuthenticationProvider.class.getName());
         System.setProperty("s-ramp-ui.atom-api.authentication.saml.issuer", "/s-ramp-ui");
         System.setProperty("s-ramp-ui.atom-api.authentication.saml.service", "/s-ramp-server");
         System.setProperty("s-ramp-ui.atom-api.authentication.saml.sign-assertions", "false");
+
+        // Don't do any resource caching!
+        System.setProperty("overlord.resource-caching.disabled", "true");
     }
 
     /**
@@ -208,8 +209,10 @@ public class SrampDevServer extends ErraiDevServer {
         srampServer.addServlet(mvnServlet, "/maven/repository");
         // TODO enable JSP support to test the repository listing
         
-        srampServer.addFilter(SamlBearerTokenAuthFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST))
+        srampServer.addFilter(SamlBearerTokenAuthFilter.class, "/s-ramp/*", EnumSet.of(DispatcherType.REQUEST))
             .setInitParameter("allowedIssuers", "/s-ramp-ui,/dtgov,/dtgov-ui");
+        srampServer.addFilter(MavenRepositoryAuthFilter.class, "/maven/repository/*", EnumSet.of(DispatcherType.REQUEST))
+        .setInitParameter("allowedIssuers", "/s-ramp-ui,/dtgov,/dtgov-ui");
         srampServer.addFilter(LocaleFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
         srampServer.addFilter(ServletCredentialsFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
