@@ -688,7 +688,11 @@
         <artifactId>overlord-commons-dev</artifactId>
         <version>${overlord-commons.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>org.overlord</groupId>
+        <artifactId>overlord-commons-test-ui</artifactId>
+        <version>${overlord-commons.version}</version>
+      </dependency>  
       <!-- Apache Commons -->
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -882,7 +886,7 @@
         <groupId>jstl</groupId>
         <artifactId>jstl</artifactId>
         <version>1.2</version>
-      </dependency>
+      </dependency>    
     </dependencies>
   </dependencyManagement>
 
