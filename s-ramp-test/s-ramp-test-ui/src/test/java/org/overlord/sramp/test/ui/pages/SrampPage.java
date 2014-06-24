@@ -1,13 +1,21 @@
 package org.overlord.sramp.test.ui.pages;
 
-import org.apache.commons.configuration.ConfigurationException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.overlord.commons.test.ui.pages.OverlordPage;
 
-public class SrampPage extends OverlordPage {
+public abstract class SrampPage extends OverlordPage {
 
-    public SrampPage() throws ConfigurationException {
+    @FindBy(partialLinkText = "Artifacts")
+    private WebElement artifactsLink;
+
+    public SrampPage() {
         super();
-        // TODO Auto-generated constructor stub
+
+    }
+
+    public void goToArtifacts() {
+        artifactsLink.click();
     }
 
 }

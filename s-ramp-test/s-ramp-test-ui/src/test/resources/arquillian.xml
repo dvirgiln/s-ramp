@@ -6,9 +6,9 @@
 	<defaultProtocol type="Servlet 3.0" />
 
 	<extension qualifier="webdriver">
-		<property name="browser">chrome</property>
+		<property name="browser">firefox</property>
 		<!-- if using chrome you need to provide path to chromedriver binary -->
-		<property name="chromeDriverBinary">/home/virchete/dev/apps/chromedriver</property>
-		<property name="ieDriverBinary">iedriver</property>
+		<!-- property name="chromeDriverBinary">/home/virchete/dev/apps/chromedriver</property>
+		<property name="ieDriverBinary">iedriver</property> -->
 	</extension>
 </arquillian>
