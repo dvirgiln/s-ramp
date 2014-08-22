@@ -177,6 +177,7 @@
                     <!-- The commons ant jar location -->
                     <property name="overlord-commons.ant.jar" location="${s-ramp-overlord-commons.ant.jar.path}" />
                     <property name="overlord-commons.i18n.jar" location="${maven.dependency.org.overlord.overlord-commons-i18n.jar.path}" />
+                    <property name="overlord-commons.services.jar" location="${maven.dependency.org.overlord.overlord-commons-services.jar.path}" />
                     <!-- Call the installer -->
                     <ant dir="${basedir}/src/main/resources" antfile="${basedir}/src/main/resources/build.xml">
                       <target name="install" />
