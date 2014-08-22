@@ -25,7 +25,8 @@ import java.util.Enumeration;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.io.IOUtils;
-import org.overlord.sramp.atom.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
+
 
 /**
  * Some general porpoise utils for working with archives.
@@ -33,6 +34,8 @@ import org.overlord.sramp.atom.i18n.Messages;
  * @author eric.wittmann@redhat.com
  */
 public class ArchiveUtils {
+
+    private final static Messages messages = Messages.getInstance();
 
 	/**
 	 * Unpacks the given archive file into the output directory.
@@ -51,7 +54,7 @@ public class ArchiveUtils {
 				File outFile = new File(toDir, entryName);
 				if (!outFile.getParentFile().exists()) {
 					if (!outFile.getParentFile().mkdirs()) {
-						throw new IOException(Messages.i18n.format("FAILED_TO_CREATE_PARENT_DIR", outFile.getParentFile().getCanonicalPath())); //$NON-NLS-1$
+                        throw new IOException(messages.format("FAILED_TO_CREATE_PARENT_DIR", outFile.getParentFile().getCanonicalPath())); //$NON-NLS-1$
 					}
 				}
 
@@ -59,9 +62,9 @@ public class ArchiveUtils {
 				    if (outFile.isDirectory()) {
 				        // Do nothing - already created.
 				    } else if (outFile.isFile()) {
-                        throw new IOException(Messages.i18n.format("FAILED_TO_CREATE_DIR", outFile.getCanonicalPath())); //$NON-NLS-1$
+                        throw new IOException(messages.format("FAILED_TO_CREATE_DIR", outFile.getCanonicalPath())); //$NON-NLS-1$
 				    } else if (!outFile.mkdir()) {
-						throw new IOException(Messages.i18n.format("FAILED_TO_CREATE_DIR", outFile.getCanonicalPath())); //$NON-NLS-1$
+                        throw new IOException(messages.format("FAILED_TO_CREATE_DIR", outFile.getCanonicalPath())); //$NON-NLS-1$
 					}
 				} else {
 					InputStream zipStream = null;

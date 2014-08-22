@@ -19,7 +19,7 @@ package org.overlord.sramp.common.ontology;
 import java.net.URI;
 import java.util.List;
 
-import org.overlord.sramp.common.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.ontology.SrampOntology.SrampOntologyClass;
 
 /**
@@ -29,6 +29,8 @@ import org.overlord.sramp.common.ontology.SrampOntology.SrampOntologyClass;
  */
 public class OntologyValidator {
 
+    private final static Messages messages = Messages.getInstance();
+
     /**
      * Validates the ontology.
      * @param ontology
@@ -37,14 +39,14 @@ public class OntologyValidator {
         try {
             new URI(ontology.getId());
         } catch (Exception e) {
-            throw new Exception(Messages.i18n.format("INVALID_ONTOLOGY_ID", ontology.getId())); //$NON-NLS-1$
+            throw new Exception(messages.format("INVALID_ONTOLOGY_ID", ontology.getId())); //$NON-NLS-1$
         }
         List<SrampOntologyClass> classes = ontology.getAllClasses();
         for (SrampOntologyClass oclass : classes) {
             try {
                 new URI(oclass.getId());
             } catch (Exception e) {
-                throw new Exception(Messages.i18n.format("INVALID_CLASS_ID", oclass.getId())); //$NON-NLS-1$
+                throw new Exception(messages.format("INVALID_CLASS_ID", oclass.getId())); //$NON-NLS-1$
             }
         }
     }

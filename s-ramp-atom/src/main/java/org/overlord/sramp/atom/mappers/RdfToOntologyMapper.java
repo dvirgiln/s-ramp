@@ -23,7 +23,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.overlord.sramp.atom.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.SrampConstants;
 import org.overlord.sramp.common.ontology.SrampOntology;
 import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
@@ -37,6 +37,8 @@ import org.w3._2002._07.owl_.Ontology;
 public class RdfToOntologyMapper {
 
     private static final RdfToOntologyMapper instance = new RdfToOntologyMapper();
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * Converts an RDF to an S-RAMP Ontology.
@@ -106,7 +108,7 @@ public class RdfToOntologyMapper {
 					parent = uriIndex.get(resourceRef);
 				}
 				if (parent == null) {
-					throw new Exception(Messages.i18n.format("FAILED_TO_RESOLVE_PARENT", resourceRef)); //$NON-NLS-1$
+                    throw new Exception(messages.format("FAILED_TO_RESOLVE_PARENT", resourceRef)); //$NON-NLS-1$
 				}
 				parent.getChildren().add(oclass);
 				oclass.setParent(parent);

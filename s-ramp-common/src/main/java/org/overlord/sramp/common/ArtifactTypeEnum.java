@@ -75,7 +75,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.WsdlExtension;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.WsdlService;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XmlDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
-import org.overlord.sramp.common.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 
 /**
  * An enum representing all of the Artifact Types defined by S-RAMP.
@@ -150,6 +150,8 @@ public enum ArtifactTypeEnum {
     ;
 
     private final static Set<String> enumValueIndex = new HashSet<String>();
+    private final static Messages messages = Messages.getInstance();
+
     static {
         ArtifactTypeEnum[] values = ArtifactTypeEnum.values();
         for (ArtifactTypeEnum value : values) {
@@ -235,7 +237,7 @@ public enum ArtifactTypeEnum {
             Method method = Artifact.class.getMethod("get" + this.name()); //$NON-NLS-1$
             return (BaseArtifactType) method.invoke(artifactWrapper);
         } catch (Exception e) {
-            throw new RuntimeException(Messages.i18n.format("ARTIFACT_UNWRAP_ERROR", this.name()), e); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("ARTIFACT_UNWRAP_ERROR", this.name()), e); //$NON-NLS-1$
         }
     }
 
@@ -275,7 +277,7 @@ public enum ArtifactTypeEnum {
                 return artifactType;
             }
         }
-        throw new RuntimeException(Messages.i18n.format("ARTIFACT_TYPE_FROM_CLASS_ERROR", artifact.getClass())); //$NON-NLS-1$
+        throw new RuntimeException(messages.format("ARTIFACT_TYPE_FROM_CLASS_ERROR", artifact.getClass())); //$NON-NLS-1$
     }
 
     /**
@@ -289,7 +291,7 @@ public enum ArtifactTypeEnum {
                 return artifactType;
             }
         }
-        throw new RuntimeException(Messages.i18n.format("ARTIFACT_TYPE_FROM_APITYPE_ERROR", apiType.value())); //$NON-NLS-1$
+        throw new RuntimeException(messages.format("ARTIFACT_TYPE_FROM_APITYPE_ERROR", apiType.value())); //$NON-NLS-1$
     }
 
     /**

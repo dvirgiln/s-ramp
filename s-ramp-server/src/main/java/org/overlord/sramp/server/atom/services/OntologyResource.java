@@ -32,6 +32,7 @@ import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.jboss.resteasy.plugins.providers.atom.Person;
 import org.jboss.resteasy.plugins.providers.atom.Source;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.MediaType;
 import org.overlord.sramp.atom.err.SrampAtomException;
 import org.overlord.sramp.atom.mappers.OntologyToRdfMapper;
@@ -40,7 +41,6 @@ import org.overlord.sramp.common.ontology.OntologyValidator;
 import org.overlord.sramp.common.ontology.SrampOntology;
 import org.overlord.sramp.repository.PersistenceFactory;
 import org.overlord.sramp.repository.PersistenceManager;
-import org.overlord.sramp.server.i18n.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
@@ -61,7 +61,7 @@ import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 public class OntologyResource extends AbstractResource {
 
 	private static Logger logger = LoggerFactory.getLogger(OntologyResource.class);
-
+    private final static Messages messages = Messages.getInstance();
 	private static OntologyToRdfMapper o2rdf = new OntologyToRdfMapper();
 	private static RdfToOntologyMapper rdf2o = new RdfToOntologyMapper();
 
@@ -111,7 +111,7 @@ public class OntologyResource extends AbstractResource {
 			entry.setAnyOtherJAXBObject(responseRDF);
 			return entry;
         } catch (Exception e) {
-        	logError(logger, Messages.i18n.format("ERROR_CREATING_ONTOLOGY"), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_CREATING_ONTOLOGY"), e); //$NON-NLS-1$
 			throw new SrampAtomException(e);
         }
     }
@@ -140,7 +140,7 @@ public class OntologyResource extends AbstractResource {
 			PersistenceManager persistenceManager = PersistenceFactory.newInstance();
 			persistenceManager.updateOntology(ontology);
         } catch (Exception e) {
-        	logError(logger, Messages.i18n.format("ERROR_UPDATING_ONTOLOGY", uuid), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_UPDATING_ONTOLOGY", uuid), e); //$NON-NLS-1$
 			throw new SrampAtomException(e);
         }
     }
@@ -174,7 +174,7 @@ public class OntologyResource extends AbstractResource {
 			entry.setAnyOtherJAXBObject(responseRDF);
 			return entry;
         } catch (Exception e) {
-        	logError(logger, Messages.i18n.format("ERROR_GETTING_ONTOLOGY", uuid), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_GETTING_ONTOLOGY", uuid), e); //$NON-NLS-1$
 			throw new SrampAtomException(e);
         }
     }
@@ -193,7 +193,7 @@ public class OntologyResource extends AbstractResource {
 			PersistenceManager persistenceManager = PersistenceFactory.newInstance();
 			persistenceManager.deleteOntology(uuid);
         } catch (Exception e) {
-        	logError(logger, Messages.i18n.format("ERROR_DELETING_ONTOLOGY", uuid), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_DELETING_ONTOLOGY", uuid), e); //$NON-NLS-1$
 			throw new SrampAtomException(e);
         }
     }
@@ -233,7 +233,7 @@ public class OntologyResource extends AbstractResource {
 
 			return feed;
         } catch (Exception e) {
-        	logError(logger, Messages.i18n.format("ERROR_GETTING_ONTOLOGIES"), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_GETTING_ONTOLOGIES"), e); //$NON-NLS-1$
 			throw new SrampAtomException(e);
         }
 	}

@@ -34,6 +34,7 @@ import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartOutput;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.DocumentArtifactType;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.MediaType;
 import org.overlord.sramp.atom.archive.SrampArchive;
 import org.overlord.sramp.atom.archive.SrampArchiveEntry;
@@ -49,7 +50,6 @@ import org.overlord.sramp.repository.PersistenceFactory;
 import org.overlord.sramp.repository.PersistenceManager;
 import org.overlord.sramp.repository.PersistenceManager.BatchItem;
 import org.overlord.sramp.repository.errors.DerivedArtifactCreateException;
-import org.overlord.sramp.server.i18n.Messages;
 import org.overlord.sramp.server.mime.MimeTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +65,7 @@ import org.slf4j.LoggerFactory;
 public class BatchResource extends AbstractResource {
 
 	private static Logger logger = LoggerFactory.getLogger(BatchResource.class);
-
+    private final static Messages messages = Messages.getInstance();
     private final Sramp sramp = new Sramp();
 
 	/**
@@ -156,7 +156,7 @@ public class BatchResource extends AbstractResource {
 
             return output;
         } catch (Exception e) {
-        	logError(logger, Messages.i18n.format("ERROR_CONSUMING_ZIP"), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_CONSUMING_ZIP"), e); //$NON-NLS-1$
 			throw new SrampAtomException(e);
         } finally {
         	IOUtils.closeQuietly(is);

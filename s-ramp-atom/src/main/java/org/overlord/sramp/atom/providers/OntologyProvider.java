@@ -34,7 +34,7 @@ import javax.xml.bind.JAXBException;
 
 import org.jboss.resteasy.plugins.providers.jaxb.JAXBMarshalException;
 import org.jboss.resteasy.plugins.providers.jaxb.JAXBUnmarshalException;
-import org.overlord.sramp.atom.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 
 /**
@@ -47,6 +47,8 @@ import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 @Produces("application/rdf+xml")
 @Consumes("application/rdf+xml")
 public class OntologyProvider implements MessageBodyReader<RDF>, MessageBodyWriter<RDF> {
+
+    private final static Messages messages = Messages.getInstance();
 
 	private static JAXBContext rdfContext;
 	{
@@ -102,12 +104,12 @@ public class OntologyProvider implements MessageBodyReader<RDF>, MessageBodyWrit
 			MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 			throws IOException, WebApplicationException {
 		if (rdfContext == null)
-			throw new JAXBMarshalException(Messages.i18n.format("UNABLE_TO_MARSHAL", mediaType), //$NON-NLS-1$
-			        new NullPointerException(Messages.i18n.format("FAILED_TO_CREATE_ONT_JAXBCTX"))); //$NON-NLS-1$
+            throw new JAXBMarshalException(messages.format("UNABLE_TO_MARSHAL", mediaType), //$NON-NLS-1$
+                    new NullPointerException(messages.format("FAILED_TO_CREATE_ONT_JAXBCTX"))); //$NON-NLS-1$
 		try {
 			rdfContext.createMarshaller().marshal(t, entityStream);
 		} catch (JAXBException e) {
-			throw new JAXBMarshalException(Messages.i18n.format("UNABLE_TO_MARSHAL", mediaType), e); //$NON-NLS-1$
+            throw new JAXBMarshalException(messages.format("UNABLE_TO_MARSHAL", mediaType), e); //$NON-NLS-1$
 		}
 	}
 
@@ -121,13 +123,13 @@ public class OntologyProvider implements MessageBodyReader<RDF>, MessageBodyWrit
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException,
 			WebApplicationException {
 		if (rdfContext == null)
-			throw new JAXBUnmarshalException(Messages.i18n.format("UNABLE_TO_MARSHAL", mediaType), //$NON-NLS-1$
-			        new NullPointerException(Messages.i18n.format("FAILED_TO_CREATE_ONT_JAXBCTX"))); //$NON-NLS-1$
+            throw new JAXBUnmarshalException(messages.format("UNABLE_TO_MARSHAL", mediaType), //$NON-NLS-1$
+                    new NullPointerException(messages.format("FAILED_TO_CREATE_ONT_JAXBCTX"))); //$NON-NLS-1$
 		try {
 			RDF entry = (RDF) rdfContext.createUnmarshaller().unmarshal(entityStream);
 			return entry;
 		} catch (JAXBException e) {
-			throw new JAXBUnmarshalException(Messages.i18n.format("UNABLE_TO_MARSHAL")); //$NON-NLS-1$
+            throw new JAXBUnmarshalException(messages.format("UNABLE_TO_MARSHAL")); //$NON-NLS-1$
 		}
 	}
 

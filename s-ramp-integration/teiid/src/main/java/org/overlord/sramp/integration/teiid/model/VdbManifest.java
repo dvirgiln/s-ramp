@@ -15,12 +15,15 @@
  */
 package org.overlord.sramp.integration.teiid.model;
 
-import org.overlord.sramp.integration.teiid.Messages;
+import org.overlord.commons.i18n.Messages;
+
 
 /**
  * The Teiid VDB manifest model object.
  */
 public final class VdbManifest {
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * The VDB manifest (<code>vdb.xml</code>) VDB-related identifiers.
@@ -149,7 +152,7 @@ public final class VdbManifest {
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @see org.overlord.sramp.integration.teiid.model.TeiidExtendedType#convert(java.lang.String)
          */
         @Override
@@ -160,12 +163,12 @@ public final class VdbManifest {
                 }
             }
 
-            throw new IllegalArgumentException(Messages.I18N.format("invalidVdbManifestExtendedType", proposedExtendedType)); //$NON-NLS-1$
+            throw new IllegalArgumentException(messages.format("invalidVdbManifestExtendedType", proposedExtendedType)); //$NON-NLS-1$
         }
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @see org.overlord.sramp.integration.teiid.model.TeiidExtendedType#extendedType()
          */
         @Override
@@ -175,7 +178,7 @@ public final class VdbManifest {
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @see org.overlord.sramp.integration.teiid.model.TeiidExtendedType#isValid(java.lang.String)
          */
         @Override
@@ -249,7 +252,7 @@ public final class VdbManifest {
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @see org.overlord.sramp.integration.teiid.model.TeiidRelationshipType#convert(java.lang.String)
          */
         @Override
@@ -260,12 +263,12 @@ public final class VdbManifest {
                 }
             }
 
-            throw new IllegalArgumentException(Messages.I18N.format("invalidVdbRelationshipType", proposedRelationshipType)); //$NON-NLS-1$
+            throw new IllegalArgumentException(messages.format("invalidVdbRelationshipType", proposedRelationshipType)); //$NON-NLS-1$
         }
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @see org.overlord.sramp.integration.teiid.model.TeiidRelationshipType#isValid(java.lang.String)
          */
         @Override
@@ -281,7 +284,7 @@ public final class VdbManifest {
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @see org.overlord.sramp.integration.teiid.model.TeiidRelationshipType#relationshipType()
          */
         @Override

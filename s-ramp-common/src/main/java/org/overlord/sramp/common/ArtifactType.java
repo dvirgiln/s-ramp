@@ -25,7 +25,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.DocumentArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
-import org.overlord.sramp.common.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 
 /**
  * A class representing all of the Artifact Types defined by S-RAMP.
@@ -34,6 +34,7 @@ import org.overlord.sramp.common.i18n.Messages;
  */
 public class ArtifactType {
 
+    private final static Messages messages = Messages.getInstance();
     /**
      * Returns true if the given artifact type is valid.  It must be alphanumeric only.
      * @param artifactType the artifact type
@@ -48,7 +49,7 @@ public class ArtifactType {
         }
         return true;
     }
-    
+
     public static final ArtifactType Document() {
         return new ArtifactType(ArtifactTypeEnum.Document, "application/octet-stream"); //$NON-NLS-1$
     }
@@ -136,7 +137,7 @@ public class ArtifactType {
             artifact.setArtifactType(this.getArtifactType().getApiType());
             return artifact;
         } catch (Exception e) {
-            throw new RuntimeException(Messages.i18n.format("ARTIFACT_UNWRAP_ERROR", getArtifactType().getType()), e); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("ARTIFACT_UNWRAP_ERROR", getArtifactType().getType()), e); //$NON-NLS-1$
         }
     }
 
@@ -146,6 +147,7 @@ public class ArtifactType {
      * @return an s-ramp artifact type
      * @deprecated
      */
+    @Deprecated
     public static ArtifactType fromFileExtension(String extension) {
         String ext = extension.toLowerCase();
         if (ext.equals("xml")) { //$NON-NLS-1$
@@ -187,25 +189,25 @@ public class ArtifactType {
      * Determines the ArtifactType from the model and type. If the model is "ext"
      * (extended) then the artifactType can be either ExtendedArtifactType or
      * ExtendedDocument. All extended artifacts that have contend inherit from
-     * ExtendedDocument. 
-     * 
+     * ExtendedDocument.
+     *
      * @param model - the model, for example core, xsd, wsdl, ext, etc.
      * @param type - the type, for example XmlDocument, WsdlDocument
      * @param isDocument - this flag is taken into account ONLY when the model is 'ext',
      * in this case the 'type' can be ExtendedDocument,
      * ExtendedArtifactType, or a user defined value (for example 'SwitchYardApplication').
-     * The flag 'isDocument' is required only if the type is user defined so it can 
-     * distinguish between an artifact with (true) or without (false) content. 
-     * If this is not known at the time of calling a value of null can be given which will 
+     * The flag 'isDocument' is required only if the type is user defined so it can
+     * distinguish between an artifact with (true) or without (false) content.
+     * If this is not known at the time of calling a value of null can be given which will
      * default the ArtifactType of ExtendedArtifactType.
-     * 
+     *
      * @return ArtifactType
      */
     public static ArtifactType valueOf(String model, String type, Boolean isDocument) {
         ArtifactType artifactType = null;
         if ("ext".equals(model)) { //$NON-NLS-1$
         	ArtifactTypeEnum artifactTypeEnum = null;
-            if  ( type.equals(ArtifactTypeEnum.ExtendedDocument.getType()) || 
+            if  ( type.equals(ArtifactTypeEnum.ExtendedDocument.getType()) ||
             		( !type.equals(ArtifactTypeEnum.ExtendedArtifactType.getType()) && isDocument!=null && isDocument ) ) {
             	artifactTypeEnum = ArtifactTypeEnum.ExtendedDocument;
             } else {
@@ -268,7 +270,7 @@ public class ArtifactType {
                 return artifactType;
             }
         }
-        throw new RuntimeException(Messages.i18n.format("ARTIFACT_TYPE_FROM_CLASS_ERROR", artifact.getClass())); //$NON-NLS-1$
+        throw new RuntimeException(messages.format("ARTIFACT_TYPE_FROM_CLASS_ERROR", artifact.getClass())); //$NON-NLS-1$
     }
 
     /**
@@ -293,7 +295,7 @@ public class ArtifactType {
             }
             return baseArtifactType;
         } catch (Exception e) {
-            throw new RuntimeException(Messages.i18n.format("ARTIFACT_INSTANTIATION_ERROR", getArtifactType().getTypeClass()), e); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("ARTIFACT_INSTANTIATION_ERROR", getArtifactType().getTypeClass()), e); //$NON-NLS-1$
         }
     }
 
@@ -308,7 +310,7 @@ public class ArtifactType {
                 return new ArtifactType(artifactType, null);
             }
         }
-        throw new RuntimeException(Messages.i18n.format("ARTIFACT_TYPE_FROM_APITYPE_ERROR", apiType.value())); //$NON-NLS-1$
+        throw new RuntimeException(messages.format("ARTIFACT_TYPE_FROM_APITYPE_ERROR", apiType.value())); //$NON-NLS-1$
     }
 
     /**
@@ -404,7 +406,7 @@ public class ArtifactType {
      */
     public void setExtendedType(String extendedType) {
         if (extendedType != null && !isValid(extendedType)) {
-            throw new RuntimeException(Messages.i18n.format("ArtifactType.InvalidExtendedType", extendedType)); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("ArtifactType.InvalidExtendedType", extendedType)); //$NON-NLS-1$
         }
         this.extendedType = extendedType;
     }

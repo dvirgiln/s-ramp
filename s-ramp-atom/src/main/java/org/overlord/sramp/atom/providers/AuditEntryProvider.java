@@ -35,7 +35,8 @@ import javax.xml.bind.JAXBException;
 import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
 import org.jboss.resteasy.plugins.providers.jaxb.JAXBMarshalException;
 import org.jboss.resteasy.plugins.providers.jaxb.JAXBUnmarshalException;
-import org.overlord.sramp.atom.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
+
 
 /**
  * A RESTEasy provider for reading/writing an S-RAMP ontology. S-RAMP ontologies are defined using a sub-set
@@ -47,6 +48,8 @@ import org.overlord.sramp.atom.i18n.Messages;
 @Produces("application/auditEntry+xml")
 @Consumes("application/auditEntry+xml")
 public class AuditEntryProvider implements MessageBodyReader<AuditEntry>, MessageBodyWriter<AuditEntry> {
+
+    private final static Messages messages = Messages.getInstance();
 
 	private static JAXBContext auditEntryContext;
 	{
@@ -102,12 +105,12 @@ public class AuditEntryProvider implements MessageBodyReader<AuditEntry>, Messag
 			MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 			throws IOException, WebApplicationException {
 		if (auditEntryContext == null)
-			throw new JAXBMarshalException(Messages.i18n.format("UNABLE_TO_MARSHAL", mediaType), //$NON-NLS-1$
-			        new NullPointerException(Messages.i18n.format("FAILED_TO_CREATE_AUDIT_JAXBCTX"))); //$NON-NLS-1$
+            throw new JAXBMarshalException(messages.format("UNABLE_TO_MARSHAL", mediaType), //$NON-NLS-1$
+                    new NullPointerException(messages.format("FAILED_TO_CREATE_AUDIT_JAXBCTX"))); //$NON-NLS-1$
 		try {
 			auditEntryContext.createMarshaller().marshal(t, entityStream);
 		} catch (JAXBException e) {
-			throw new JAXBMarshalException(Messages.i18n.format("UNABLE_TO_MARSHAL", mediaType), e); //$NON-NLS-1$
+            throw new JAXBMarshalException(messages.format("UNABLE_TO_MARSHAL", mediaType), e); //$NON-NLS-1$
 		}
 	}
 
@@ -121,13 +124,13 @@ public class AuditEntryProvider implements MessageBodyReader<AuditEntry>, Messag
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException,
 			WebApplicationException {
 		if (auditEntryContext == null)
-			throw new JAXBUnmarshalException(Messages.i18n.format("UNABLE_TO_MARSHAL", mediaType), //$NON-NLS-1$
-			        new NullPointerException(Messages.i18n.format("FAILED_TO_CREATE_AUDIT_JAXBCTX"))); //$NON-NLS-1$
+            throw new JAXBUnmarshalException(messages.format("UNABLE_TO_MARSHAL", mediaType), //$NON-NLS-1$
+                    new NullPointerException(messages.format("FAILED_TO_CREATE_AUDIT_JAXBCTX"))); //$NON-NLS-1$
 		try {
 			AuditEntry entry = (AuditEntry) auditEntryContext.createUnmarshaller().unmarshal(entityStream);
 			return entry;
 		} catch (JAXBException e) {
-			throw new JAXBUnmarshalException(Messages.i18n.format("UNABLE_TO_MARSHAL", mediaType), e); //$NON-NLS-1$
+            throw new JAXBUnmarshalException(messages.format("UNABLE_TO_MARSHAL", mediaType), e); //$NON-NLS-1$
 		}
 	}
 

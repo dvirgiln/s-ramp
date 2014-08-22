@@ -56,6 +56,7 @@ import org.codehaus.plexus.logging.Logger;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.archive.SrampArchive;
 import org.overlord.sramp.atom.archive.SrampArchiveEntry;
 import org.overlord.sramp.atom.archive.SrampArchiveException;
@@ -75,7 +76,6 @@ import org.overlord.sramp.common.ArtifactTypeEnum;
 import org.overlord.sramp.common.Sramp;
 import org.overlord.sramp.common.SrampModelUtils;
 import org.overlord.sramp.integration.java.model.JavaModel;
-import org.overlord.sramp.wagon.i18n.Messages;
 import org.overlord.sramp.wagon.models.MavenGavInfo;
 import org.overlord.sramp.wagon.util.DevNullOutputStream;
 
@@ -86,6 +86,8 @@ import org.overlord.sramp.wagon.util.DevNullOutputStream;
  */
 @Component(role = Wagon.class, hint = "sramp", instantiationStrategy = "per-lookup")
 public class SrampWagon extends StreamWagon {
+
+    private final static Messages messages = Messages.getInstance();
 
 	@Requirement
 	private Logger logger;
@@ -154,11 +156,11 @@ public class SrampWagon extends StreamWagon {
 
             this.client = new SrampAtomApiClient(endpoint, username, password, true);
 		} catch (SrampArchiveException e) {
-			throw new ConnectionException(Messages.i18n.format("FAILED_TO_CREATE_ARCHIVE"), e); //$NON-NLS-1$
+            throw new ConnectionException(messages.format("FAILED_TO_CREATE_ARCHIVE"), e); //$NON-NLS-1$
 		} catch (SrampClientException e) {
-            throw new ConnectionException(Messages.i18n.format("FAILED_TO_CONNECT_TO_SRAMP"), e); //$NON-NLS-1$
+            throw new ConnectionException(messages.format("FAILED_TO_CONNECT_TO_SRAMP"), e); //$NON-NLS-1$
         } catch (SrampAtomException e) {
-            throw new ConnectionException(Messages.i18n.format("FAILED_TO_CONNECT_TO_SRAMP"), e); //$NON-NLS-1$
+            throw new ConnectionException(messages.format("FAILED_TO_CONNECT_TO_SRAMP"), e); //$NON-NLS-1$
         } finally {
             Thread.currentThread().setContextClassLoader(oldCtxCL);
         }
@@ -170,9 +172,9 @@ public class SrampWagon extends StreamWagon {
     private String promptForUsername() {
         Console console = System.console();
         if (console != null) {
-            return console.readLine(Messages.i18n.format("USERNAME_PROMPT")); //$NON-NLS-1$
+            return console.readLine(messages.format("USERNAME_PROMPT")); //$NON-NLS-1$
         } else {
-            System.err.println(Messages.i18n.format("NO_CONSOLE_ERROR_1")); //$NON-NLS-1$
+            System.err.println(messages.format("NO_CONSOLE_ERROR_1")); //$NON-NLS-1$
             return null;
         }
     }
@@ -183,9 +185,9 @@ public class SrampWagon extends StreamWagon {
     private String promptForPassword() {
         Console console = System.console();
         if (console != null) {
-            return new String(console.readPassword(Messages.i18n.format("PASSWORD_PROMPT"))); //$NON-NLS-1$
+            return new String(console.readPassword(messages.format("PASSWORD_PROMPT"))); //$NON-NLS-1$
         } else {
-            System.err.println(Messages.i18n.format("NO_CONSOLE_ERROR_2")); //$NON-NLS-1$
+            System.err.println(messages.format("NO_CONSOLE_ERROR_2")); //$NON-NLS-1$
             return null;
         }
     }
@@ -216,7 +218,7 @@ public class SrampWagon extends StreamWagon {
             return;
         }
 
-		debug(Messages.i18n.format("LOOKING_UP_RESOURCE_IN_SRAMP", resource)); //$NON-NLS-1$
+        debug(messages.format("LOOKING_UP_RESOURCE_IN_SRAMP", resource)); //$NON-NLS-1$
 
 		if (gavInfo.isHash()) {
 			doGetHash(gavInfo, inputData);
@@ -252,7 +254,7 @@ public class SrampWagon extends StreamWagon {
                         .propertyName("maven.version") //$NON-NLS-1$
                         .count(500).orderBy("createdTimestamp").ascending().query(); //$NON-NLS-1$
                 if (resultSet.size() == 0) {
-                    throw new Exception(Messages.i18n.format("NO_ARTIFACTS_FOUND")); //$NON-NLS-1$
+                    throw new Exception(messages.format("NO_ARTIFACTS_FOUND")); //$NON-NLS-1$
                 }
 
                 String groupId = gavInfo.getGroupId();
@@ -304,7 +306,7 @@ public class SrampWagon extends StreamWagon {
                 inputData.setInputStream(IOUtils.toInputStream(hash));
             }
         } catch (Exception e) {
-            throw new ResourceDoesNotExistException(Messages.i18n.format("FAILED_TO_GENERATE_METADATA"), e); //$NON-NLS-1$
+            throw new ResourceDoesNotExistException(messages.format("FAILED_TO_GENERATE_METADATA"), e); //$NON-NLS-1$
         } finally {
             Thread.currentThread().setContextClassLoader(oldCtxCL);
         }
@@ -336,7 +338,7 @@ public class SrampWagon extends StreamWagon {
                         .propertyName("maven.classifier").propertyName("maven.type") //$NON-NLS-1$ //$NON-NLS-2$
                         .count(500).orderBy("createdTimestamp").ascending().query(); //$NON-NLS-1$
                 if (resultSet.size() == 0) {
-                    throw new Exception(Messages.i18n.format("NO_ARTIFACTS_FOUND")); //$NON-NLS-1$
+                    throw new Exception(messages.format("NO_ARTIFACTS_FOUND")); //$NON-NLS-1$
                 }
 
                 SimpleDateFormat timestampFormat = new SimpleDateFormat("yyyyMMdd.HHmmss"); //$NON-NLS-1$
@@ -402,7 +404,7 @@ public class SrampWagon extends StreamWagon {
                 inputData.setInputStream(IOUtils.toInputStream(hash));
             }
         } catch (Exception e) {
-            throw new ResourceDoesNotExistException(Messages.i18n.format("FAILED_TO_GENERATE_METADATA"), e); //$NON-NLS-1$
+            throw new ResourceDoesNotExistException(messages.format("FAILED_TO_GENERATE_METADATA"), e); //$NON-NLS-1$
         } finally {
             Thread.currentThread().setContextClassLoader(oldCtxCL);
         }
@@ -435,13 +437,13 @@ public class SrampWagon extends StreamWagon {
         try {
     		SrampArchiveEntry entry = this.archive.getEntry(artyPath);
     		if (entry == null) {
-    			throw new ResourceDoesNotExistException(Messages.i18n.format("MISSING_RESOURCE_HASH", gavInfo.getName())); //$NON-NLS-1$
+                throw new ResourceDoesNotExistException(messages.format("MISSING_RESOURCE_HASH", gavInfo.getName())); //$NON-NLS-1$
     		}
     		BaseArtifactType metaData = entry.getMetaData();
 
     		String hashValue = SrampModelUtils.getCustomProperty(metaData, hashPropName);
     		if (hashValue == null) {
-    			throw new ResourceDoesNotExistException(Messages.i18n.format("MISSING_RESOURCE_HASH", gavInfo.getName())); //$NON-NLS-1$
+                throw new ResourceDoesNotExistException(messages.format("MISSING_RESOURCE_HASH", gavInfo.getName())); //$NON-NLS-1$
     		}
     		inputData.setInputStream(IOUtils.toInputStream(hashValue));
         } finally {
@@ -471,7 +473,7 @@ public class SrampWagon extends StreamWagon {
 			// Query the artifact meta data using GAV info
 			BaseArtifactType artifact = findExistingArtifact(client, gavInfo);
 			if (artifact == null)
-				throw new ResourceDoesNotExistException(Messages.i18n.format("ARTIFACT_NOT_FOUND", gavInfo.getName())); //$NON-NLS-1$
+                throw new ResourceDoesNotExistException(messages.format("ARTIFACT_NOT_FOUND", gavInfo.getName())); //$NON-NLS-1$
 			this.archive.addEntry(gavInfo.getFullName(), artifact, null);
 			ArtifactType type = ArtifactType.valueOf(artifact);
 
@@ -482,11 +484,11 @@ public class SrampWagon extends StreamWagon {
 			throw e;
 		} catch (SrampClientException e) {
 			if (e.getCause() instanceof HttpHostConnectException) {
-				this.debug(Messages.i18n.format("SRAMP_CONNECTION_FAILED", e.getMessage())); //$NON-NLS-1$
+                this.debug(messages.format("SRAMP_CONNECTION_FAILED", e.getMessage())); //$NON-NLS-1$
 			} else {
 				this.error(e.getMessage(), e);
 			}
-			throw new ResourceDoesNotExistException(Messages.i18n.format("FAILED_TO_GET_RESOURCE_FROM_SRAMP", gavInfo.getName())); //$NON-NLS-1$
+            throw new ResourceDoesNotExistException(messages.format("FAILED_TO_GET_RESOURCE_FROM_SRAMP", gavInfo.getName())); //$NON-NLS-1$
 		} catch (Throwable t) {
 			this.error(t.getMessage(), t);
 		} finally {
@@ -549,12 +551,12 @@ public class SrampWagon extends StreamWagon {
 			throws TransferFailedException, ResourceDoesNotExistException, AuthorizationException {
 	    MavenGavInfo gavInfo = MavenGavInfo.fromResource(resource);
 	    if (allowSnapshot || !gavInfo.isSnapshot()) {
-    		logger.info(Messages.i18n.format("UPLOADING_TO_SRAMP", resource.getName())); //$NON-NLS-1$
+            logger.info(messages.format("UPLOADING_TO_SRAMP", resource.getName())); //$NON-NLS-1$
     		firePutInitiated(resource, source);
 
     		firePutStarted(resource, source);
     		if (resource.getName().contains("maven-metadata.xml")) { //$NON-NLS-1$
-    			logger.info(Messages.i18n.format("SKIPPING_ARTY", resource.getName())); //$NON-NLS-1$
+                logger.info(messages.format("SKIPPING_ARTY", resource.getName())); //$NON-NLS-1$
     			try {
     				transfer(resource, content, new DevNullOutputStream(), TransferEvent.REQUEST_PUT);
     			} catch (IOException e) {
@@ -565,7 +567,7 @@ public class SrampWagon extends StreamWagon {
     		}
     		firePutCompleted(resource, source);
 	    } else {
-	        throw new TransferFailedException(Messages.i18n.format("SNAPSHOT_NOT_ALLOWED"));
+            throw new TransferFailedException(messages.format("SNAPSHOT_NOT_ALLOWED"));
 	    }
 	}
 
@@ -612,7 +614,7 @@ public class SrampWagon extends StreamWagon {
 	 * @throws TransferFailedException
 	 */
 	private void doPutHash(MavenGavInfo gavInfo, InputStream resourceInputStream) throws TransferFailedException {
-		logger.info(Messages.i18n.format("STORING_HASH_AS_PROP", gavInfo.getName())); //$NON-NLS-1$
+        logger.info(messages.format("STORING_HASH_AS_PROP", gavInfo.getName())); //$NON-NLS-1$
 		try {
 			String artyPath = gavInfo.getFullName();
 			String hashPropName;
@@ -644,7 +646,7 @@ public class SrampWagon extends StreamWagon {
 				Thread.currentThread().setContextClassLoader(oldCtxCL);
 			}
 		} catch (Exception e) {
-			throw new TransferFailedException(Messages.i18n.format("FAILED_TO_STORE_HASH", gavInfo.getName()), e); //$NON-NLS-1$
+            throw new TransferFailedException(messages.format("FAILED_TO_STORE_HASH", gavInfo.getName()), e); //$NON-NLS-1$
 		}
 	}
 
@@ -683,7 +685,7 @@ public class SrampWagon extends StreamWagon {
 			// If we found an artifact, we should update its content.  If not, we should upload
 			// the artifact to the repository.
 			if (artifact != null) {
-                throw new TransferFailedException(Messages.i18n.format("ARTIFACT_UPDATE_NOT_ALLOWED", gavInfo.getFullName())); //$NON-NLS-1$
+                throw new TransferFailedException(messages.format("ARTIFACT_UPDATE_NOT_ALLOWED", gavInfo.getFullName())); //$NON-NLS-1$
 
 			} else {
 				// Upload the content, then add the maven properties to the artifact
@@ -745,12 +747,12 @@ public class SrampWagon extends StreamWagon {
     private BaseArtifactType ensureArtifactGrouping() throws SrampClientException, SrampAtomException {
         String groupingName = getParamFromRepositoryUrl("artifactGrouping"); //$NON-NLS-1$
         if (groupingName == null || groupingName.trim().length() == 0) {
-            logger.warn(Messages.i18n.format("NO_ARTIFACT_GROUPING_NAME")); //$NON-NLS-1$
+            logger.warn(messages.format("NO_ARTIFACT_GROUPING_NAME")); //$NON-NLS-1$
             return null;
         }
         QueryResultSet query = client.buildQuery("/s-ramp/ext/ArtifactGrouping[@name = ?]").parameter(groupingName).count(2).query(); //$NON-NLS-1$
         if (query.size() > 1) {
-            logger.warn(Messages.i18n.format("MULTIPLE_ARTIFACT_GROUPSING_FOUND", groupingName)); //$NON-NLS-1$
+            logger.warn(messages.format("MULTIPLE_ARTIFACT_GROUPSING_FOUND", groupingName)); //$NON-NLS-1$
             return null;
         } else if (query.size() == 1) {
             ArtifactSummary summary = query.get(0);
@@ -760,7 +762,7 @@ public class SrampWagon extends StreamWagon {
             groupingArtifact.setArtifactType(BaseArtifactEnum.EXTENDED_ARTIFACT_TYPE);
             groupingArtifact.setExtendedType("ArtifactGrouping"); //$NON-NLS-1$
             groupingArtifact.setName(groupingName);
-            groupingArtifact.setDescription(Messages.i18n.format("ARTIFACT_GROUPING_DESCRIPTION")); //$NON-NLS-1$
+            groupingArtifact.setDescription(messages.format("ARTIFACT_GROUPING_DESCRIPTION")); //$NON-NLS-1$
             return client.createArtifact(groupingArtifact);
         }
     }
@@ -931,7 +933,7 @@ public class SrampWagon extends StreamWagon {
     	            return val;
     	        }
 	        } else {
-	            throw new RuntimeException(Messages.i18n.format("INVALID_QUERY_PARAM")); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("INVALID_QUERY_PARAM")); //$NON-NLS-1$
 	        }
 	    }
 	    return null;

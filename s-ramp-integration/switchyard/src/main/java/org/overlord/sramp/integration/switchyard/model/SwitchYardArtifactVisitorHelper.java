@@ -16,13 +16,15 @@
 package org.overlord.sramp.integration.switchyard.model;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
-import org.overlord.sramp.integration.switchyard.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 
 /**
  * Helper used to visit switchyard artifacts.
  * @author eric.wittmann@redhat.com
  */
 public class SwitchYardArtifactVisitorHelper {
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * Visits a switchyard artifact.
@@ -41,7 +43,7 @@ public class SwitchYardArtifactVisitorHelper {
         } else if (SwitchYardModel.SwitchYardValidator.equals(artifact.getExtendedType())) {
             visitor.visitValidator(artifact);
         } else {
-            throw new RuntimeException(Messages.i18n.format("VISITOR_NOT_IMPLEMENTED", artifact.getExtendedType())); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("VISITOR_NOT_IMPLEMENTED", artifact.getExtendedType())); //$NON-NLS-1$
         }
     }
 

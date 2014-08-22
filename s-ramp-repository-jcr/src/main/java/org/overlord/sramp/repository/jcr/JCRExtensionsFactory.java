@@ -17,8 +17,8 @@ package org.overlord.sramp.repository.jcr;
 
 import javax.jcr.RepositoryException;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.commons.services.ServiceRegistryUtil;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +26,8 @@ public class JCRExtensionsFactory {
 
 	private static Logger log = LoggerFactory.getLogger(JCRExtensionsFactory.class);
 	private static JCRExtensions instance;
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * @return the discovered jcr extensions
@@ -35,8 +37,8 @@ public class JCRExtensionsFactory {
         if (instance == null) {
             instance = ServiceRegistryUtil.getSingleService(JCRExtensions.class);
             if (instance == null)
-                throw new RuntimeException(Messages.i18n.format("JCR_EXTENSIONS_NOT_FOUND")); //$NON-NLS-1$
-            log.info(Messages.i18n.format("JCR_EXTENSIONS", instance.getClass())); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("JCR_EXTENSIONS_NOT_FOUND")); //$NON-NLS-1$
+            log.info(messages.format("JCR_EXTENSIONS", instance.getClass())); //$NON-NLS-1$
         }
         return instance;
     }

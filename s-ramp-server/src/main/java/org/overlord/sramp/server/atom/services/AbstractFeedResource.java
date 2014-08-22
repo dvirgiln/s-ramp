@@ -28,6 +28,7 @@ import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.jboss.resteasy.plugins.providers.atom.Link;
 import org.jboss.resteasy.plugins.providers.atom.Person;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.MediaType;
 import org.overlord.sramp.atom.err.SrampAtomException;
 import org.overlord.sramp.atom.visitors.ArtifactToSummaryAtomEntryVisitor;
@@ -37,7 +38,6 @@ import org.overlord.sramp.repository.QueryManager;
 import org.overlord.sramp.repository.QueryManagerFactory;
 import org.overlord.sramp.repository.query.ArtifactSet;
 import org.overlord.sramp.repository.query.SrampQuery;
-import org.overlord.sramp.server.i18n.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractFeedResource extends AbstractResource {
 
 	private static Logger logger = LoggerFactory.getLogger(AbstractFeedResource.class);
-
+    private final static Messages messages = Messages.getInstance();
 	/**
 	 * Constructor.
 	 */
@@ -88,7 +88,7 @@ public abstract class AbstractFeedResource extends AbstractResource {
 			addPaginationLinks(feed, artifactSet, query, startIndex, count, orderBy, ascending, baseUrl);
 			return feed;
 		} catch (Throwable e) {
-			logError(logger, Messages.i18n.format("Error trying to create an Artifact Feed."), e); //$NON-NLS-1$
+            logError(logger, messages.format("Error trying to create an Artifact Feed."), e); //$NON-NLS-1$
 			throw new SrampAtomException(e);
 		} finally {
 			if (artifactSet != null)

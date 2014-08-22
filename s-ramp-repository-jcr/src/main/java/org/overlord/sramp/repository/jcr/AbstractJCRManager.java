@@ -20,13 +20,16 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 import javax.jcr.query.QueryResult;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.ArtifactType;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
+
 
 /**
  * Base class for JCR manager.
  */
 public class AbstractJCRManager {
+
+    private final static Messages messages = Messages.getInstance();
 
 //	private static Logger log = LoggerFactory.getLogger(AbstractJCRManager.class);
 
@@ -77,7 +80,7 @@ public class AbstractJCRManager {
             return null;
         }
         if (jcrNodes.getSize() > 1) {
-            throw new Exception(Messages.i18n.format("TOO_MANY_ARTIFACTS", artifactUuid)); //$NON-NLS-1$
+            throw new Exception(messages.format("TOO_MANY_ARTIFACTS", artifactUuid)); //$NON-NLS-1$
         }
         Node node = jcrNodes.nextNode();
         return node;

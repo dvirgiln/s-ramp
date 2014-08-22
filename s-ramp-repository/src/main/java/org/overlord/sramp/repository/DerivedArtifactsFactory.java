@@ -15,16 +15,18 @@
  */
 package org.overlord.sramp.repository;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.commons.services.ServiceRegistryUtil;
-import org.overlord.sramp.repository.i18n.Messages;
 
 
 public class DerivedArtifactsFactory {
 
+    private final static Messages messages = Messages.getInstance();
+
     public static DerivedArtifacts newInstance()  {
         DerivedArtifacts daManager = ServiceRegistryUtil.getSingleService(DerivedArtifacts.class);
         if (daManager == null)
-            throw new RuntimeException(Messages.i18n.format("MISSING_DERIVED_ARTIFACTS_PROVIDER")); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("MISSING_DERIVED_ARTIFACTS_PROVIDER")); //$NON-NLS-1$
         return daManager;
     }
 }

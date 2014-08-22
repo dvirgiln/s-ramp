@@ -37,8 +37,9 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.version.VersionException;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.repository.jcr.JCRConstants;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
+
 
 /**
  * Some common utils for working with JCR.
@@ -46,6 +47,8 @@ import org.overlord.sramp.repository.jcr.i18n.Messages;
  * @author eric.wittmann@redhat.com
  */
 public class JCRUtils {
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * Called to set the jcr:mimeType property on the given artifact.  The mime type property
@@ -215,7 +218,7 @@ public class JCRUtils {
 
     private static void isNotNull( Object argument, String name ) {
         if (argument == null) {
-            throw new IllegalArgumentException(Messages.i18n.format("ARG_CANNOT_BE_NULL", name)); //$NON-NLS-1$
+            throw new IllegalArgumentException(messages.format("ARG_CANNOT_BE_NULL", name)); //$NON-NLS-1$
         }
     }
 

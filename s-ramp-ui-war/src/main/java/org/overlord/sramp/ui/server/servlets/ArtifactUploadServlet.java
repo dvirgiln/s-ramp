@@ -35,6 +35,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.archive.SrampArchive;
 import org.overlord.sramp.atom.archive.expand.DefaultMetaDataFactory;
 import org.overlord.sramp.atom.archive.expand.ZipToSrampArchive;
@@ -42,7 +43,6 @@ import org.overlord.sramp.atom.archive.expand.registry.ZipToSrampArchiveRegistry
 import org.overlord.sramp.atom.err.SrampAtomException;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.ui.server.api.SrampApiClientAccessor;
-import org.overlord.sramp.ui.server.i18n.Messages;
 import org.overlord.sramp.ui.server.services.ArtifactTypeGuessingService;
 import org.overlord.sramp.ui.server.util.ExceptionUtils;
 
@@ -60,6 +60,8 @@ public class ArtifactUploadServlet extends AbstractUploadServlet {
     private SrampApiClientAccessor clientAccessor;
     @Inject
     private ArtifactTypeGuessingService artifactTypeGuesser;
+
+    static final Messages messages = Messages.getInstance();
 
 	/**
 	 * Constructor.
@@ -116,7 +118,7 @@ public class ArtifactUploadServlet extends AbstractUploadServlet {
 			writeToResponse(responseMap, response);
 		} else {
 			response.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE,
-			        Messages.i18n.format("UploadServlet.ContentTypeNotSupported")); //$NON-NLS-1$
+ messages.format("UploadServlet.ContentTypeNotSupported")); //$NON-NLS-1$
 		}
 	}
 

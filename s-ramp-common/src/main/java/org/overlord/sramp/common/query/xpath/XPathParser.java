@@ -31,13 +31,14 @@ import java.util.List;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.common.SrampConstants;
-import org.overlord.sramp.common.i18n.Messages;
 import org.overlord.sramp.common.query.xpath.ast.AndExpr;
 import org.overlord.sramp.common.query.xpath.ast.Argument;
 import org.overlord.sramp.common.query.xpath.ast.ArtifactSet;
 import org.overlord.sramp.common.query.xpath.ast.EqualityExpr;
+import org.overlord.sramp.common.query.xpath.ast.EqualityExpr.Operator;
 import org.overlord.sramp.common.query.xpath.ast.Expr;
 import org.overlord.sramp.common.query.xpath.ast.ForwardPropertyStep;
 import org.overlord.sramp.common.query.xpath.ast.FunctionCall;
@@ -48,7 +49,6 @@ import org.overlord.sramp.common.query.xpath.ast.PrimaryExpr;
 import org.overlord.sramp.common.query.xpath.ast.Query;
 import org.overlord.sramp.common.query.xpath.ast.RelationshipPath;
 import org.overlord.sramp.common.query.xpath.ast.SubartifactSet;
-import org.overlord.sramp.common.query.xpath.ast.EqualityExpr.Operator;
 
 /**
  * Parses an XPath query string and creates an abstract syntax tree representation. The supported grammar is
@@ -58,6 +58,8 @@ public class XPathParser {
 
 	private NamespaceContext namespaceContext;
 	private String defaultPrefix;
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * Default constructor.
@@ -125,7 +127,7 @@ public class XPathParser {
 			Predicate predicate = parsePredicate(tokens);
 			query.setPredicate(predicate);
 			if (!tokens.canConsume("]")) //$NON-NLS-1$
-				throw new XPathParserException(Messages.i18n.format("XPATH_PREDICATE_NOT_TERMINATED")); //$NON-NLS-1$
+                throw new XPathParserException(messages.format("XPATH_PREDICATE_NOT_TERMINATED")); //$NON-NLS-1$
 		}
 
 		if (tokens.canConsume("/")) { //$NON-NLS-1$
@@ -134,7 +136,7 @@ public class XPathParser {
 		}
 
 		if (tokens.hasNext())
-			throw new XPathParserException(Messages.i18n.format("XPATH_TERMINATION")); //$NON-NLS-1$
+            throw new XPathParserException(messages.format("XPATH_TERMINATION")); //$NON-NLS-1$
 
 		return query;
 	}
@@ -161,36 +163,36 @@ public class XPathParser {
 		String artifactType = null;
 
 		if (!tokens.canConsume("/")) //$NON-NLS-1$
-			throw new XPathParserException(Messages.i18n.format("XPATH_RELATIVE_QUERY")); //$NON-NLS-1$
+            throw new XPathParserException(messages.format("XPATH_RELATIVE_QUERY")); //$NON-NLS-1$
 		if (!tokens.matches(TokenType.name) && !tokens.matches("/")) //$NON-NLS-1$
-			throw new XPathParserException(Messages.i18n.format("XPATH_INVALID_STEP_1")); //$NON-NLS-1$
+            throw new XPathParserException(messages.format("XPATH_INVALID_STEP_1")); //$NON-NLS-1$
 
 		// Is this of the form //{artifactType} ?
 		if (tokens.matches("/")) { //$NON-NLS-1$
 			tokens.consume().toString();
 			if (!tokens.matches(TokenType.name))
-				throw new XPathParserException(Messages.i18n.format("XPATH_EMPTY_ROOT")); //$NON-NLS-1$
+                throw new XPathParserException(messages.format("XPATH_EMPTY_ROOT")); //$NON-NLS-1$
 			artifactType = tokens.consume().toString();
 			artifactModel = resolveArtifactModel(artifactType);
 		} else {
 			String rootSrampSegment = tokens.consume().toString();
 			if (!"s-ramp".equals(rootSrampSegment)) //$NON-NLS-1$
-				throw new XPathParserException(Messages.i18n.format("XPATH_INVALID_ROOT")); //$NON-NLS-1$
+                throw new XPathParserException(messages.format("XPATH_INVALID_ROOT")); //$NON-NLS-1$
 
 			// Next is the artifact model
 			if (tokens.hasNext() && !tokens.matches("[")) { //$NON-NLS-1$
 				if (!tokens.canConsume("/")) //$NON-NLS-1$
-					throw new XPathParserException(Messages.i18n.format("XPATH_INVALID_STEP_2")); //$NON-NLS-1$
+                    throw new XPathParserException(messages.format("XPATH_INVALID_STEP_2")); //$NON-NLS-1$
 				if (!tokens.matches(TokenType.name))
-					throw new XPathParserException(Messages.i18n.format("XPATH_INVALID_STEP_2")); //$NON-NLS-1$
+                    throw new XPathParserException(messages.format("XPATH_INVALID_STEP_2")); //$NON-NLS-1$
 				artifactModel = tokens.consume().toString();
 
 				// And now the artifact type
 				if (tokens.hasNext() && !tokens.matches("[")) { //$NON-NLS-1$
 					if (!tokens.canConsume("/")) //$NON-NLS-1$
-						throw new XPathParserException(Messages.i18n.format("XPATH_INVALID_STEP_3")); //$NON-NLS-1$
+                        throw new XPathParserException(messages.format("XPATH_INVALID_STEP_3")); //$NON-NLS-1$
 					if (!tokens.matches(TokenType.name))
-						throw new XPathParserException(Messages.i18n.format("XPATH_INVALID_STEP_3")); //$NON-NLS-1$
+                        throw new XPathParserException(messages.format("XPATH_INVALID_STEP_3")); //$NON-NLS-1$
 					artifactType = tokens.consume().toString();
 				}
 			}
@@ -269,7 +271,7 @@ public class XPathParser {
 			Expr expr = parseExpr(tokens);
 			equalityExpr.setExpr(expr);
 			if (!tokens.canConsume(")")) //$NON-NLS-1$
-				throw new XPathParserException(Messages.i18n.format("XPATH_MISSING_PAREN")); //$NON-NLS-1$
+                throw new XPathParserException(messages.format("XPATH_MISSING_PAREN")); //$NON-NLS-1$
 		} else if (tokens.canConsume("@")) { //$NON-NLS-1$
 			ForwardPropertyStep forwardPropertyStep = parseForwardPropertyStep(tokens);
 			PrimaryExpr primaryExpr = null;
@@ -323,11 +325,11 @@ public class XPathParser {
 		String namespace = null;
 
 		if (!tokens.matches(TokenType.name))
-			throw new XPathParserException(Messages.i18n.format("XPATH_EXPECTED_NAME_TOKEN")); //$NON-NLS-1$
+            throw new XPathParserException(messages.format("XPATH_EXPECTED_NAME_TOKEN")); //$NON-NLS-1$
 		String ncname1 = tokens.consume().toString();
 		if (tokens.canConsume(":")) { //$NON-NLS-1$
 			if (!tokens.matches(TokenType.name))
-				throw new XPathParserException(Messages.i18n.format("XPATH_EXPECTED_NAME_TOKEN")); //$NON-NLS-1$
+                throw new XPathParserException(messages.format("XPATH_EXPECTED_NAME_TOKEN")); //$NON-NLS-1$
 			String ncname2 = tokens.consume().toString();
 			prefix = ncname1;
 			localPart = ncname2;
@@ -366,11 +368,11 @@ public class XPathParser {
 				}
 			} catch (NumberFormatException e) {
 				// This wasn't a number after all.
-				throw new XPathParserException(Messages.i18n.format("XPATH_INVALID_NUMERIC_LITERAL")); //$NON-NLS-1$
+                throw new XPathParserException(messages.format("XPATH_INVALID_NUMERIC_LITERAL")); //$NON-NLS-1$
 			}
 			primaryExpr.setNumber(number);
 		} else {
-			throw new XPathParserException(Messages.i18n.format("XPATH_PRIMARY_EXPR_EXPECTED")); //$NON-NLS-1$
+            throw new XPathParserException(messages.format("XPATH_PRIMARY_EXPR_EXPECTED")); //$NON-NLS-1$
 		}
 		return primaryExpr;
 	}
@@ -382,7 +384,7 @@ public class XPathParser {
 	 */
 	private SubartifactSet parseSubartifactSet(TokenStream tokens) {
 		if (!tokens.matches(TokenType.name) && !tokens.matches(".")) //$NON-NLS-1$
-			throw new XPathParserException(Messages.i18n.format("XPATH_EXPR_EXPECTED")); //$NON-NLS-1$
+            throw new XPathParserException(messages.format("XPATH_EXPR_EXPECTED")); //$NON-NLS-1$
 
 		SubartifactSet subartifactSet = new SubartifactSet();
 		String relationshipOrFunction = tokens.consume().toString();
@@ -395,7 +397,7 @@ public class XPathParser {
 			RelationshipPath relationshipPath = new RelationshipPath(relationshipOrFunction);
 			Predicate predicate = parsePredicate(tokens);
 			if (!tokens.canConsume("]")) //$NON-NLS-1$
-				throw new XPathParserException(Messages.i18n.format("XPATH_UNTERMINATED_PREDICATE")); //$NON-NLS-1$
+                throw new XPathParserException(messages.format("XPATH_UNTERMINATED_PREDICATE")); //$NON-NLS-1$
 
 			subartifactSet.setRelationshipPath(relationshipPath);
 			subartifactSet.setPredicate(predicate);
@@ -407,12 +409,12 @@ public class XPathParser {
 		} else if (tokens.canConsume(":")) { //$NON-NLS-1$
 			String prefix = relationshipOrFunction;
 			if (!tokens.matches(TokenType.name))
-				throw new XPathParserException(Messages.i18n.format("XPATH_FUNCTION_EXPECTED")); //$NON-NLS-1$
+                throw new XPathParserException(messages.format("XPATH_FUNCTION_EXPECTED")); //$NON-NLS-1$
 			String localName = tokens.consume().toString();
 			String namespace = getNamespaceContext().getNamespaceURI(prefix);
 			QName functionName = new QName(namespace, localName, prefix);
 			if (!tokens.matches("(")) //$NON-NLS-1$
-				throw new XPathParserException(Messages.i18n.format("XPATH_ARGS_EXPECTED")); //$NON-NLS-1$
+                throw new XPathParserException(messages.format("XPATH_ARGS_EXPECTED")); //$NON-NLS-1$
 			List<Argument> arguments = parseFunctionArguments(tokens);
 
 			FunctionCall functionCall = new FunctionCall();
@@ -454,7 +456,7 @@ public class XPathParser {
 			}
 		}
 		if (!tokens.canConsume(")")) // Consume the close paren //$NON-NLS-1$
-			throw new XPathParserException(Messages.i18n.format("XPATH_UNTERMINATED_ARG_LIST")); //$NON-NLS-1$
+            throw new XPathParserException(messages.format("XPATH_UNTERMINATED_ARG_LIST")); //$NON-NLS-1$
 		return arguments;
 	}
 

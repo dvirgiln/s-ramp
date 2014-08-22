@@ -76,7 +76,6 @@
       <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-gwt</artifactId>
     </dependency>
-
     <!-- Third Party Dependencies -->
     <dependency>
       <groupId>org.picketbox</groupId>

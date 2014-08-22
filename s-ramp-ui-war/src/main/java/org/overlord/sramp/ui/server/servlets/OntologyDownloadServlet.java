@@ -29,9 +29,9 @@ import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.ui.server.api.SrampApiClientAccessor;
-import org.overlord.sramp.ui.server.i18n.Messages;
 import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 
 /**
@@ -42,6 +42,8 @@ import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 public class OntologyDownloadServlet extends AbstractDownloadServlet {
 
     private static final long serialVersionUID = ArtifactDownloadServlet.class.hashCode();
+
+    static final Messages messages = Messages.getInstance();
 
     @Inject
     private SrampApiClientAccessor clientAccessor;
@@ -76,7 +78,7 @@ public class OntologyDownloadServlet extends AbstractDownloadServlet {
             if (StringUtils.isNotEmpty(uuid)) {
                 doDownloadContent(httpResponse, client, uuid);
             } else {
-                throw new Exception(Messages.i18n.format("OntologyDownloadServlet.no.uuid.param")); //$NON-NLS-1$
+                throw new Exception(messages.format("OntologyDownloadServlet.no.uuid.param")); //$NON-NLS-1$
             }
 
         } catch (Exception e) {

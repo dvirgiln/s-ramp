@@ -38,6 +38,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.err.SrampAtomException;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.common.Sramp;
@@ -51,7 +52,6 @@ import org.overlord.sramp.repository.QueryManager;
 import org.overlord.sramp.repository.QueryManagerFactory;
 import org.overlord.sramp.repository.query.ArtifactSet;
 import org.overlord.sramp.repository.query.SrampQuery;
-import org.overlord.sramp.server.i18n.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,6 +63,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MavenRepositoryService extends HttpServlet {
 
+    private final static Messages messages = Messages.getInstance();
     private static final long serialVersionUID = 1L;
 
     private static final String MAVEN_SEPARATOR = "-"; //$NON-NLS-1$
@@ -119,7 +120,7 @@ public class MavenRepositoryService extends HttpServlet {
                     listItemsResponse(req, resp, maven_url);
                 }
             } catch (MavenRepositoryException e) {
-                logger.info(Messages.i18n.format(
+                logger.info(messages.format(
                         "maven.servlet.artifact.content.get.exception", //$NON-NLS-1$
                         metadata.getGroupId(), metadata.getArtifactId(), metadata.getVersion(),
                         metadata.getFileName()));
@@ -216,7 +217,7 @@ public class MavenRepositoryService extends HttpServlet {
             }
             artifactSet = srampQuery.executeQuery();
         } catch (Throwable e) {
-            logger.error(Messages.i18n.format("maven.resource.query.error", queryBuilder.toString()), e); //$NON-NLS-1$
+            logger.error(messages.format("maven.resource.query.error", queryBuilder.toString()), e); //$NON-NLS-1$
             throw new SrampAtomException(e);
         }
         return artifactSet;
@@ -269,7 +270,7 @@ public class MavenRepositoryService extends HttpServlet {
                 baseArtifact = artifactSet.iterator().next();
             }
         } catch (SrampAtomException e) {
-            throw new MavenRepositoryException(Messages.i18n.format(""), e); //$NON-NLS-1$
+            throw new MavenRepositoryException(messages.format(""), e); //$NON-NLS-1$
         } finally {
             if (artifactSet != null) {
                 artifactSet.close();
@@ -295,7 +296,7 @@ public class MavenRepositoryService extends HttpServlet {
                     artifactContent = new ByteArrayInputStream(content.getBytes());
                     contentLength = content.length();
                 } else {
-                    logger.info(Messages.i18n.format("maven.resource.get.subcontent.not.found", baseArtifact.getUuid(), ext.getCustomProperty())); //$NON-NLS-1$
+                    logger.info(messages.format("maven.resource.get.subcontent.not.found", baseArtifact.getUuid(), ext.getCustomProperty())); //$NON-NLS-1$
                     return null;
                 }
 
@@ -304,9 +305,9 @@ public class MavenRepositoryService extends HttpServlet {
                 try {
                     artifactContent = persistenceManager.getArtifactContent(baseArtifact.getUuid(), artifactType);
                 } catch (SrampException e) {
-                    logger.error(Messages.i18n.format("maven.resource.get.content.error", baseArtifact.getUuid()), e); //$NON-NLS-1$
+                    logger.error(messages.format("maven.resource.get.content.error", baseArtifact.getUuid()), e); //$NON-NLS-1$
 
-                    throw new MavenRepositoryException(Messages.i18n.format("maven.resource.get.content.error", //$NON-NLS-1$
+                    throw new MavenRepositoryException(messages.format("maven.resource.get.content.error", //$NON-NLS-1$
                             baseArtifact.getUuid()), e);
 
                 }
@@ -321,7 +322,7 @@ public class MavenRepositoryService extends HttpServlet {
                     artifactType.getMimeType());
             return wrapper;
         } else {
-            logger.error(Messages.i18n.format("maven.resource.item.null", metadata.toString())); //$NON-NLS-1$
+            logger.error(messages.format("maven.resource.item.null", metadata.toString())); //$NON-NLS-1$
             // Return null so that the servlet can return a 404
             return null;
         }
@@ -496,7 +497,7 @@ public class MavenRepositoryService extends HttpServlet {
                 }
             }
         } catch (SrampAtomException e) {
-            throw new MavenRepositoryException(Messages.i18n.format("maven.resource.get.items.error", groupId, artifactId, version), e); //$NON-NLS-1$
+            throw new MavenRepositoryException(messages.format("maven.resource.get.items.error", groupId, artifactId, version), e); //$NON-NLS-1$
         } finally {
             if (artifactSet != null) {
                 artifactSet.close();
@@ -537,16 +538,16 @@ public class MavenRepositoryService extends HttpServlet {
                     String uuid = uploadArtifact(metadata, content);
                     responseMap.put("uuid", uuid); //$NON-NLS-1$
                 } else {
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Messages.i18n.format("maven.servlet.put.snapshot.not.allowed")); //$NON-NLS-1$
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, messages.format("maven.servlet.put.snapshot.not.allowed")); //$NON-NLS-1$
                 }
 
             } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, Messages.i18n.format("maven.servlet.put.url.without.artifact")); //$NON-NLS-1$
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, messages.format("maven.servlet.put.url.without.artifact")); //$NON-NLS-1$
             }
 
         } catch (Throwable e) {
-            logger.error(Messages.i18n.format("maven.servlet.artifact.content.put.exception"), e); //$NON-NLS-1$
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Messages.i18n.format("maven.servlet.put.exception")); //$NON-NLS-1$
+            logger.error(messages.format("maven.servlet.artifact.content.put.exception"), e); //$NON-NLS-1$
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, messages.format("maven.servlet.put.exception")); //$NON-NLS-1$
         } finally {
             if (content != null) {
                 IOUtils.closeQuietly(content);
@@ -558,7 +559,7 @@ public class MavenRepositoryService extends HttpServlet {
     private String uploadArtifact(MavenMetaData metadata, InputStream content) throws MavenRepositoryException {
         String uuid = null;
         if (content == null) {
-            throw new MavenRepositoryException(Messages.i18n.format("maven.resource.upload.no.content")); //$NON-NLS-1$
+            throw new MavenRepositoryException(messages.format("maven.resource.upload.no.content")); //$NON-NLS-1$
         }
         String fileName = metadata.getFileName();
         PersistenceManager persistenceManager = PersistenceFactory.newInstance();
@@ -609,7 +610,7 @@ public class MavenRepositoryService extends HttpServlet {
                 baseArtifact = artifactSet.iterator().next();
             }
         } catch (SrampAtomException e) {
-            throw new MavenRepositoryException(Messages.i18n.format("maven.resource.upload.sramp.query.error", metadata.toString()), e); //$NON-NLS-1$
+            throw new MavenRepositoryException(messages.format("maven.resource.upload.sramp.query.error", metadata.toString()), e); //$NON-NLS-1$
         } finally {
             if (artifactSet != null) {
                 artifactSet.close();
@@ -625,7 +626,7 @@ public class MavenRepositoryService extends HttpServlet {
                     try {
                         content_value = IOUtils.toString(content);
                     } catch (IOException e1) {
-                        throw new MavenRepositoryException(Messages.i18n.format("maven.resource.upload.sramp.error", metadata.toString()), e1); //$NON-NLS-1$
+                        throw new MavenRepositoryException(messages.format("maven.resource.upload.sramp.error", metadata.toString()), e1); //$NON-NLS-1$
                     }
 
                     if (StringUtils.isNotBlank(content_value)) {
@@ -641,7 +642,7 @@ public class MavenRepositoryService extends HttpServlet {
                             try {
                                 persistenceManager.updateArtifact(baseArtifact, artifactType);
                             } catch (SrampException e) {
-                                throw new MavenRepositoryException(Messages.i18n.format("maven.resource.upload.sramp.error", metadata.toString()), e); //$NON-NLS-1$
+                                throw new MavenRepositoryException(messages.format("maven.resource.upload.sramp.error", metadata.toString()), e); //$NON-NLS-1$
                             }
                         }
                     }
@@ -649,7 +650,7 @@ public class MavenRepositoryService extends HttpServlet {
                     try {
                         persistenceManager.updateArtifactContent(baseArtifact.getUuid(), artifactType, content);
                     } catch (SrampException e) {
-                        throw new MavenRepositoryException(Messages.i18n.format("maven.resource.upload.sramp.error", metadata.toString()), e); //$NON-NLS-1$
+                        throw new MavenRepositoryException(messages.format("maven.resource.upload.sramp.error", metadata.toString()), e); //$NON-NLS-1$
                     }
                 }
 
@@ -664,12 +665,12 @@ public class MavenRepositoryService extends HttpServlet {
                     try {
                         persistenceManager.updateArtifactContent(baseArtifact.getUuid(), artifactType, content);
                     } catch (SrampException e) {
-                        throw new MavenRepositoryException(Messages.i18n.format("maven.resource.upload.sramp.update.content.error", //$NON-NLS-1$
+                        throw new MavenRepositoryException(messages.format("maven.resource.upload.sramp.update.content.error", //$NON-NLS-1$
                                 baseArtifact.getUuid()), e);
                     }
                     persisted = baseArtifact;
                 } else {
-                    throw new MavenRepositoryException(Messages.i18n.format("maven.resource.upload.sramp.release.artifact.exist", //$NON-NLS-1$
+                    throw new MavenRepositoryException(messages.format("maven.resource.upload.sramp.release.artifact.exist", //$NON-NLS-1$
                             metadata.getFullName()));
                 }
 
@@ -681,7 +682,7 @@ public class MavenRepositoryService extends HttpServlet {
                 try {
                     persisted = persistenceManager.persistArtifact(baseArtifactType, content);
                 } catch (SrampException e1) {
-                    throw new MavenRepositoryException(Messages.i18n.format("maven.resource.upload.sramp.new.content.error"), e1); //$NON-NLS-1$
+                    throw new MavenRepositoryException(messages.format("maven.resource.upload.sramp.new.content.error"), e1); //$NON-NLS-1$
                 }
             }
             // Store the metadata to the persisted artifact
@@ -711,7 +712,7 @@ public class MavenRepositoryService extends HttpServlet {
             try {
                 persistenceManager.updateArtifact(persisted, artifactType);
             } catch (SrampException e) {
-                throw new MavenRepositoryException(Messages.i18n.format("maven.resource.upload.sramp.update.content.metadata.error", //$NON-NLS-1$
+                throw new MavenRepositoryException(messages.format("maven.resource.upload.sramp.update.content.metadata.error", //$NON-NLS-1$
                         persisted.getUuid()), e);
             }
             uuid = persisted.getUuid();
@@ -757,7 +758,7 @@ public class MavenRepositoryService extends HttpServlet {
             IOException {
         String method = req.getMethod();
         String url = req.getRequestURI();
-        logger.info(Messages.i18n.format("maven.repository.servlet.service", method, url)); //$NON-NLS-1$
+        logger.info(messages.format("maven.repository.servlet.service", method, url)); //$NON-NLS-1$
         super.service(req, resp);
     }
 

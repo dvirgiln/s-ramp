@@ -38,8 +38,9 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.err.SrampAtomException;
-import org.overlord.sramp.atom.i18n.Messages;
+
 
 /**
  * A RESTEasy provider for reading/writing an S-RAMP Exception.
@@ -52,6 +53,8 @@ import org.overlord.sramp.atom.i18n.Messages;
 @Consumes(org.overlord.sramp.atom.MediaType.APPLICATION_SRAMP_ATOM_EXCEPTION)
 public class SrampAtomExceptionProvider implements ExceptionMapper<SrampAtomException>,
 		MessageBodyWriter<SrampAtomException>, MessageBodyReader<SrampAtomException> {
+
+    private final static Messages messages = Messages.getInstance();
 
 	/**
 	 * Constructor.
@@ -149,7 +152,7 @@ public class SrampAtomExceptionProvider implements ExceptionMapper<SrampAtomExce
 		String stackTrace = buffer.toString();
 		String msg = httpHeaders == null ? null : httpHeaders.getFirst("Error-Message"); //$NON-NLS-1$
 		if (msg == null) {
-			msg = Messages.i18n.format("UNKNOWN_SRAMP_ERROR"); //$NON-NLS-1$
+            msg = messages.format("UNKNOWN_SRAMP_ERROR"); //$NON-NLS-1$
 		}
 		SrampAtomException error = new SrampAtomException(msg, stackTrace);
 		return error;

@@ -15,8 +15,8 @@
  */
 package org.overlord.sramp.repository;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.commons.services.ServiceRegistryUtil;
-import org.overlord.sramp.repository.i18n.Messages;
 
 
 /**
@@ -24,13 +24,14 @@ import org.overlord.sramp.repository.i18n.Messages;
  */
 public class PersistenceFactory {
 
+    private final static Messages messages = Messages.getInstance();
     /**
      * Return a new instance of the persistence manager.
      */
     public static PersistenceManager newInstance() {
         PersistenceManager manager = ServiceRegistryUtil.getSingleService(PersistenceManager.class);
         if (manager == null)
-            throw new RuntimeException(Messages.i18n.format("MISSING_PERSISTENCEMAN_PROVIDER")); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("MISSING_PERSISTENCEMAN_PROVIDER")); //$NON-NLS-1$
         return manager;
     }
 }

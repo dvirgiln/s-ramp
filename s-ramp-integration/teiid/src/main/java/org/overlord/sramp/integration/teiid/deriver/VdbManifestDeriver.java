@@ -19,19 +19,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+
 import javax.xml.namespace.QName;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
+
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Property;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.SrampModelUtils;
 import org.overlord.sramp.common.derived.AbstractXmlDeriver;
 import org.overlord.sramp.common.derived.LinkerContext;
-import org.overlord.sramp.integration.teiid.Messages;
 import org.overlord.sramp.integration.teiid.Utils;
 import org.overlord.sramp.integration.teiid.model.Describable.XmlId;
 import org.overlord.sramp.integration.teiid.model.Propertied;
@@ -57,6 +59,8 @@ import org.w3c.dom.NodeList;
 public final class VdbManifestDeriver extends AbstractXmlDeriver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VdbManifestDeriver.class);
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * The delimeter that separates mapped role names in the data policy property value. Value is {@value} .
@@ -96,7 +100,7 @@ public final class VdbManifestDeriver extends AbstractXmlDeriver {
         // make sure Teiid VDB manifest
         if (!(artifact instanceof ExtendedDocument)
             || !VdbManifest.ARTIFACT_TYPE.extendedType().equals(((ExtendedDocument)artifact).getExtendedType())) {
-            throw new IllegalArgumentException(Messages.I18N.format("notVdbArtifact", artifact.getName())); //$NON-NLS-1$
+            throw new IllegalArgumentException(messages.format("notVdbArtifact", artifact.getName())); //$NON-NLS-1$
         }
 
         final ExtendedDocument vdbArtifact = (ExtendedDocument)artifact;
@@ -104,7 +108,7 @@ public final class VdbManifestDeriver extends AbstractXmlDeriver {
         try {
             // root element should be the VDB element
             if (!VdbManifest.ManifestId.VDB_ELEMENT.equals(rootElement.getLocalName())) {
-                throw new IllegalArgumentException(Messages.I18N.format("missingVdbRootElement", artifact.getName())); //$NON-NLS-1$
+                throw new IllegalArgumentException(messages.format("missingVdbRootElement", artifact.getName())); //$NON-NLS-1$
             }
 
             processVdb(derivedArtifacts, vdbArtifact, rootElement, xmlDeriverContext.getXpath());

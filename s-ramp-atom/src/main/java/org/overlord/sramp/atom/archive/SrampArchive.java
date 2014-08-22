@@ -32,7 +32,8 @@ import javax.xml.bind.JAXBException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.overlord.sramp.atom.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
+
 
 /**
  * Models the archive format defined in the S-RAMP Atom Binding document.
@@ -40,6 +41,8 @@ import org.overlord.sramp.atom.i18n.Messages;
  * @author eric.wittmann@redhat.com
  */
 public class SrampArchive {
+
+    private final static Messages messages = Messages.getInstance();
 
 	private File originalFile;
 	private boolean shouldDeleteOriginalFile;
@@ -58,7 +61,7 @@ public class SrampArchive {
 			if (workDir != null && workDir.exists()) {
 				try { FileUtils.deleteDirectory(workDir); } catch (IOException e1) { }
 			}
-			throw new SrampArchiveException(Messages.i18n.format("FAILED_TO_CREATE_WORK_DIR"), e); //$NON-NLS-1$
+            throw new SrampArchiveException(messages.format("FAILED_TO_CREATE_WORK_DIR"), e); //$NON-NLS-1$
 		}
 	}
 
@@ -77,7 +80,7 @@ public class SrampArchive {
 			if (this.workDir != null) {
 				try { FileUtils.deleteDirectory(this.workDir); } catch (IOException e1) { }
 			}
-			throw new SrampArchiveException(Messages.i18n.format("FAILED_TO_UNPACK_ARCHIVE_TO_WORK_DIR"), e); //$NON-NLS-1$
+            throw new SrampArchiveException(messages.format("FAILED_TO_UNPACK_ARCHIVE_TO_WORK_DIR"), e); //$NON-NLS-1$
 		}
 	}
 
@@ -104,7 +107,7 @@ public class SrampArchive {
 			if (this.originalFile != null && this.originalFile.exists()) {
 				this.originalFile.delete();
 			}
-			throw new SrampArchiveException(Messages.i18n.format("FAILED_TO_UNPACK_ARCHIVE_TO_WORK_DIR"), e); //$NON-NLS-1$
+            throw new SrampArchiveException(messages.format("FAILED_TO_UNPACK_ARCHIVE_TO_WORK_DIR"), e); //$NON-NLS-1$
 		}
 	}
 
@@ -205,13 +208,13 @@ public class SrampArchive {
 	 */
 	public void addEntry(String path, BaseArtifactType metaData, InputStream content) throws SrampArchiveException {
 		if (path == null)
-			throw new SrampArchiveException(Messages.i18n.format("INVALID_ENTRY_PATH")); //$NON-NLS-1$
+            throw new SrampArchiveException(messages.format("INVALID_ENTRY_PATH")); //$NON-NLS-1$
 		if (metaData == null)
-			throw new SrampArchiveException(Messages.i18n.format("MISSING_META_DATA")); //$NON-NLS-1$
+            throw new SrampArchiveException(messages.format("MISSING_META_DATA")); //$NON-NLS-1$
 		File metaDataFile = new File(this.workDir, path + ".atom"); //$NON-NLS-1$
 		File contentFile = new File(this.workDir, path);
 		if (metaDataFile.exists())
-			throw new SrampArchiveException(Messages.i18n.format("ARCHIVE_ALREADY_EXISTS")); //$NON-NLS-1$
+            throw new SrampArchiveException(messages.format("ARCHIVE_ALREADY_EXISTS")); //$NON-NLS-1$
 		// Create any required parent directories
 		metaDataFile.getParentFile().mkdirs();
 		if (content != null)
@@ -232,7 +235,7 @@ public class SrampArchive {
 	 */
 	public void updateEntry(SrampArchiveEntry entry, InputStream content) throws SrampArchiveException {
 		if (entry.getPath() == null)
-			throw new SrampArchiveException(Messages.i18n.format("INVALID_ENTRY_PATH")); //$NON-NLS-1$
+            throw new SrampArchiveException(messages.format("INVALID_ENTRY_PATH")); //$NON-NLS-1$
 		File contentFile = new File(this.workDir, entry.getPath());
 		File metaDataFile = new File(this.workDir, entry.getPath() + ".atom"); //$NON-NLS-1$
 
@@ -259,7 +262,7 @@ public class SrampArchive {
 			outStream = new FileOutputStream(workPath);
 			IOUtils.copy(content, outStream);
 		} catch (Throwable t) {
-			throw new SrampArchiveException(Messages.i18n.format("ERROR_WRITING_CONTENT"), t); //$NON-NLS-1$
+            throw new SrampArchiveException(messages.format("ERROR_WRITING_CONTENT"), t); //$NON-NLS-1$
 		} finally {
 			IOUtils.closeQuietly(content);
 			IOUtils.closeQuietly(outStream);
@@ -298,7 +301,7 @@ public class SrampArchive {
 			}
 			return archiveFile;
 		} catch (Throwable t) {
-			throw new SrampArchiveException(Messages.i18n.format("ERROR_PACKING_ARCHIVE"), t); //$NON-NLS-1$
+            throw new SrampArchiveException(messages.format("ERROR_PACKING_ARCHIVE"), t); //$NON-NLS-1$
 		}
 	}
 

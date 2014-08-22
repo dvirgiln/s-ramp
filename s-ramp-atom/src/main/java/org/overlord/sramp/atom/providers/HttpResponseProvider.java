@@ -38,8 +38,9 @@ import javax.ws.rs.ext.Provider;
 import javax.ws.rs.ext.Providers;
 
 import org.jboss.resteasy.util.HttpHeaderNames;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.beans.HttpResponseBean;
-import org.overlord.sramp.atom.i18n.Messages;
+
 
 /**
  * A RESTEasy provider for reading/writing an HTTP Response.  This is used in the batch
@@ -57,6 +58,8 @@ public class HttpResponseProvider implements MessageBodyReader<HttpResponseBean>
 
 	@Context
 	protected Providers providers;
+
+    private final static Messages messages = Messages.getInstance();
 
 	/**
 	 * Constructor.
@@ -147,7 +150,7 @@ public class HttpResponseProvider implements MessageBodyReader<HttpResponseBean>
 		// Read the prolog: "HTTP/1.1 201 Created"
 		String line1 = reader.readLine();
 		if (!line1.startsWith("HTTP/1.1")) { //$NON-NLS-1$
-			throw new IOException(Messages.i18n.format("MISSING_HTTP_PROLOG")); //$NON-NLS-1$
+            throw new IOException(messages.format("MISSING_HTTP_PROLOG")); //$NON-NLS-1$
 		}
 		int idx1 = line1.indexOf(' ');
 		int idx2 = line1.indexOf(' ', idx1 + 1);

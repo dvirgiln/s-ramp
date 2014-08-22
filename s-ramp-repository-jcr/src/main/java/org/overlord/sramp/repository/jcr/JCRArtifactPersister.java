@@ -40,6 +40,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.DocumentArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XmlDocument;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.ArtifactAlreadyExistsException;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.common.Sramp;
@@ -53,7 +54,6 @@ import org.overlord.sramp.common.visitors.ArtifactVisitorHelper;
 import org.overlord.sramp.repository.DerivedArtifactsFactory;
 import org.overlord.sramp.repository.jcr.audit.ArtifactDiff;
 import org.overlord.sramp.repository.jcr.audit.ArtifactJCRNodeDiffer;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
 import org.overlord.sramp.repository.jcr.mapper.ArtifactToJCRNodeVisitor;
 import org.overlord.sramp.repository.jcr.util.JCRUtils;
 import org.slf4j.Logger;
@@ -68,6 +68,8 @@ public final class JCRArtifactPersister {
 
     private static Logger log = LoggerFactory.getLogger(JCRArtifactPersister.class);
     private static Sramp sramp = new Sramp();
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * Phase one of persisting an artifact consists of creating the JCR node for the artifact and
@@ -92,7 +94,7 @@ public final class JCRArtifactPersister {
         if (session.nodeExists(artifactPath)) {
             throw new ArtifactAlreadyExistsException(uuid);
         }
-        log.debug(Messages.i18n.format("UPLOADING_TO_JCR", name)); //$NON-NLS-1$
+        log.debug(messages.format("UPLOADING_TO_JCR", name)); //$NON-NLS-1$
 
         Node artifactNode = null;
         boolean isDocumentArtifact = SrampModelUtils.isDocumentArtifact(metaData);
@@ -139,7 +141,7 @@ public final class JCRArtifactPersister {
         if (visitor.hasError())
             throw visitor.getError();
 
-        log.debug(Messages.i18n.format("SAVED_JCR_NODE", name, uuid)); //$NON-NLS-1$
+        log.debug(messages.format("SAVED_JCR_NODE", name, uuid)); //$NON-NLS-1$
         if (sramp.isAuditingEnabled()) {
             auditCreateArtifact(artifactNode);
             session.save();
@@ -256,7 +258,7 @@ public final class JCRArtifactPersister {
             // Persist each of the derived nodes
             for (BaseArtifactType derivedArtifact : derivedArtifacts) {
                 if (derivedArtifact.getUuid() == null) {
-                    throw new SrampServerException(Messages.i18n.format("MISSING_DERIVED_UUID", derivedArtifact.getName())); //$NON-NLS-1$
+                    throw new SrampServerException(messages.format("MISSING_DERIVED_UUID", derivedArtifact.getName())); //$NON-NLS-1$
                 }
                 ArtifactType derivedArtifactType = ArtifactType.valueOf(derivedArtifact);
                 String jcrMixinName = derivedArtifactType.getArtifactType().getApiType().value();
@@ -295,14 +297,14 @@ public final class JCRArtifactPersister {
                     auditCreateArtifact(derivedArtifactNode);
                 }
 
-                log.debug(Messages.i18n.format("SAVED_DERIVED_ARTY_TO_JCR", derivedArtifact.getName(), derivedArtifact.getUuid())); //$NON-NLS-1$
+                log.debug(messages.format("SAVED_DERIVED_ARTY_TO_JCR", derivedArtifact.getName(), derivedArtifact.getUuid())); //$NON-NLS-1$
             }
 
             // Save current changes so that references to nodes can be found.  Note that if
             // transactions are enabled, this will not actually persist to final storage.
             session.save();
 
-            log.debug(Messages.i18n.format("SAVED_ARTIFACTS", derivedArtifacts.size())); //$NON-NLS-1$
+            log.debug(messages.format("SAVED_ARTIFACTS", derivedArtifacts.size())); //$NON-NLS-1$
         } catch (SrampException e) {
             throw e;
         } catch (Throwable t) {
@@ -338,13 +340,13 @@ public final class JCRArtifactPersister {
                 if (visitor.hasError())
                     throw visitor.getError();
 
-                log.debug(Messages.i18n.format("SAVED_RELATIONSHIPS", derivedArtifact.getName())); //$NON-NLS-1$
+                log.debug(messages.format("SAVED_RELATIONSHIPS", derivedArtifact.getName())); //$NON-NLS-1$
             }
 
             // Persist phase 2 (the relationships)
             session.save();
 
-            log.debug(Messages.i18n.format("SAVED_ARTIFACTS_2", derivedArtifacts.size())); //$NON-NLS-1$
+            log.debug(messages.format("SAVED_ARTIFACTS_2", derivedArtifacts.size())); //$NON-NLS-1$
         } catch (SrampException e) {
             throw e;
         } catch (Throwable t) {

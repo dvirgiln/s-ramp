@@ -23,10 +23,11 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.SrampException;
 import org.overlord.sramp.common.query.xpath.XPathParser;
 import org.overlord.sramp.common.query.xpath.ast.Query;
-import org.overlord.sramp.repository.i18n.Messages;
+
 
 /**
  * A base class for concrete implementations of the {@link SrampQuery} interface.  This
@@ -38,9 +39,10 @@ import org.overlord.sramp.repository.i18n.Messages;
 public abstract class AbstractSrampQueryImpl implements SrampQuery {
 
 	private static final XPathParser sParser = new XPathParser();
+    private final static Messages messages = Messages.getInstance();
 
 	private String xpathTemplate;
-	private List<QueryReplacementParam<?>> replacementParams = new ArrayList<QueryReplacementParam<?>>();
+	private final List<QueryReplacementParam<?>> replacementParams = new ArrayList<QueryReplacementParam<?>>();
 	private String orderByProperty;
 	private boolean orderAscending;
 
@@ -192,14 +194,14 @@ public abstract class AbstractSrampQueryImpl implements SrampQuery {
 			boolean isLastSegment = segment == xpathSegments[xpathSegments.length - 1];
 			if (!isLastSegment) {
 				if (paramCounter >= replacementParams.size())
-					throw new InvalidQueryException(Messages.i18n.format("TOO_FEW_QUERY_PARAMS")); //$NON-NLS-1$
+                    throw new InvalidQueryException(messages.format("TOO_FEW_QUERY_PARAMS")); //$NON-NLS-1$
 				QueryReplacementParam<?> param = replacementParams.get(paramCounter);
 				builder.append(param.getFormattedValue());
 				paramCounter++;
 			}
 		}
 		if (replacementParams.size() > paramCounter)
-			throw new InvalidQueryException(Messages.i18n.format("TOO_MANY_QUERY_PARAMS")); //$NON-NLS-1$
+            throw new InvalidQueryException(messages.format("TOO_MANY_QUERY_PARAMS")); //$NON-NLS-1$
 
 		return builder.toString();
 	}
@@ -214,7 +216,7 @@ public abstract class AbstractSrampQueryImpl implements SrampQuery {
 		try {
 			return sParser.parseXPath(xpath);
 		} catch (Throwable e) {
-			throw new InvalidQueryException(Messages.i18n.format("QUERY_PARSE_FAILED"), e); //$NON-NLS-1$
+            throw new InvalidQueryException(messages.format("QUERY_PARSE_FAILED"), e); //$NON-NLS-1$
 		}
 	}
 

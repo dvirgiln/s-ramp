@@ -57,6 +57,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartInput;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartRelatedOutput;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.MediaType;
 import org.overlord.sramp.atom.SrampAtomUtils;
 import org.overlord.sramp.atom.archive.SrampArchive;
@@ -66,7 +67,6 @@ import org.overlord.sramp.atom.err.SrampAtomException;
 import org.overlord.sramp.client.audit.AuditResultSet;
 import org.overlord.sramp.client.auth.AuthenticationProvider;
 import org.overlord.sramp.client.auth.BasicAuthenticationProvider;
-import org.overlord.sramp.client.i18n.Messages;
 import org.overlord.sramp.client.ontology.OntologySummary;
 import org.overlord.sramp.client.query.ArtifactSummary;
 import org.overlord.sramp.client.query.QueryResultSet;
@@ -85,8 +85,10 @@ public class SrampAtomApiClient {
 	private String endpoint;
 	private boolean validating;
 	private AuthenticationProvider authProvider;
-	private Set<String> enabledFeatures = new HashSet<String>();
+	private final Set<String> enabledFeatures = new HashSet<String>();
 	private Locale locale;
+
+    private final static Messages messages = Messages.getInstance();
 
 	/**
 	 * Constructor.
@@ -186,7 +188,7 @@ public class SrampAtomApiClient {
 	private void assertFeatureEnabled(String feature) throws SrampClientException {
 		if (this.validating) {
 			if (!this.enabledFeatures.contains(feature)) {
-				throw new SrampClientException(Messages.i18n.format("FEATURE_NOT_SUPPORTED")); //$NON-NLS-1$
+                throw new SrampClientException(messages.format("FEATURE_NOT_SUPPORTED")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -201,7 +203,7 @@ public class SrampAtomApiClient {
 	private void assertFeatureEnabled(ArtifactType feature) throws SrampClientException {
 		if (this.validating) {
 			if (!this.enabledFeatures.contains(feature.getArtifactType().getType())) {
-                throw new SrampClientException(Messages.i18n.format("FEATURE_NOT_SUPPORTED")); //$NON-NLS-1$
+                throw new SrampClientException(messages.format("FEATURE_NOT_SUPPORTED")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -247,7 +249,7 @@ public class SrampAtomApiClient {
         try {
             QueryResultSet uuidRS = buildQuery("/s-ramp[@uuid = ?]").parameter(artifactUuid).count(1).query(); //$NON-NLS-1$
             if (uuidRS.size() == 0)
-                throw new SrampClientException(Messages.i18n.format("ARTIFACT_NOT_FOUND", artifactUuid)); //$NON-NLS-1$
+                throw new SrampClientException(messages.format("ARTIFACT_NOT_FOUND", artifactUuid)); //$NON-NLS-1$
             ArtifactType artifactType = uuidRS.iterator().next().getType();
             return getArtifactMetaData(artifactType, artifactUuid);
         } catch (SrampAtomException e) {
@@ -350,7 +352,7 @@ public class SrampAtomApiClient {
     public BaseArtifactType createArtifact(BaseArtifactType artifact) throws SrampClientException, SrampAtomException {
         ArtifactType artifactType = ArtifactType.valueOf(artifact);
         if (SrampModelUtils.isDocumentArtifact(artifact)) {
-            throw new SrampClientException(Messages.i18n.format("MISSING_ARTIFACT_CONTEN")); //$NON-NLS-1$
+            throw new SrampClientException(messages.format("MISSING_ARTIFACT_CONTEN")); //$NON-NLS-1$
         }
 
         assertFeatureEnabled(artifactType);
@@ -506,7 +508,7 @@ public class SrampAtomApiClient {
 					}
 				} else {
 					// Only a non-compliant s-ramp impl could cause this
-					SrampAtomException exception = new SrampAtomException(Messages.i18n.format("BAD_RETURN_CODE", rbean.getCode(), contentId));  //$NON-NLS-1$
+                    SrampAtomException exception = new SrampAtomException(messages.format("BAD_RETURN_CODE", rbean.getCode(), contentId)); //$NON-NLS-1$
 					rval.put(path, exception);
 				}
 			}
@@ -662,7 +664,7 @@ public class SrampAtomApiClient {
 		try {
 			String xpath = srampQuery;
 			if (xpath == null)
-				throw new Exception(Messages.i18n.format("INVALID_QUERY_FORMAT")); //$NON-NLS-1$
+                throw new Exception(messages.format("INVALID_QUERY_FORMAT")); //$NON-NLS-1$
 			// Remove the leading /s-ramp/ prior to POSTing to the atom endpoint
 			if (xpath.startsWith("/s-ramp/")) //$NON-NLS-1$
 				xpath = xpath.substring(8);
@@ -745,7 +747,7 @@ public class SrampAtomApiClient {
 	public SrampClientQuery buildQuery(String query) {
 	    return new SrampClientQuery(this, query);
 	}
-	
+
 	/**
 	 * Adds on ontology in RDF format to the S-RAMP repository.  This will only work if the S-RAMP
      * repository supports the ontology collection, which is not a part of the S-RAMP 1.0
@@ -953,7 +955,7 @@ public class SrampAtomApiClient {
             response = request.post(Entry.class);
             Entry entry = response.getEntity();
             if (entry == null)
-                throw new SrampAtomException(Messages.i18n.format("AUDIT_ENTRY_ADD_FAILED")); //$NON-NLS-1$
+                throw new SrampAtomException(messages.format("AUDIT_ENTRY_ADD_FAILED")); //$NON-NLS-1$
             return SrampAtomUtils.unwrap(entry, AuditEntry.class);
         } catch (SrampAtomException e) {
             throw e;

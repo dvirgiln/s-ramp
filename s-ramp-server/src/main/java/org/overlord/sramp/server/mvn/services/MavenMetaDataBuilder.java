@@ -19,10 +19,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.apache.commons.lang.StringUtils;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.repository.QueryManager;
 import org.overlord.sramp.repository.QueryManagerFactory;
 import org.overlord.sramp.repository.query.SrampQuery;
-import org.overlord.sramp.server.i18n.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 public class MavenMetaDataBuilder {
 
     private static Logger logger = LoggerFactory.getLogger(MavenMetaDataBuilder.class);
-
+    private final static Messages messages = Messages.getInstance();
     /**
      * Builds the Maven Metadata based on a URL, which format is supposed to be /groupId.../artifactId/versionId/filename
      *
@@ -300,7 +300,7 @@ public class MavenMetaDataBuilder {
                 return true;
             }
         } catch (Throwable e) {
-            logger.error(Messages.i18n.format("maven.resource.query.error", query), e); //$NON-NLS-1$
+            logger.error(messages.format("maven.resource.query.error", query), e); //$NON-NLS-1$
         }
 
         return false;
@@ -329,7 +329,7 @@ public class MavenMetaDataBuilder {
                 return true;
             }
         } catch (Throwable e) {
-            logger.error(Messages.i18n.format("maven.resource.query.error", query), e); //$NON-NLS-1$
+            logger.error(messages.format("maven.resource.query.error", query), e); //$NON-NLS-1$
         }
 
         return false;

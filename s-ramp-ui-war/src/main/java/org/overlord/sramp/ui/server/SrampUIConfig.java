@@ -20,8 +20,8 @@ import javax.inject.Singleton;
 import org.apache.commons.configuration.Configuration;
 import org.overlord.commons.config.ConfigurationFactory;
 import org.overlord.commons.config.JBossServer;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.ui.server.api.SrampApiClientAccessor;
-import org.overlord.sramp.ui.server.i18n.Messages;
 
 /**
  * Global access to configuration information.
@@ -30,6 +30,7 @@ import org.overlord.sramp.ui.server.i18n.Messages;
  */
 @Singleton
 public class SrampUIConfig {
+    static final Messages messages = Messages.getInstance();
 
     public static final String SRAMP_UI_CONFIG_FILE_NAME     = "sramp-ui.config.file.name"; //$NON-NLS-1$
     public static final String SRAMP_UI_CONFIG_FILE_REFRESH  = "sramp-ui.config.file.refresh"; //$NON-NLS-1$
@@ -63,7 +64,7 @@ public class SrampUIConfig {
                 "/META-INF/config/org.overlord.sramp.ui.server.api.properties", //$NON-NLS-1$
                 SrampApiClientAccessor.class);
         String defaultSrampApiEndpoint = JBossServer.getBaseUrl() + "/s-ramp-server"; //$NON-NLS-1$
-        System.out.println(Messages.i18n.format("Config.Loaded", SrampUIConfig.config.getString(SRAMP_API_ENDPOINT, defaultSrampApiEndpoint))); //$NON-NLS-1$
+        System.out.println(messages.format("Config.Loaded", SrampUIConfig.config.getString(SRAMP_API_ENDPOINT, defaultSrampApiEndpoint))); //$NON-NLS-1$
     }
 
     /**

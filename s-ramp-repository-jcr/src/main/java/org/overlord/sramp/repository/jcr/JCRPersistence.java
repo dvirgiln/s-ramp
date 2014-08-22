@@ -38,6 +38,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactEnum;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.DocumentArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.ArtifactNotFoundException;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.common.InvalidArtifactUpdateException;
@@ -58,7 +59,6 @@ import org.overlord.sramp.repository.PersistenceManager;
 import org.overlord.sramp.repository.jcr.JCRArtifactPersister.Phase1Result;
 import org.overlord.sramp.repository.jcr.JCRArtifactPersister.Phase2Result;
 import org.overlord.sramp.repository.jcr.audit.ArtifactJCRNodeDiffer;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
 import org.overlord.sramp.repository.jcr.mapper.ArtifactToJCRNodeVisitor;
 import org.overlord.sramp.repository.jcr.mapper.JCRNodeToOntology;
 import org.overlord.sramp.repository.jcr.mapper.OntologyToJCRNode;
@@ -80,6 +80,8 @@ import org.slf4j.LoggerFactory;
 @Service(value = { org.overlord.sramp.repository.DerivedArtifacts.class,
         org.overlord.sramp.repository.PersistenceManager.class })
 public class JCRPersistence extends AbstractJCRManager implements PersistenceManager, DerivedArtifacts, ClassificationHelper {
+
+    private final static Messages messages = Messages.getInstance();
 
 	private static Logger log = LoggerFactory.getLogger(JCRPersistence.class);
 	private static Sramp sramp = new Sramp();
@@ -213,7 +215,7 @@ public class JCRPersistence extends AbstractJCRManager implements PersistenceMan
 		try {
 			ArtifactDeriver deriver = ArtifactDeriverFactory.createArtifactDeriver(ArtifactType.valueOf(sourceArtifact));
 			Collection<BaseArtifactType> derivedArtifacts = deriver.derive(sourceArtifact, sourceArtifactContent);
-			log.debug(Messages.i18n.format("SUCCESSFUL_DERIVATION", derivedArtifacts.size(), sourceArtifact.getUuid())); //$NON-NLS-1$
+            log.debug(messages.format("SUCCESSFUL_DERIVATION", derivedArtifacts.size(), sourceArtifact.getUuid())); //$NON-NLS-1$
 			return derivedArtifacts;
 		} catch (IOException e) {
 			throw new SrampServerException(e);
@@ -229,7 +231,7 @@ public class JCRPersistence extends AbstractJCRManager implements PersistenceMan
         try {
             ArtifactDeriver deriver = ArtifactDeriverFactory.createArtifactDeriver(ArtifactType.valueOf(sourceArtifact));
             deriver.link(context, sourceArtifact, derivedArtifacts);
-            log.debug(Messages.i18n.format("SUCCESSFUL_LINKAGE", derivedArtifacts.size(), sourceArtifact.getUuid())); //$NON-NLS-1$
+            log.debug(messages.format("SUCCESSFUL_LINKAGE", derivedArtifacts.size(), sourceArtifact.getUuid())); //$NON-NLS-1$
         } catch (Exception e) {
             throw new SrampServerException(e);
         }
@@ -326,7 +328,7 @@ public class JCRPersistence extends AbstractJCRManager implements PersistenceMan
 				throw visitor.getError();
 			session.save();
 
-			log.debug(Messages.i18n.format("UPDATED_ARTY_META_DATA", artifact.getUuid())); //$NON-NLS-1$
+            log.debug(messages.format("UPDATED_ARTY_META_DATA", artifact.getUuid())); //$NON-NLS-1$
 
 			if (log.isDebugEnabled()) {
 				printArtifactGraph(artifact.getUuid(), type);
@@ -358,7 +360,7 @@ public class JCRPersistence extends AbstractJCRManager implements PersistenceMan
                 throw new ArtifactNotFoundException(uuid);
             }
             if (artifactNode.isNodeType(JCRConstants.SRAMP_NON_DOCUMENT_TYPE)) {
-                throw new InvalidArtifactUpdateException(Messages.i18n.format("JCRPersistence.NoArtifactContent")); //$NON-NLS-1$
+                throw new InvalidArtifactUpdateException(messages.format("JCRPersistence.NoArtifactContent")); //$NON-NLS-1$
             }
 			JCRUtils tools = new JCRUtils();
 			tools.uploadFile(session, artifactNode.getPath(), content);
@@ -375,7 +377,7 @@ public class JCRPersistence extends AbstractJCRManager implements PersistenceMan
 			// TODO is "update content" even allowed in s-ramp??
 
 			session.save();
-			log.debug(Messages.i18n.format("UPDATED_ARTY_CONTENT", uuid)); //$NON-NLS-1$
+            log.debug(messages.format("UPDATED_ARTY_CONTENT", uuid)); //$NON-NLS-1$
         } catch (SrampException se) {
             throw se;
         } catch (Throwable t) {
@@ -411,7 +413,7 @@ public class JCRPersistence extends AbstractJCRManager implements PersistenceMan
             // Move the jcr node
             session.move(srcPath, trashPath);
 			session.save();
-			log.debug(Messages.i18n.format("DELETED_ARTY", uuid)); //$NON-NLS-1$
+            log.debug(messages.format("DELETED_ARTY", uuid)); //$NON-NLS-1$
         } catch (SrampException se) {
             throw se;
         } catch (Throwable t) {
@@ -450,7 +452,7 @@ public class JCRPersistence extends AbstractJCRManager implements PersistenceMan
 				Node ontologyNode = ontologiesNode.addNode(ontology.getUuid(), "sramp:ontology"); //$NON-NLS-1$
 				o2jcr.write(ontology, ontologyNode);
 				session.save();
-				log.debug(Messages.i18n.format("SAVED_ONTOLOGY", ontology.getUuid())); //$NON-NLS-1$
+                log.debug(messages.format("SAVED_ONTOLOGY", ontology.getUuid())); //$NON-NLS-1$
 				return ontology;
 			}
         } catch (SrampException se) {
@@ -535,7 +537,7 @@ public class JCRPersistence extends AbstractJCRManager implements PersistenceMan
 			} else {
                 throw new OntologyNotFoundException(ontology.getUuid());
 			}
-			log.debug(Messages.i18n.format("UPDATED_ONTOLOGY", ontology.getUuid())); //$NON-NLS-1$
+            log.debug(messages.format("UPDATED_ONTOLOGY", ontology.getUuid())); //$NON-NLS-1$
 			session.save();
         } catch (SrampException se) {
             throw se;
@@ -563,7 +565,7 @@ public class JCRPersistence extends AbstractJCRManager implements PersistenceMan
                 throw new OntologyNotFoundException(uuid);
 			}
 			session.save();
-			log.debug(Messages.i18n.format("DELETED_ONTOLOGY", uuid)); //$NON-NLS-1$
+            log.debug(messages.format("DELETED_ONTOLOGY", uuid)); //$NON-NLS-1$
         } catch (SrampException se) {
             throw se;
         } catch (Throwable t) {
@@ -667,7 +669,7 @@ public class JCRPersistence extends AbstractJCRManager implements PersistenceMan
             throw new RuntimeException(e);
         }
     }
-	
+
 	/**
 	 * @see org.overlord.sramp.common.repository.PersistenceManager#shutdown()
 	 */

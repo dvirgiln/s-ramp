@@ -18,7 +18,7 @@ package org.overlord.sramp.common.visitors;
 import java.lang.reflect.Method;
 
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
-import org.overlord.sramp.common.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 
 /**
  * Helper class used to visit S-RAMP artifacts.  This should be replaced by "accept" methods implemented
@@ -30,6 +30,7 @@ import org.overlord.sramp.common.i18n.Messages;
  */
 public final class ArtifactVisitorHelper {
 
+    private final static Messages messages = Messages.getInstance();
 	/**
 	 * Called to help the given visitor visit the provided artifact.
 	 * @param visitor
@@ -41,8 +42,7 @@ public final class ArtifactVisitorHelper {
 			method.invoke(visitor, artifact);
 		} catch (Exception e) {
 			// This shouldn't happen unless we've programmed something wrong in the visitor interface.
-			throw new RuntimeException(
-			        Messages.i18n.format("VISIT_METHOD_NOT_FOUND", visitor.getClass(), artifact.getClass()), //$NON-NLS-1$
+            throw new RuntimeException(messages.format("VISIT_METHOD_NOT_FOUND", visitor.getClass(), artifact.getClass()), //$NON-NLS-1$
 					e);
 		}
 	}

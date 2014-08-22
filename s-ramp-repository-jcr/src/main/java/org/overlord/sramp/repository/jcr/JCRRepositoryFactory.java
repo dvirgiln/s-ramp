@@ -21,8 +21,8 @@ import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.commons.services.ServiceRegistryUtil;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +30,8 @@ public class JCRRepositoryFactory {
 
     public static String WORKSPACE_NAME = "default"; //$NON-NLS-1$
 	private static Logger log = LoggerFactory.getLogger(JCRRepositoryFactory.class);
+
+    private final static Messages messages = Messages.getInstance();
 
 	private static JCRRepository instance;
 	private static ThreadLocal<Credentials> loginCredentials = new ThreadLocal<Credentials>();
@@ -44,8 +46,8 @@ public class JCRRepositoryFactory {
         if (instance == null) {
             instance = ServiceRegistryUtil.getSingleService(JCRRepository.class);
             if (instance == null)
-                throw new RuntimeException(Messages.i18n.format("JCR_PROVIDER_NOT_FOUND")); //$NON-NLS-1$
-            log.info(Messages.i18n.format("JCR_PROVIDER", instance.getClass())); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("JCR_PROVIDER_NOT_FOUND")); //$NON-NLS-1$
+            log.info(messages.format("JCR_PROVIDER", instance.getClass())); //$NON-NLS-1$
             instance.startup();
         }
         return instance;

@@ -15,7 +15,7 @@
  */
 package org.overlord.sramp.common;
 
-import org.overlord.sramp.common.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 
 
 /**
@@ -26,6 +26,8 @@ import org.overlord.sramp.common.i18n.Messages;
 public class ArtifactNotFoundException extends SrampUserException {
 
     private static final long serialVersionUID = 1131976536249817281L;
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * Constructor.
@@ -38,7 +40,7 @@ public class ArtifactNotFoundException extends SrampUserException {
      * @param message
      */
     public ArtifactNotFoundException(String uuid) {
-        super(Messages.i18n.format("ARTIFACT_NOT_FOUND", uuid)); //$NON-NLS-1$
+        super(messages.format("ARTIFACT_NOT_FOUND", uuid)); //$NON-NLS-1$
     }
 
 }

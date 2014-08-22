@@ -15,12 +15,16 @@
  */
 package org.overlord.sramp.integration.teiid.model;
 
-import org.overlord.sramp.integration.teiid.Messages;
+import org.overlord.commons.i18n.Messages;
+
+
 
 /**
  * The Teiid VDB archive model object.
  */
 public final class Vdb {
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * The VDB extended artifact types.
@@ -41,7 +45,7 @@ public final class Vdb {
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @see org.overlord.sramp.integration.teiid.model.TeiidExtendedType#convert(java.lang.String)
          */
         @Override
@@ -52,12 +56,12 @@ public final class Vdb {
                 }
             }
 
-            throw new IllegalArgumentException(Messages.I18N.format("invalidVdbExtendedType", proposedExtendedType)); //$NON-NLS-1$
+            throw new IllegalArgumentException(messages.format("invalidVdbExtendedType", proposedExtendedType)); //$NON-NLS-1$
         }
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @see org.overlord.sramp.integration.teiid.model.TeiidExtendedType#extendedType()
          */
         @Override
@@ -67,7 +71,7 @@ public final class Vdb {
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @see org.overlord.sramp.integration.teiid.model.TeiidExtendedType#isValid(java.lang.String)
          */
         @Override

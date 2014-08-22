@@ -79,11 +79,12 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XmlDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdDocument;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.XsdTypeTarget;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.common.SrampConstants;
 import org.overlord.sramp.common.visitors.HierarchicalArtifactVisitorAdapter;
 import org.overlord.sramp.repository.jcr.JCRConstants;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
+
 
 /**
  * A visitor for going from a JCR node to an S-RAMP artifact instance.
@@ -92,8 +93,10 @@ import org.overlord.sramp.repository.jcr.i18n.Messages;
  */
 public class JCRNodeToArtifactVisitor extends HierarchicalArtifactVisitorAdapter {
 
-	private Node jcrNode;
-	private JCRReferenceResolver referenceResolver;
+	private final Node jcrNode;
+	private final JCRReferenceResolver referenceResolver;
+
+    private final static Messages messages = Messages.getInstance();
 
 	/**
 	 * Constructor.
@@ -203,7 +206,7 @@ public class JCRNodeToArtifactVisitor extends HierarchicalArtifactVisitorAdapter
 				Property property = relatedDocNode.getProperty("sramp:relationshipTarget"); //$NON-NLS-1$
 				Value[] values = property.getValues();
 				if (values.length > 1) {
-					throw new Exception(Messages.i18n.format("MAX_CARDINALITY_FAILED", values.length)); //$NON-NLS-1$
+                    throw new Exception(messages.format("MAX_CARDINALITY_FAILED", values.length)); //$NON-NLS-1$
 				}
 				Value value = values[0];
 				String targetUUID = referenceResolver.resolveReference(value);

@@ -21,11 +21,12 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.SrampException;
 import org.overlord.sramp.common.ontology.OntologyUpdateException;
 import org.overlord.sramp.common.ontology.SrampOntology;
 import org.overlord.sramp.common.ontology.SrampOntology.SrampOntologyClass;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
+
 
 /**
  * Class that knows how to write an ontology to the given JCR node.
@@ -33,6 +34,8 @@ import org.overlord.sramp.repository.jcr.i18n.Messages;
  * @author eric.wittmann@redhat.com
  */
 public final class OntologyToJCRNode {
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * Constructor.
@@ -87,7 +90,7 @@ public final class OntologyToJCRNode {
     public void update(SrampOntology ontology, Node ontologyJcrNode) throws RepositoryException, SrampException {
         String base = ontologyJcrNode.getProperty("sramp:base").getString(); //$NON-NLS-1$
         if (!base.equals(ontology.getBase())) {
-            throw new OntologyUpdateException(Messages.i18n.format("CANNOT_CHANGE_ONTOLOGY_BASE")); //$NON-NLS-1$
+            throw new OntologyUpdateException(messages.format("CANNOT_CHANGE_ONTOLOGY_BASE")); //$NON-NLS-1$
         }
 
         ontologyJcrNode.setProperty("sramp:label", ontology.getLabel()); //$NON-NLS-1$

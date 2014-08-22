@@ -35,10 +35,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.err.SrampAtomException;
 import org.overlord.sramp.common.SrampConstants;
 import org.overlord.sramp.ui.server.api.SrampApiClientAccessor;
-import org.overlord.sramp.ui.server.i18n.Messages;
 import org.overlord.sramp.ui.server.util.ExceptionUtils;
 import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 
@@ -55,6 +55,8 @@ public class OntologyUploadServlet extends AbstractUploadServlet {
     @Inject
     private SrampApiClientAccessor clientAccessor;
 
+    static final Messages messages = Messages.getInstance();
+
 	/**
 	 * Constructor.
 	 */
@@ -67,6 +69,9 @@ public class OntologyUploadServlet extends AbstractUploadServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse response)
 			throws ServletException, IOException {
+
+        String message = messages.format("OntologyDownloadServlet.no.uuid.param");
+        System.out.println(message);
 		// Extract the relevant content from the POST'd form
 		if (ServletFileUpload.isMultipartContent(req)) {
 			Map<String, String> responseMap;
@@ -107,7 +112,7 @@ public class OntologyUploadServlet extends AbstractUploadServlet {
 			writeToResponse(responseMap, response);
 		} else {
 			response.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE,
-			        Messages.i18n.format("UploadServlet.ContentTypeNotSupported")); //$NON-NLS-1$
+ messages.format("UploadServlet.ContentTypeNotSupported")); //$NON-NLS-1$
 		}
 	}
 

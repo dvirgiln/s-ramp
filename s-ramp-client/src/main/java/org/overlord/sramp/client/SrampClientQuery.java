@@ -24,8 +24,8 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.err.SrampAtomException;
-import org.overlord.sramp.client.i18n.Messages;
 import org.overlord.sramp.client.query.QueryResultSet;
 
 
@@ -38,14 +38,16 @@ import org.overlord.sramp.client.query.QueryResultSet;
  */
 public class SrampClientQuery {
 
-    private SrampAtomApiClient client;
-    private String queryTemplate;
-    private List<String> replacementParams = new ArrayList<String>();
+    private final static Messages messages = Messages.getInstance();
+
+    private final SrampAtomApiClient client;
+    private final String queryTemplate;
+    private final List<String> replacementParams = new ArrayList<String>();
     private int startIndex = 0;
     private int count = 20;
     private String orderBy = "name"; //$NON-NLS-1$
     private boolean ascending = true;
-    private Set<String> propertyNames = new HashSet<String>();
+    private final Set<String> propertyNames = new HashSet<String>();
 
     /**
      * Constructor.
@@ -214,14 +216,14 @@ public class SrampClientQuery {
             boolean isLastSegment = segment == xpathSegments[xpathSegments.length - 1];
             if (!isLastSegment) {
                 if (paramCounter >= replacementParams.size())
-                    throw new SrampClientException(Messages.i18n.format("TOO_FEW_QUERY_PARAMS")); //$NON-NLS-1$
+                    throw new SrampClientException(messages.format("TOO_FEW_QUERY_PARAMS")); //$NON-NLS-1$
                 String param = replacementParams.get(paramCounter);
                 builder.append(param);
                 paramCounter++;
             }
         }
         if (replacementParams.size() > paramCounter)
-            throw new SrampClientException(Messages.i18n.format("TOO_MANY_QUERY_PARAMS")); //$NON-NLS-1$
+            throw new SrampClientException(messages.format("TOO_MANY_QUERY_PARAMS")); //$NON-NLS-1$
 
         return builder.toString();
     }

@@ -15,8 +15,8 @@
  */
 package org.overlord.sramp.common.ontology;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.SrampUserException;
-import org.overlord.sramp.common.i18n.Messages;
 
 /**
  * Exception thrown when the user attempts to add a classified-by value to an
@@ -27,6 +27,8 @@ import org.overlord.sramp.common.i18n.Messages;
 public class InvalidClassifiedByException extends SrampUserException {
 
     private static final long serialVersionUID = 8277077613160811686L;
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * Constructor.
@@ -39,7 +41,7 @@ public class InvalidClassifiedByException extends SrampUserException {
      * @param classifiedBy
      */
     public InvalidClassifiedByException(String classifiedBy) {
-        super(Messages.i18n.format("INVALID_CLASSIFIED_BY", classifiedBy)); //$NON-NLS-1$
+        super(messages.format("INVALID_CLASSIFIED_BY", classifiedBy)); //$NON-NLS-1$
     }
 
 }

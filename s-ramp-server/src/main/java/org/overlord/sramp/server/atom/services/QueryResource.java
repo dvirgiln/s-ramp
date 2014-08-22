@@ -32,10 +32,10 @@ import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.jboss.resteasy.util.GenericType;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.MediaType;
 import org.overlord.sramp.atom.err.SrampAtomException;
 import org.overlord.sramp.common.Sramp;
-import org.overlord.sramp.server.i18n.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public class QueryResource extends AbstractFeedResource {
 
 	private static Logger logger = LoggerFactory.getLogger(QueryResource.class);
-
+    private final static Messages messages = Messages.getInstance();
 	private final Sramp sramp = new Sramp();
 
 	/**
@@ -86,7 +86,7 @@ public class QueryResource extends AbstractFeedResource {
 			}
 			return query(query, startIndex, count, orderBy, asc, propNames, baseUrl);
 		} catch (Throwable e) {
-			logError(logger, Messages.i18n.format("ERROR_EXECUTING_QUERY", query), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_EXECUTING_QUERY", query), e); //$NON-NLS-1$
 			throw new SrampAtomException(e);
 		}
 	}
@@ -125,7 +125,7 @@ public class QueryResource extends AbstractFeedResource {
 		} catch (SrampAtomException e) {
 			throw e;
 		} catch (Throwable e) {
-			logError(logger, Messages.i18n.format("ERROR_EXECUTING_QUERY", query), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_EXECUTING_QUERY", query), e); //$NON-NLS-1$
 			throw new SrampAtomException(e);
 		}
 	}
@@ -144,7 +144,7 @@ public class QueryResource extends AbstractFeedResource {
 	protected Feed query(String query, Integer startIndex, Integer count, String orderBy, Boolean ascending,
 			Set<String> propNames, String baseUrl) throws SrampAtomException {
 		if (query == null)
-			throw new SrampAtomException(Messages.i18n.format("MISSING_QUERY_PARAM")); //$NON-NLS-1$
+            throw new SrampAtomException(messages.format("MISSING_QUERY_PARAM")); //$NON-NLS-1$
 
 		// Add on the "/s-ramp/" if it's missing
 		String xpath = query;

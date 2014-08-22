@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.ArtifactTypeEnum;
 import org.overlord.sramp.common.SrampConstants;
 import org.overlord.sramp.common.SrampException;
@@ -46,7 +47,7 @@ import org.overlord.sramp.common.query.xpath.ast.SubartifactSet;
 import org.overlord.sramp.common.query.xpath.visitors.XPathVisitor;
 import org.overlord.sramp.repository.jcr.ClassificationHelper;
 import org.overlord.sramp.repository.jcr.JCRConstants;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
+
 
 /**
  * Visitor used to produce a JCR SQL2 query from an S-RAMP xpath query.
@@ -54,6 +55,8 @@ import org.overlord.sramp.repository.jcr.i18n.Messages;
  * @author eric.wittmann@redhat.com
  */
 public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
+
+    private final static Messages messages = Messages.getInstance();
 
 	private static QName CLASSIFIED_BY_ANY_OF = new QName(SrampConstants.SRAMP_NS, "classifiedByAnyOf"); //$NON-NLS-1$
 	private static QName CLASSIFIED_BY_ALL_OF = new QName(SrampConstants.SRAMP_NS, "classifiedByAllOf"); //$NON-NLS-1$
@@ -85,18 +88,18 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 
         corePropertyMap.put(new QName(SrampConstants.SRAMP_NS, "derived"), "sramp:derived"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	private String selectAlias;
-	private StringBuilder fromBuilder = new StringBuilder();
+	private final StringBuilder fromBuilder = new StringBuilder();
 	private String notDeletedFilter = null;
-	private StringBuilder whereBuilder = new StringBuilder();
+	private final StringBuilder whereBuilder = new StringBuilder();
     private String artifactPredicateContext = null;
 	private String relationshipPredicateContext = null;
 	private int relationshipJoinCounter = 1;
 	private int artifactJoinCounter = 1;
-	private ClassificationHelper classificationHelper;
+	private final ClassificationHelper classificationHelper;
 	private String lastFPS = null;
-    private Pattern datePattern = Pattern.compile("\\d\\d\\d\\d-\\d\\d-\\d\\d"); //$NON-NLS-1$
+    private final Pattern datePattern = Pattern.compile("\\d\\d\\d\\d-\\d\\d-\\d\\d"); //$NON-NLS-1$
 	private SrampException error;
 
 	/**
@@ -189,10 +192,10 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
                 this.selectAlias = artifactAlias;
 		    }
 		    if (subartifactSet.getFunctionCall() != null) {
-		          throw new RuntimeException(Messages.i18n.format("XP_SUBARTIFACTSET_NOT_SUPPORTED")); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("XP_SUBARTIFACTSET_NOT_SUPPORTED")); //$NON-NLS-1$
 		    }
 		    if (subartifactSet.getSubartifactSet() != null) {
-                throw new RuntimeException(Messages.i18n.format("XP_TOPLEVEL_SUBARTIFACTSET_ONLY")); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("XP_TOPLEVEL_SUBARTIFACTSET_ONLY")); //$NON-NLS-1$
 		    }
 		}
 	}
@@ -244,7 +247,7 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 		if (node.getPrimaryExpr() != null)
 			node.getPrimaryExpr().accept(this);
 		else
-			throw new RuntimeException(Messages.i18n.format("XP_ONLY_PRIMARY_FUNC_ARGS")); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("XP_ONLY_PRIMARY_FUNC_ARGS")); //$NON-NLS-1$
 	}
 
 	/**
@@ -309,7 +312,7 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 				this.whereBuilder.append("]"); //$NON-NLS-1$
 				this.lastFPS = jcrPropName;
 			} else {
-				throw new RuntimeException(Messages.i18n.format("XP_INVALID_PROPERTY_NS", property.getNamespaceURI())); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("XP_INVALID_PROPERTY_NS", property.getNamespaceURI())); //$NON-NLS-1$
 			}
 		}
 	}
@@ -336,9 +339,9 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 				operator = "OR"; //$NON-NLS-1$
 			} else {
 			    if (node.getFunctionName().getLocalPart().equals("matches") || node.getFunctionName().getLocalPart().equals("not")) { //$NON-NLS-1$ //$NON-NLS-2$
-                    throw new RuntimeException(Messages.i18n.format("XP_BAD_FUNC_NS", node.getFunctionName().getLocalPart()) ); //$NON-NLS-1$
+                    throw new RuntimeException(messages.format("XP_BAD_FUNC_NS", node.getFunctionName().getLocalPart())); //$NON-NLS-1$
 			    }
-				throw new RuntimeException(Messages.i18n.format("XP_FUNC_NOT_SUPPORTED", node.getFunctionName().toString())); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("XP_FUNC_NOT_SUPPORTED", node.getFunctionName().toString())); //$NON-NLS-1$
 			}
 
 			if (classifications.size() > 1) {
@@ -364,7 +367,7 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 			}
 		} else if (MATCHES.equals(node.getFunctionName())) {
 			if (node.getArguments().size() != 2) {
-				throw new RuntimeException(Messages.i18n.format("XP_MATCHES_FUNC_NUM_ARGS_ERROR", node.getArguments().size()));  //$NON-NLS-1$
+                throw new RuntimeException(messages.format("XP_MATCHES_FUNC_NUM_ARGS_ERROR", node.getArguments().size())); //$NON-NLS-1$
 			}
 			Argument attributeArg = node.getArguments().get(0);
 			Argument patternArg = node.getArguments().get(1);
@@ -379,7 +382,7 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 			this.whereBuilder.append("'"); //$NON-NLS-1$
 		} else if (NOT.equals(node.getFunctionName())) {
 		    if (node.getArguments().size() != 1) {
-		        throw new RuntimeException(Messages.i18n.format("XP_NOT_FUNC_NUM_ARGS_ERROR", node.getArguments().size()));  //$NON-NLS-1$
+                throw new RuntimeException(messages.format("XP_NOT_FUNC_NUM_ARGS_ERROR", node.getArguments().size())); //$NON-NLS-1$
 		    }
 		    this.whereBuilder.append("NOT ("); //$NON-NLS-1$
 		    Argument argument = node.getArguments().get(0);
@@ -390,7 +393,7 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 		    }
 		    this.whereBuilder.append(")"); //$NON-NLS-1$
 		} else {
-			throw new RuntimeException(Messages.i18n.format("XP_FUNCTION_NOT_SUPPORTED", node.getFunctionName().toString())); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("XP_FUNCTION_NOT_SUPPORTED", node.getFunctionName().toString())); //$NON-NLS-1$
 		}
 	}
 
@@ -403,7 +406,7 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 		for (int idx = 1; idx < arguments.size(); idx++) {
 			Argument arg = arguments.get(idx);
 			if (arg.getPrimaryExpr() == null || arg.getPrimaryExpr().getLiteral() == null) {
-				throw new RuntimeException(Messages.i18n.format("XP_INVALID_CLASSIFIER_FORMAT")); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("XP_INVALID_CLASSIFIER_FORMAT")); //$NON-NLS-1$
 			}
 			classifiedBy.add(arg.getPrimaryExpr().getLiteral());
 		}
@@ -458,7 +461,7 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 		} else if (node.getNumber() != null) {
 			this.whereBuilder.append(node.getNumber());
 		} else if (node.getPropertyQName() != null) {
-			throw new RuntimeException(Messages.i18n.format("XP_PROPERTY_PRIMARY_EXPR_NOT_SUPPORTED")); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("XP_PROPERTY_PRIMARY_EXPR_NOT_SUPPORTED")); //$NON-NLS-1$
 		}
 	}
 
@@ -519,7 +522,7 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 			}
 
 			if (node.getSubartifactSet() != null) {
-				throw new RuntimeException(Messages.i18n.format("XP_MULTILEVEL_SUBARTYSETS_NOT_SUPPORTED")); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("XP_MULTILEVEL_SUBARTYSETS_NOT_SUPPORTED")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -552,7 +555,7 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 			}
 			return fps;
 		} catch (Throwable t) {
-			throw new RuntimeException(Messages.i18n.format("XP_EXPECTED_PROPERTY_ARG")); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("XP_EXPECTED_PROPERTY_ARG")); //$NON-NLS-1$
 		}
 	}
 
@@ -569,7 +572,7 @@ public class SrampToJcrSql2QueryVisitor implements XPathVisitor {
 			}
 			return l;
 		} catch (Throwable t) {
-			throw new RuntimeException(Messages.i18n.format("XP_EXPECTED_STRING_LITERAL_ARG")); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("XP_EXPECTED_STRING_LITERAL_ARG")); //$NON-NLS-1$
 		}
 	}
 

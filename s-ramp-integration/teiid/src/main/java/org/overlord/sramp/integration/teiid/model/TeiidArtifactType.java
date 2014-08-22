@@ -15,7 +15,9 @@
  */
 package org.overlord.sramp.integration.teiid.model;
 
-import org.overlord.sramp.integration.teiid.Messages;
+import org.overlord.commons.i18n.Messages;
+
+
 
 /**
  * The Teiid extended artifact types. Files of these types can be uploaded to S-RAMP.
@@ -44,13 +46,15 @@ public enum TeiidArtifactType implements TeiidExtendedType {
 
     private final String extendedType;
 
+    private final static Messages messages = Messages.getInstance();
+
     private TeiidArtifactType( final String extendedType ) {
         this.extendedType = PREFIX + extendedType;
     }
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.overlord.sramp.integration.teiid.model.TeiidExtendedType#convert(java.lang.String)
      */
     @Override
@@ -61,12 +65,12 @@ public enum TeiidArtifactType implements TeiidExtendedType {
             }
         }
 
-        throw new IllegalArgumentException(Messages.I18N.format("invalidTeiidArtifactType", proposedExtendedType)); //$NON-NLS-1$
+        throw new IllegalArgumentException(messages.format("invalidTeiidArtifactType", proposedExtendedType)); //$NON-NLS-1$
     }
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.overlord.sramp.integration.teiid.model.TeiidExtendedType#extendedType()
      */
     @Override
@@ -76,7 +80,7 @@ public enum TeiidArtifactType implements TeiidExtendedType {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see org.overlord.sramp.integration.teiid.model.TeiidExtendedType#isValid(java.lang.String)
      */
     @Override

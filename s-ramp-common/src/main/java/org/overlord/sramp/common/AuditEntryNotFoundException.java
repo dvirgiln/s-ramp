@@ -15,7 +15,7 @@
  */
 package org.overlord.sramp.common;
 
-import org.overlord.sramp.common.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 
 
 /**
@@ -27,13 +27,15 @@ public class AuditEntryNotFoundException extends SrampUserException {
 
     private static final long serialVersionUID = 8446724007853150213L;
 
+    private final static Messages messages = Messages.getInstance();
+
     /**
      * Constructor.
      * @param auditEntryUuid
      * @param artifactUuid
      */
     public AuditEntryNotFoundException(String artifactUuid, String auditEntryUuid) {
-        super(Messages.i18n.format("AUDIT_ENTRY_NOT_FOUND", artifactUuid, auditEntryUuid)); //$NON-NLS-1$
+        super(messages.format("AUDIT_ENTRY_NOT_FOUND", artifactUuid, auditEntryUuid)); //$NON-NLS-1$
     }
 
 }

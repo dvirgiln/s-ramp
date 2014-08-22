@@ -33,13 +33,13 @@ import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
 import org.jboss.resteasy.plugins.providers.atom.Entry;
 import org.jboss.resteasy.plugins.providers.atom.Feed;
 import org.jboss.resteasy.plugins.providers.atom.Person;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.MediaType;
 import org.overlord.sramp.atom.err.SrampAtomException;
 import org.overlord.sramp.common.SrampConstants;
 import org.overlord.sramp.repository.AuditManager;
 import org.overlord.sramp.repository.AuditManagerFactory;
 import org.overlord.sramp.repository.audit.AuditEntrySet;
-import org.overlord.sramp.server.i18n.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +58,7 @@ import org.slf4j.LoggerFactory;
 public class AuditResource extends AbstractResource {
 
     private static Logger logger = LoggerFactory.getLogger(AuditResource.class);
+    private final static Messages messages = Messages.getInstance();
 //    private final Sramp sramp = new Sramp();
 
 	/**
@@ -79,7 +80,7 @@ public class AuditResource extends AbstractResource {
             AuditEntry rval = auditManager.addAuditEntry(artifactUuid, auditEntry);
             return auditEntryToAtomEntry(rval);
         } catch (Throwable e) {
-            logError(logger, Messages.i18n.format("ERROR_CREATING_AUDIT_ENTRY", artifactUuid), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_CREATING_AUDIT_ENTRY", artifactUuid), e); //$NON-NLS-1$
             throw new SrampAtomException(e);
         }
     }
@@ -98,7 +99,7 @@ public class AuditResource extends AbstractResource {
             AuditEntry auditEntry = auditManager.getArtifactAuditEntry(artifactUuid, auditEntryUuid);
             return auditEntryToAtomEntry(auditEntry);
         } catch (Throwable e) {
-            logError(logger, Messages.i18n.format("ERROR_GETTING_AUDIT_ENTRY", artifactUuid, auditEntryUuid), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_GETTING_AUDIT_ENTRY", artifactUuid, auditEntryUuid), e); //$NON-NLS-1$
             throw new SrampAtomException(e);
         }
     }
@@ -132,7 +133,7 @@ public class AuditResource extends AbstractResource {
             AuditEntrySet entries = auditManager.getArtifactAuditEntries(artifactUuid);
             return createAuditFeed(entries, startIdx, endIdx);
         } catch (Throwable e) {
-            logError(logger, Messages.i18n.format("ERROR_GETTING_AUDIT_ENTRIES", artifactUuid), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_GETTING_AUDIT_ENTRIES", artifactUuid), e); //$NON-NLS-1$
             throw new SrampAtomException(e);
         }
     }
@@ -166,7 +167,7 @@ public class AuditResource extends AbstractResource {
             AuditEntrySet entries = auditManager.getUserAuditEntries(username);
             return createAuditFeed(entries, startIdx, endIdx);
         } catch (Throwable e) {
-            logError(logger, Messages.i18n.format("ERROR_GETTING_AUDIT_ENTRIES_2", username), e); //$NON-NLS-1$
+            logError(logger, messages.format("ERROR_GETTING_AUDIT_ENTRIES_2", username), e); //$NON-NLS-1$
             throw new SrampAtomException(e);
         }
     }

@@ -22,7 +22,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.overlord.sramp.atom.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
+
+
 
 /**
  * The collection of artifacts found during the discovery process.
@@ -32,7 +34,9 @@ import org.overlord.sramp.atom.i18n.Messages;
 public class DiscoveredArtifacts implements Iterable<DiscoveredArtifact> {
 
 	private Set<DiscoveredArtifact> artifacts = new HashSet<DiscoveredArtifact>();
-	private Map<String, DiscoveredArtifact> index = new HashMap<String, DiscoveredArtifact>();
+	private final Map<String, DiscoveredArtifact> index = new HashMap<String, DiscoveredArtifact>();
+
+    private final static Messages messages = Messages.getInstance();
 
 	/**
 	 * Constructor.
@@ -71,7 +75,7 @@ public class DiscoveredArtifacts implements Iterable<DiscoveredArtifact> {
 		String absWorkDirPath = workDir.getAbsolutePath();
 		String absFilePath = file.getAbsolutePath();
 		if (!absFilePath.startsWith(absFilePath)) {
-			throw new RuntimeException(Messages.i18n.format("BAD_ARCHIVE_PATH", file.getName())); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("BAD_ARCHIVE_PATH", file.getName())); //$NON-NLS-1$
 		}
 		String relativeFilePath = absFilePath.substring(absWorkDirPath.length());
 		return relativeFilePath.replace('\\', '/');

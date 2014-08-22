@@ -25,6 +25,7 @@ import org.jboss.errai.bus.server.annotations.Service;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.DocumentArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Property;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.atom.err.SrampAtomException;
 import org.overlord.sramp.client.SrampClientException;
 import org.overlord.sramp.common.ArtifactType;
@@ -34,7 +35,6 @@ import org.overlord.sramp.ui.client.shared.beans.ArtifactRelationshipsBean;
 import org.overlord.sramp.ui.client.shared.exceptions.SrampUiException;
 import org.overlord.sramp.ui.client.shared.services.IArtifactService;
 import org.overlord.sramp.ui.server.api.SrampApiClientAccessor;
-import org.overlord.sramp.ui.server.i18n.Messages;
 import org.overlord.sramp.ui.server.services.util.RelationshipResolver;
 
 /**
@@ -51,6 +51,8 @@ public class ArtifactService implements IArtifactService {
     @Inject
     private SrampApiClientAccessor clientAccessor;
 
+    static final Messages messages = Messages.getInstance();
+
     /**
      * Constructor.
      */
@@ -65,7 +67,7 @@ public class ArtifactService implements IArtifactService {
         try {
             BaseArtifactType artifact = clientAccessor.getClient().getArtifactMetaData(uuid);
             ArtifactType artifactType = ArtifactType.valueOf(artifact);
-            
+
             ArtifactBean bean = new ArtifactBean();
             bean.setModel(artifactType.getArtifactType().getModel());
             bean.setType(artifactType.getType());
@@ -115,7 +117,7 @@ public class ArtifactService implements IArtifactService {
         try {
             ArtifactType at = ArtifactType.valueOf(artifactType);
             BaseArtifactType artifact = clientAccessor.getClient().getArtifactMetaData(at, uuid);
-            String response = Messages.i18n.format("ArtifactService.DownloadContent"); //$NON-NLS-1$
+            String response = messages.format("ArtifactService.DownloadContent"); //$NON-NLS-1$
             if (SrampModelUtils.isDocumentArtifact(artifact)) {
                 DocumentArtifactType doc = (DocumentArtifactType) artifact;
                 if (SrampModelUtils.isTextDocumentArtifact(doc) && doc.getContentSize() <= TWO_MEG) {
@@ -206,7 +208,7 @@ public class ArtifactService implements IArtifactService {
     /**
      * Creates a link to the remote repository for the given artifact.
      * @param artifact
-     * @param artifactType 
+     * @param artifactType
      */
     private String getRepositoryLink(BaseArtifactType artifact, ArtifactType artifactType) {
         StringBuilder builder = new StringBuilder();
@@ -226,7 +228,7 @@ public class ArtifactService implements IArtifactService {
     /**
      * Creates a media link to the remote repository for the given artifact.
      * @param artifact
-     * @param artifactType 
+     * @param artifactType
      */
     private String getRepositoryMediaLink(BaseArtifactType artifact, ArtifactType artifactType) {
         return getRepositoryLink(artifact, artifactType) + "/media"; //$NON-NLS-1$

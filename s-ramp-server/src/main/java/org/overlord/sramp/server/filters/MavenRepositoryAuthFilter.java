@@ -32,8 +32,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
 import org.overlord.commons.auth.filters.SimplePrincipal;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.Sramp;
-import org.overlord.sramp.server.i18n.Messages;
+
 
 /**
  * A filter that supports authentication to the s-ramp maven repository facade.  This
@@ -44,9 +45,9 @@ import org.overlord.sramp.server.i18n.Messages;
  * @author eric.wittmann@redhat.com
  */
 public class MavenRepositoryAuthFilter implements Filter {
-    
+
     private static final Sramp sramp = new Sramp();
-    
+    private final static Messages messages = Messages.getInstance();
     /**
      * Constructor.
      */
@@ -85,7 +86,7 @@ public class MavenRepositoryAuthFilter implements Filter {
     /**
      * Sends a response that tells the client that authentication is required.
      * @param response
-     * @throws IOException 
+     * @throws IOException
      */
     private void sendAuthResponse(HttpServletResponse response) throws IOException {
         response.setHeader("WWW-Authenticate", String.format("BASIC realm=\"maven\"")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -156,7 +157,7 @@ public class MavenRepositoryAuthFilter implements Filter {
                 String password = data.substring(sepIdx + 1);
                 return new Creds(username, password);
             } else {
-                throw new RuntimeException(Messages.i18n.format("MavenRepositoryAuthFilter.InvalidCredFormat")); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("MavenRepositoryAuthFilter.InvalidCredFormat")); //$NON-NLS-1$
             }
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
@@ -168,7 +169,7 @@ public class MavenRepositoryAuthFilter implements Filter {
      * @param credentials
      * @param request
      * @param response
-     * @throws IOException 
+     * @throws IOException
      */
     protected boolean login(Creds credentials, HttpServletRequest request,
             HttpServletResponse response) throws IOException {
@@ -186,7 +187,7 @@ public class MavenRepositoryAuthFilter implements Filter {
     @Override
     public void destroy() {
     }
-    
+
     /**
      * Models inbound basic auth credentials (user/password).
      * @author eric.wittmann@redhat.com
@@ -194,7 +195,7 @@ public class MavenRepositoryAuthFilter implements Filter {
     protected static class Creds {
         public String username;
         public String password;
-        
+
         /**
          * Constructor.
          */

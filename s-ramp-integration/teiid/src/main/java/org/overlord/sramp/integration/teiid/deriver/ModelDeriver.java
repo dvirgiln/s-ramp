@@ -17,16 +17,18 @@ package org.overlord.sramp.integration.teiid.deriver;
 
 import java.io.IOException;
 import java.util.Collection;
+
 import javax.xml.namespace.QName;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
+
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedDocument;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.SrampModelUtils;
 import org.overlord.sramp.common.derived.AbstractXmlDeriver;
 import org.overlord.sramp.common.derived.LinkerContext;
-import org.overlord.sramp.integration.teiid.Messages;
 import org.overlord.sramp.integration.teiid.Utils;
 import org.overlord.sramp.integration.teiid.model.Describable.XmlId;
 import org.overlord.sramp.integration.teiid.model.TeiidArtifactType;
@@ -45,6 +47,8 @@ public final class ModelDeriver extends AbstractXmlDeriver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ModelDeriver.class);
 
+    private final static Messages messages = Messages.getInstance();
+
     /**
      * {@inheritDoc}
      *
@@ -58,7 +62,7 @@ public final class ModelDeriver extends AbstractXmlDeriver {
         // make sure Teiid model
         if (!(artifact instanceof ExtendedDocument)
             || !TeiidArtifactType.MODEL.extendedType().equals(((ExtendedDocument)artifact).getExtendedType())) {
-            throw new IllegalArgumentException(Messages.I18N.format("notModelArtifact", artifact.getName())); //$NON-NLS-1$
+            throw new IllegalArgumentException(messages.format("notModelArtifact", artifact.getName())); //$NON-NLS-1$
         }
 
         final ExtendedDocument modelArtifact = (ExtendedDocument)artifact;
@@ -66,7 +70,7 @@ public final class ModelDeriver extends AbstractXmlDeriver {
         try {
             // root element should be the XMI element
             if (!TeiidModel.XmiId.ROOT_ELEMENT.equals(xmlDeriverContext.getRootElement().getLocalName())) {
-                throw new IllegalArgumentException(Messages.I18N.format("missingModelRootElement", artifact.getName())); //$NON-NLS-1$
+                throw new IllegalArgumentException(messages.format("missingModelRootElement", artifact.getName())); //$NON-NLS-1$
             }
 
             processNamespaces(xmlDeriverContext.getRootElement(), xmlDeriverContext);
@@ -99,7 +103,7 @@ public final class ModelDeriver extends AbstractXmlDeriver {
                                                          XPathConstants.NODE);
 
         if (annotationElement == null) {
-            throw new IllegalArgumentException(Messages.I18N.format("missingModelAnnotationElement", modelArtifact.getName())); //$NON-NLS-1$
+            throw new IllegalArgumentException(messages.format("missingModelAnnotationElement", modelArtifact.getName())); //$NON-NLS-1$
         }
 
         setProperty(modelArtifact, annotationElement, TeiidModel.XmiId.UUID, PropertyId.MMUID);

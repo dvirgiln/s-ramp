@@ -28,6 +28,7 @@ import org.apache.felix.scr.annotations.Service;
 import org.jboss.downloads.overlord.sramp._2013.auditing.AuditEntry;
 import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType;
 import org.jboss.downloads.overlord.sramp._2013.auditing.AuditItemType.Property;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.ArtifactNotFoundException;
 import org.overlord.sramp.common.AuditEntryNotFoundException;
 import org.overlord.sramp.common.SrampException;
@@ -35,7 +36,6 @@ import org.overlord.sramp.common.SrampServerException;
 import org.overlord.sramp.repository.AuditManager;
 import org.overlord.sramp.repository.audit.AuditEntrySet;
 import org.overlord.sramp.repository.jcr.audit.JCRAuditEntrySet;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
 import org.overlord.sramp.repository.jcr.mapper.JCRNodeToAuditEntryFactory;
 import org.overlord.sramp.repository.query.InvalidQueryException;
 import org.slf4j.Logger;
@@ -53,6 +53,9 @@ import org.slf4j.LoggerFactory;
 public class JCRAuditManager extends AbstractJCRManager implements AuditManager {
 
     private static Logger log = LoggerFactory.getLogger(JCRAuditManager.class);
+
+    private final static Messages messages = Messages.getInstance();
+
     private static final String AUDIT_ENTRY_QUERY = "SELECT auditEntry.*" //$NON-NLS-1$
             + " FROM [sramp:baseArtifactType] AS artifact" //$NON-NLS-1$
             + " JOIN [audit:auditEntry] AS auditEntry ON ISCHILDNODE(auditEntry, artifact) " //$NON-NLS-1$
@@ -135,8 +138,8 @@ public class JCRAuditManager extends AbstractJCRManager implements AuditManager 
             QueryResult jcrQueryResult = jcrQuery.execute();
             NodeIterator jcrNodes = jcrQueryResult.getNodes();
             long endTime = System.currentTimeMillis();
-            log.debug(Messages.i18n.format("QUERY_EXECUTED", jcrSql2Query)); //$NON-NLS-1$
-            log.debug(Messages.i18n.format("QUERY_EXECUTED_IN", endTime - startTime)); //$NON-NLS-1$
+            log.debug(messages.format("QUERY_EXECUTED", jcrSql2Query)); //$NON-NLS-1$
+            log.debug(messages.format("QUERY_EXECUTED_IN", endTime - startTime)); //$NON-NLS-1$
             if (jcrNodes.getSize() == 1) {
                 Node node = jcrNodes.nextNode();
                 return JCRNodeToAuditEntryFactory.createAuditEntry(session, node);
@@ -188,8 +191,8 @@ public class JCRAuditManager extends AbstractJCRManager implements AuditManager 
             QueryResult jcrQueryResult = jcrQuery.execute();
             NodeIterator jcrNodes = jcrQueryResult.getNodes();
             long endTime = System.currentTimeMillis();
-            log.debug(Messages.i18n.format("QUERY_EXECUTED", query)); //$NON-NLS-1$
-            log.debug(Messages.i18n.format("QUERY_EXECUTED_IN", endTime - startTime)); //$NON-NLS-1$
+            log.debug(messages.format("QUERY_EXECUTED", query)); //$NON-NLS-1$
+            log.debug(messages.format("QUERY_EXECUTED_IN", endTime - startTime)); //$NON-NLS-1$
             return new JCRAuditEntrySet(session, jcrNodes);
         } catch (Throwable t) {
             JCRRepositoryFactory.logoutQuietly(session);

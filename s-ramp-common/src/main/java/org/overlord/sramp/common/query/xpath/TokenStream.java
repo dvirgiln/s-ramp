@@ -18,7 +18,7 @@ package org.overlord.sramp.common.query.xpath;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.overlord.sramp.common.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 
 /**
  * A stream of tokens produced by the tokenizer.
@@ -26,6 +26,8 @@ import org.overlord.sramp.common.i18n.Messages;
  * @author eric.wittmann@redhat.com
  */
 public class TokenStream {
+
+    private final static Messages messages = Messages.getInstance();
 
 	private List<Token> tokens = new ArrayList<Token>();
 
@@ -45,7 +47,7 @@ public class TokenStream {
 	 */
 	public void addToken(String value, TokenType type) {
 		if (tokens == null) {
-			throw new RuntimeException(Messages.i18n.format("TOKEN_STREAM_ALREADY_BUILT")); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("TOKEN_STREAM_ALREADY_BUILT")); //$NON-NLS-1$
 		}
 		tokens.add(new Token(type, value));
 	}
@@ -55,7 +57,7 @@ public class TokenStream {
 	 */
 	public TokenStream build() {
 		if (tokens == null) {
-			throw new RuntimeException(Messages.i18n.format("TOKEN_STREAM_ALREADY_BUILT_2")); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("TOKEN_STREAM_ALREADY_BUILT_2")); //$NON-NLS-1$
 		}
 		stream = tokens.toArray(new Token[tokens.size()]);
 		tokens = null;

@@ -43,6 +43,7 @@ import org.apache.felix.scr.annotations.Service;
 import org.modeshape.common.collection.Problems;
 import org.modeshape.jcr.RepositoryConfiguration;
 import org.modeshape.jcr.api.nodetype.NodeTypeManager;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.commons.services.ServiceRegistryUtil;
 import org.overlord.sramp.common.Sramp;
 import org.overlord.sramp.common.SrampConstants;
@@ -50,7 +51,6 @@ import org.overlord.sramp.repository.jcr.JCRConstants;
 import org.overlord.sramp.repository.jcr.JCRExtensions;
 import org.overlord.sramp.repository.jcr.JCRRepository;
 import org.overlord.sramp.repository.jcr.JCRRepositoryFactory;
-import org.overlord.sramp.repository.jcr.modeshape.i18n.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +59,8 @@ import org.slf4j.LoggerFactory;
 public class ModeshapeRepository extends JCRRepository {
 
 	private static Logger log = LoggerFactory.getLogger(ModeshapeRepository.class);
+
+    private final static Messages messages = Messages.getInstance();
 	private static String S_RAMP_JNDI = "jcr/sramp"; //$NON-NLS-1$
 
     private static Sramp sramp = new Sramp();
@@ -96,7 +98,7 @@ public class ModeshapeRepository extends JCRRepository {
 	    //Using the Modeshape Service
 	    if (configUrl==null) {
 	        String srampJndiLocation = sramp.getConfigProperty(SrampConstants.SRAMP_CONFIG_JCR_REPO_JNDI, S_RAMP_JNDI);
-            log.info(Messages.i18n.format("CONNECT_TO_MS", srampJndiLocation)); //$NON-NLS-1$
+            log.info(messages.format("CONNECT_TO_MS", srampJndiLocation)); //$NON-NLS-1$
             try {
                 InitialContext context = new InitialContext();
                 repository = (javax.jcr.Repository) context.lookup(srampJndiLocation);
@@ -104,12 +106,12 @@ public class ModeshapeRepository extends JCRRepository {
                 throw new RepositoryException(e.getMessage(),e);
             }
             if (repository==null) {
-                throw new RepositoryException(Messages.i18n.format("JNDI_BINDING_NOT_FOUND", srampJndiLocation));  //$NON-NLS-1$
+                throw new RepositoryException(messages.format("JNDI_BINDING_NOT_FOUND", srampJndiLocation)); //$NON-NLS-1$
             }
 	    }
 	    //Using Modeshape embedded
 	    else {
-	        log.info(Messages.i18n.format("STARTING_MS")); //$NON-NLS-1$
+            log.info(messages.format("STARTING_MS")); //$NON-NLS-1$
     		try {
     			Map<String,String> parameters = new HashMap<String,String>();
     			RepositoryConfiguration config = RepositoryConfiguration.read(configUrl);
@@ -120,7 +122,7 @@ public class ModeshapeRepository extends JCRRepository {
     			parameters.put("org.modeshape.jcr.URL",configUrl.toExternalForm()); //$NON-NLS-1$
     			Set<RepositoryFactory> services = ServiceRegistryUtil.getServices(RepositoryFactory.class);
     			if (services.isEmpty())
-                    throw new RepositoryException(Messages.i18n.format("FAILED_TO_CREATE_JCR_REPO")); //$NON-NLS-1$
+                    throw new RepositoryException(messages.format("FAILED_TO_CREATE_JCR_REPO")); //$NON-NLS-1$
     			for (RepositoryFactory factory : services) {
                     theFactory = factory;
                     repository = factory.getRepository(parameters);
@@ -158,10 +160,10 @@ public class ModeshapeRepository extends JCRRepository {
 				Class<?> clazz = Class.forName(className);
 				URL resourceUrl = clazz.getResource(path);
 				if (resourceUrl == null)
-					throw new Exception(Messages.i18n.format("MISSING_CONFIG", configUrl)); //$NON-NLS-1$
+                    throw new Exception(messages.format("MISSING_CONFIG", configUrl)); //$NON-NLS-1$
 				return resourceUrl;
 			}
-			throw new Exception(Messages.i18n.format("INVALID_CLASSPATH_URL", configUrl)); //$NON-NLS-1$
+            throw new Exception(messages.format("INVALID_CLASSPATH_URL", configUrl)); //$NON-NLS-1$
 		} else {
 		    try {
                 File f = new File(configUrl);
@@ -203,7 +205,7 @@ public class ModeshapeRepository extends JCRRepository {
 			// Register the ModeShape S-RAMP node types ...
 			is = ModeshapeRepository.class.getClassLoader().getResourceAsStream("org/overlord/sramp/repository/jcr/modeshape/sramp.cnd"); //$NON-NLS-1$
 			if (is == null) {
-			    throw new RuntimeException(Messages.i18n.format("CND_NOT_FOUND")); //$NON-NLS-1$
+                throw new RuntimeException(messages.format("CND_NOT_FOUND")); //$NON-NLS-1$
 			}
 			manager.registerNodeTypes(is,true);
 		} catch (LoginException e) {
@@ -231,7 +233,7 @@ public class ModeshapeRepository extends JCRRepository {
             try {
                 org.modeshape.jcr.api.RepositoryFactory modeRepo = (org.modeshape.jcr.api.RepositoryFactory) theFactory;
                 Boolean state = modeRepo.shutdown().get();
-                log.info(Messages.i18n.format("SHUTDOWN_MS", state)); //$NON-NLS-1$
+                log.info(messages.format("SHUTDOWN_MS", state)); //$NON-NLS-1$
                 repository = null;
             } catch (InterruptedException e) {
                 log.error(e.getMessage(), e);

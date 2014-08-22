@@ -25,11 +25,11 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.ExtendedArtifactType;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Relationship;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Target;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.ArtifactTypeEnum;
 import org.overlord.sramp.common.SrampModelUtils;
 import org.overlord.sramp.common.derived.LinkerContext;
 import org.overlord.sramp.integration.java.model.JavaModel;
-import org.overlord.sramp.integration.switchyard.i18n.Messages;
 import org.overlord.sramp.integration.switchyard.model.SwitchYardArtifactVisitor;
 import org.overlord.sramp.integration.switchyard.model.SwitchYardArtifactVisitorHelper;
 import org.overlord.sramp.integration.switchyard.model.SwitchYardModel;
@@ -46,6 +46,8 @@ public class SwitchYardLinker implements SwitchYardArtifactVisitor {
     private static Logger log = LoggerFactory.getLogger(SwitchYardLinker.class);
 
     private static ThreadLocal<LinkerContext> linkerContext = new ThreadLocal<LinkerContext>();
+
+    private final static Messages messages = Messages.getInstance();
 
     /**
      * Constructor.
@@ -319,7 +321,7 @@ public class SwitchYardLinker implements SwitchYardArtifactVisitor {
         if (artifacts != null && !artifacts.isEmpty()) {
             return artifacts.iterator().next();
         } else {
-            log.debug(Messages.i18n.format("NO_JAVA_CLASS", className)); //$NON-NLS-1$
+            log.debug(messages.format("NO_JAVA_CLASS", className)); //$NON-NLS-1$
             return null;
         }
     }
@@ -340,7 +342,7 @@ public class SwitchYardLinker implements SwitchYardArtifactVisitor {
         if (artifacts != null && !artifacts.isEmpty()) {
             return artifacts.iterator().next();
         } else {
-            log.debug(Messages.i18n.format("NO_JAVA_INTERFACE", interfaceName)); //$NON-NLS-1$
+            log.debug(messages.format("NO_JAVA_INTERFACE", interfaceName)); //$NON-NLS-1$
             return null;
         }
     }
@@ -361,7 +363,7 @@ public class SwitchYardLinker implements SwitchYardArtifactVisitor {
         if (artifacts != null && !artifacts.isEmpty()) {
             return artifacts.iterator().next();
         } else {
-            log.debug(Messages.i18n.format("NO_ELEMENT_DECL", refQName)); //$NON-NLS-1$
+            log.debug(messages.format("NO_ELEMENT_DECL", refQName)); //$NON-NLS-1$
             return null;
         }
     }

@@ -15,9 +15,10 @@
  */
 package org.overlord.sramp.repository.errors;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.ArtifactTypeEnum;
 import org.overlord.sramp.common.SrampUserException;
-import org.overlord.sramp.repository.i18n.Messages;
+
 
 /**
  * Exception thrown the user attempts to delete a derived artifact.
@@ -27,7 +28,7 @@ import org.overlord.sramp.repository.i18n.Messages;
 public class DerivedArtifactDeleteException extends SrampUserException {
 
     private static final long serialVersionUID = -2247193241132739490L;
-
+    private final static Messages messages = Messages.getInstance();
     /**
      * Constructor.
      */
@@ -39,7 +40,7 @@ public class DerivedArtifactDeleteException extends SrampUserException {
      * @param artifactType
      */
     public DerivedArtifactDeleteException(ArtifactTypeEnum artifactType) {
-        super(Messages.i18n.format("CANNOT_DELETE_DERIVED_ARTY", artifactType)); //$NON-NLS-1$
+        super(messages.format("CANNOT_DELETE_DERIVED_ARTY", artifactType)); //$NON-NLS-1$
     }
 
 }

@@ -22,6 +22,7 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 import javax.jcr.query.QueryResult;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.common.SrampException;
 import org.overlord.sramp.common.query.xpath.ast.Query;
 import org.overlord.sramp.common.query.xpath.visitors.XPathSerializationVisitor;
@@ -30,7 +31,6 @@ import org.overlord.sramp.repository.jcr.ClassificationHelper;
 import org.overlord.sramp.repository.jcr.JCRConstants;
 import org.overlord.sramp.repository.jcr.JCRPersistence;
 import org.overlord.sramp.repository.jcr.JCRRepositoryFactory;
-import org.overlord.sramp.repository.jcr.i18n.Messages;
 import org.overlord.sramp.repository.query.AbstractSrampQueryImpl;
 import org.overlord.sramp.repository.query.ArtifactSet;
 import org.overlord.sramp.repository.query.QueryExecutionException;
@@ -46,6 +46,8 @@ import org.slf4j.LoggerFactory;
 public class JCRSrampQuery extends AbstractSrampQueryImpl {
 
 	private static Logger log = LoggerFactory.getLogger(JCRPersistence.class);
+
+    private final static Messages messages = Messages.getInstance();
 
 	private static Map<String, String> sOrderByMappings = new HashMap<String, String>();
 	static {
@@ -91,7 +93,7 @@ public class JCRSrampQuery extends AbstractSrampQueryImpl {
 				XPathSerializationVisitor visitor = new XPathSerializationVisitor();
 				queryModel.accept(visitor);
 				String originalQuery = visitor.getXPath();
-				System.out.println(Messages.i18n.format("JCR_QUERY_FROM", jcrSql2Query, originalQuery)); //$NON-NLS-1$
+                System.out.println(messages.format("JCR_QUERY_FROM", jcrSql2Query, originalQuery)); //$NON-NLS-1$
 			}
 			javax.jcr.query.Query jcrQuery = jcrQueryManager.createQuery(jcrSql2Query, JCRConstants.JCR_SQL2);
 			long startTime = System.currentTimeMillis();
@@ -99,8 +101,8 @@ public class JCRSrampQuery extends AbstractSrampQueryImpl {
 			NodeIterator jcrNodes = jcrQueryResult.getNodes();
 			long endTime = System.currentTimeMillis();
 
-			log.debug(Messages.i18n.format("QUERY_EXECUTED", jcrSql2Query)); //$NON-NLS-1$
-			log.debug(Messages.i18n.format("QUERY_EXECUTED_IN", endTime - startTime)); //$NON-NLS-1$
+            log.debug(messages.format("QUERY_EXECUTED", jcrSql2Query)); //$NON-NLS-1$
+            log.debug(messages.format("QUERY_EXECUTED_IN", endTime - startTime)); //$NON-NLS-1$
 
 			return new JCRArtifactSet(session, jcrNodes, logoutOnClose);
 		} catch (SrampException e) {
