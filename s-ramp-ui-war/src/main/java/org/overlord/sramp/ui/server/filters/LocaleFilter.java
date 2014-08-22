@@ -25,7 +25,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.overlord.sramp.common.i18n.AbstractMessages;
+import org.overlord.commons.i18n.AbstractMessages;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.ui.server.api.SrampApiClientAccessor;
 
 /**
@@ -60,10 +61,10 @@ public class LocaleFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         Locale locale = request.getLocale();
-        AbstractMessages.setLocale(locale);
+        Messages.setLocale(locale);
         SrampApiClientAccessor.setLocale(locale);
         chain.doFilter(request, response);
-        AbstractMessages.clearLocale();
+        Messages.clearLocale();
         SrampApiClientAccessor.clearLocale();
     }
 

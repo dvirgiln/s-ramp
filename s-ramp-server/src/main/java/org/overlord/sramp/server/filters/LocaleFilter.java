@@ -25,8 +25,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.overlord.sramp.common.i18n.AbstractMessages;
-
+import org.overlord.commons.i18n.AbstractMessages;
+import org.overlord.commons.i18n.Messages;
 /**
  * A filter used to configure the i18n system to obey any inbound locale information.  In
  * other words, this filter is used to pull the locale info from an inbound http request and
@@ -55,9 +55,9 @@ public class LocaleFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         Locale locale = request.getLocale();
-        AbstractMessages.setLocale(locale);
+        Messages.setLocale(locale);
         chain.doFilter(request, response);
-        AbstractMessages.clearLocale();
+        Messages.clearLocale();
     }
 
     /**

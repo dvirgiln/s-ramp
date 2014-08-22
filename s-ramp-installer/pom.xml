@@ -69,7 +69,10 @@
       <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-codec</artifactId>
     </dependency>    
-    
+    <dependency>
+      <groupId>org.overlord</groupId>
+      <artifactId>overlord-commons-i18n</artifactId>
+    </dependency>   
     <!-- S-RAMP -->
     <dependency>
       <groupId>org.overlord.sramp</groupId>
@@ -173,7 +176,7 @@
 
                     <!-- The commons ant jar location -->
                     <property name="overlord-commons.ant.jar" location="${s-ramp-overlord-commons.ant.jar.path}" />
-                    
+                    <property name="overlord-commons.i18n.jar" location="${maven.dependency.org.overlord.overlord-commons-i18n.jar.path}" />
                     <!-- Call the installer -->
                     <ant dir="${basedir}/src/main/resources" antfile="${basedir}/src/main/resources/build.xml">
                       <target name="install" />
