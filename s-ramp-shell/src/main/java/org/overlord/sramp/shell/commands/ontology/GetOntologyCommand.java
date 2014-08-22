@@ -26,7 +26,6 @@ import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.client.ontology.OntologySummary;
 import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileNameCompleter;
 import org.w3._1999._02._22_rdf_syntax_ns_.RDF;
 
@@ -49,30 +48,30 @@ public class GetOntologyCommand extends BuiltInShellCommand {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute() throws Exception {
-		String ontologyIdArg = this.requiredArgument(0, Messages.i18n.format("GetOntology.InvalidArgMsg.OntologyId")); //$NON-NLS-1$
+        String ontologyIdArg = this.requiredArgument(0, messages.format("GetOntology.InvalidArgMsg.OntologyId")); //$NON-NLS-1$
         String filePathArg = this.optionalArgument(1);
 
 		QName feedVarName = new QName("ontology", "feed"); //$NON-NLS-1$ //$NON-NLS-2$
 		QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-            print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 
 		if (!ontologyIdArg.contains(":") || ontologyIdArg.endsWith(":")) { //$NON-NLS-1$ //$NON-NLS-2$
-            throw new InvalidCommandArgumentException(0, Messages.i18n.format("InvalidOntologyIdFormat")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(0, messages.format("InvalidOntologyIdFormat")); //$NON-NLS-1$
 		}
 
 		File filePath = null;
 		if (filePathArg != null) {
 		    filePath = new File(filePathArg);
 		    if (filePath.exists()) {
-		        print(Messages.i18n.format("GetOntology.PathExists", filePath)); //$NON-NLS-1$
+                print(messages.format("GetOntology.PathExists", filePath)); //$NON-NLS-1$
 		        return false;
 		    }
 		    if (filePath.getParentFile() != null && filePath.getParentFile().isFile()) {
-                print(Messages.i18n.format("GetOntology.InvalidOutputPath", filePath)); //$NON-NLS-1$
+                print(messages.format("GetOntology.InvalidOutputPath", filePath)); //$NON-NLS-1$
                 return false;
 		    }
 		}
@@ -84,18 +83,18 @@ public class GetOntologyCommand extends BuiltInShellCommand {
 		if ("feed".equals(idType)) { //$NON-NLS-1$
 			List<OntologySummary> ontologies = (List<OntologySummary>) getContext().getVariable(feedVarName);
 			if (ontologies == null) {
-				throw new InvalidCommandArgumentException(0, Messages.i18n.format("DeleteOntology.NoOntologyFeed")); //$NON-NLS-1$
+                throw new InvalidCommandArgumentException(0, messages.format("DeleteOntology.NoOntologyFeed")); //$NON-NLS-1$
 			}
 			int feedIdx = Integer.parseInt(idValue) - 1;
 			if (feedIdx < 0 || feedIdx >= ontologies.size()) {
-                throw new InvalidCommandArgumentException(0, Messages.i18n.format("FeedIndexOutOfRange")); //$NON-NLS-1$
+                throw new InvalidCommandArgumentException(0, messages.format("FeedIndexOutOfRange")); //$NON-NLS-1$
 			}
 			OntologySummary summary = ontologies.get(feedIdx);
 			ontologyUuid = summary.getUuid();
 		} else if ("uuid".equals(idType)) { //$NON-NLS-1$
 			ontologyUuid = idValue;
 		} else {
-            throw new InvalidCommandArgumentException(0, Messages.i18n.format("InvalidIdFormat")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(0, messages.format("InvalidIdFormat")); //$NON-NLS-1$
 		}
 
 		try {
@@ -107,7 +106,7 @@ public class GetOntologyCommand extends BuiltInShellCommand {
 			    printOntology(ontology);
 			}
 		} catch (Exception e) {
-			print(Messages.i18n.format("GetOntology.GetFailed")); //$NON-NLS-1$
+            print(messages.format("GetOntology.GetFailed")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
             return false;
 		}
@@ -135,7 +134,7 @@ public class GetOntologyCommand extends BuiltInShellCommand {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         marshaller.marshal(ontology, filePath);
-        print(Messages.i18n.format("GetOntology.OntologySaved", filePath.getCanonicalPath())); //$NON-NLS-1$
+        print(messages.format("GetOntology.OntologySaved", filePath.getCanonicalPath())); //$NON-NLS-1$
     }
 
     /**

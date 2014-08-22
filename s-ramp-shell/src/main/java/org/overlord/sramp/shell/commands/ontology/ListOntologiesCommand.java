@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.client.ontology.OntologySummary;
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Lists all ontologies in the S-RAMP repository.
@@ -46,13 +46,13 @@ public class ListOntologiesCommand extends BuiltInShellCommand {
 		QName feedVarName = new QName("ontology", "feed"); //$NON-NLS-1$ //$NON-NLS-2$
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 		try {
 			List<OntologySummary> ontologies = client.getOntologies();
-			print(Messages.i18n.format("ListOntologies.Summary", ontologies.size())); //$NON-NLS-1$
-			print("  Idx  " + Messages.i18n.format("ListOntologies.Base")); //$NON-NLS-1$ //$NON-NLS-2$
+            print(messages.format("ListOntologies.Summary", ontologies.size())); //$NON-NLS-1$
+            print("  Idx  " + messages.format("ListOntologies.Base")); //$NON-NLS-1$ //$NON-NLS-2$
 			print("  ---  ----"); //$NON-NLS-1$
 			int idx = 1;
 			for (OntologySummary ontology : ontologies) {
@@ -62,7 +62,7 @@ public class ListOntologiesCommand extends BuiltInShellCommand {
 
 			getContext().setVariable(feedVarName, ontologies);
 		} catch (Exception e) {
-			print(Messages.i18n.format("ListOntologies.Failed")); //$NON-NLS-1$
+            print(messages.format("ListOntologies.Failed")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
             return false;
 		}

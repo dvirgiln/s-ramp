@@ -15,8 +15,9 @@
  */
 package org.overlord.sramp.shell.commands;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.shell.api.AbstractShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * The command used when a command does not exist for a given command name.
@@ -24,6 +25,8 @@ import org.overlord.sramp.shell.i18n.Messages;
  * @author eric.wittmann@redhat.com
  */
 public class CommandNotFoundCommand extends AbstractShellCommand {
+
+    protected final static Messages messages = Messages.getInstance();
 
 	/**
 	 * Constructor.
@@ -50,7 +53,7 @@ public class CommandNotFoundCommand extends AbstractShellCommand {
 	 */
 	@Override
 	public boolean execute() {
-		print(Messages.i18n.format("COMMAND_NOT_FOUND")); //$NON-NLS-1$
+        print(messages.format("COMMAND_NOT_FOUND")); //$NON-NLS-1$
         return true;
 	}
 

@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Connects to an s-ramp server.
@@ -41,7 +41,7 @@ public class ConnectCommand extends BuiltInShellCommand {
 	 */
 	@Override
 	public boolean execute() throws Exception {
-		String endpointUrlArg = this.requiredArgument(0, Messages.i18n.format("Connect.InvalidArgMsg.NoUrl")); //$NON-NLS-1$
+        String endpointUrlArg = this.requiredArgument(0, messages.format("Connect.InvalidArgMsg.NoUrl")); //$NON-NLS-1$
 		String opt1 = this.optionalArgument(1);
         String opt2 = this.optionalArgument(2);
         String opt3 = this.optionalArgument(3);
@@ -76,9 +76,9 @@ public class ConnectCommand extends BuiltInShellCommand {
 			SrampAtomApiClient client = null;
 		    client = new SrampAtomApiClient(endpointUrlArg, username, password, validating);
 			getContext().setVariable(varName, client);
-			print(Messages.i18n.format("Connect.Success", endpointUrlArg)); //$NON-NLS-1$
+            print(messages.format("Connect.Success", endpointUrlArg)); //$NON-NLS-1$
 		} catch (Exception e) {
-			print(Messages.i18n.format("Connect.Failure", endpointUrlArg)); //$NON-NLS-1$
+            print(messages.format("Connect.Failure", endpointUrlArg)); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
 	        return false;
 		}
@@ -93,7 +93,7 @@ public class ConnectCommand extends BuiltInShellCommand {
         if (username != null) {
             return username;
         }
-        return getContext().promptForInput(Messages.i18n.format("Connect.UserPrompt")); //$NON-NLS-1$
+        return getContext().promptForInput(messages.format("Connect.UserPrompt")); //$NON-NLS-1$
     }
 
     /**
@@ -104,7 +104,7 @@ public class ConnectCommand extends BuiltInShellCommand {
         if (password != null) {
             return password;
         }
-        return getContext().promptForPassword(Messages.i18n.format("Connect.PasswordPrompt")); //$NON-NLS-1$
+        return getContext().promptForPassword(messages.format("Connect.PasswordPrompt")); //$NON-NLS-1$
     }
 
 	/**

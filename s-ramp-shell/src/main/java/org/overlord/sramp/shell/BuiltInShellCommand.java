@@ -15,8 +15,9 @@
  */
 package org.overlord.sramp.shell;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.shell.api.AbstractShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Abstract base class for all built-in shell commands.
@@ -25,12 +26,13 @@ import org.overlord.sramp.shell.i18n.Messages;
  */
 public abstract class BuiltInShellCommand extends AbstractShellCommand {
 
+    protected final static Messages messages = Messages.getInstance();
     /**
      * @see org.overlord.sramp.shell.api.shell.ShellCommand#printUsage()
      */
     @Override
     public void printUsage() {
-        print(Messages.i18n.format(getClass().getSimpleName() + ".usage")); //$NON-NLS-1$
+        print(messages.format(getClass().getSimpleName() + ".usage")); //$NON-NLS-1$
     }
 
     /**
@@ -38,7 +40,7 @@ public abstract class BuiltInShellCommand extends AbstractShellCommand {
      */
     @Override
     public void printHelp() {
-        print(Messages.i18n.format(getClass().getSimpleName() + ".help")); //$NON-NLS-1$
+        print(messages.format(getClass().getSimpleName() + ".help")); //$NON-NLS-1$
     }
 
 }

@@ -23,6 +23,8 @@ public class SrampMessagesPathProvider implements MessagesPathProvider {
         paths.add("org.overlord.sramp.shell.i18n");
         paths.add("org.overlord.sramp.shell.api.i18n");
         paths.add("org.overlord.sramp.wagon.i18n");
+        paths.add("org.overlord.sramp.shell.i18n");
+        paths.add("org.overlord.sramp.shell.api.i18n");
         return paths;
     }
 

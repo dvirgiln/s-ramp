@@ -28,7 +28,7 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.Property;
 import org.overlord.sramp.common.SrampModelUtils;
 import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Command used to manipulate properties on the currently active S-RAMP artifact.  This command
@@ -56,34 +56,34 @@ public class PropertyCommand extends BuiltInShellCommand {
 	 */
 	@Override
 	public boolean execute() throws Exception {
-		String subcmdArg = requiredArgument(0, Messages.i18n.format("Property.InvalidArgMsg.SubCommand")); //$NON-NLS-1$
-		String propNameArg = requiredArgument(1, Messages.i18n.format("Property.InvalidArgMsg.PropertyName")); //$NON-NLS-1$
+        String subcmdArg = requiredArgument(0, messages.format("Property.InvalidArgMsg.SubCommand")); //$NON-NLS-1$
+        String propNameArg = requiredArgument(1, messages.format("Property.InvalidArgMsg.PropertyName")); //$NON-NLS-1$
 		String propValueArg = null;
 		if ("set".equals(subcmdArg)) { //$NON-NLS-1$
-			propValueArg = requiredArgument(2, Messages.i18n.format("Property.InvalidArgMsg.PropertyValue")); //$NON-NLS-1$
+            propValueArg = requiredArgument(2, messages.format("Property.InvalidArgMsg.PropertyValue")); //$NON-NLS-1$
 		}
 
 		QName artifactVarName = new QName("s-ramp", "artifact"); //$NON-NLS-1$ //$NON-NLS-2$
 		BaseArtifactType artifact = (BaseArtifactType) getContext().getVariable(artifactVarName);
 		if (artifact == null) {
-			print(Messages.i18n.format("NoActiveArtifact")); //$NON-NLS-1$
+            print(messages.format("NoActiveArtifact")); //$NON-NLS-1$
 			return false;
 		}
 
 		try {
 			if ("set".equals(subcmdArg)) { //$NON-NLS-1$
 				setProperty(artifact, propNameArg, propValueArg);
-				print(Messages.i18n.format("Property.PropertySet", propNameArg)); //$NON-NLS-1$
+                print(messages.format("Property.PropertySet", propNameArg)); //$NON-NLS-1$
 			} else if ("unset".equals(subcmdArg)) { //$NON-NLS-1$
 				unsetProperty(artifact, propNameArg);
-				print(Messages.i18n.format("Property.PropertyUnset", propNameArg)); //$NON-NLS-1$
+                print(messages.format("Property.PropertyUnset", propNameArg)); //$NON-NLS-1$
 			} else {
-				throw new InvalidCommandArgumentException(0, Messages.i18n.format("Property.InvalidSubCommand")); //$NON-NLS-1$
+                throw new InvalidCommandArgumentException(0, messages.format("Property.InvalidSubCommand")); //$NON-NLS-1$
 			}
 		} catch (InvalidCommandArgumentException e) {
 			throw e;
 		} catch (Exception e) {
-			print(Messages.i18n.format("Property.Failure")); //$NON-NLS-1$
+            print(messages.format("Property.Failure")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
             return false;
 		}

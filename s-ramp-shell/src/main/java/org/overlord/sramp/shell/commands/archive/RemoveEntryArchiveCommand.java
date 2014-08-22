@@ -20,7 +20,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.overlord.sramp.atom.archive.SrampArchive;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileEntryPathCompleter;
 
 /**
@@ -42,7 +41,7 @@ public class RemoveEntryArchiveCommand extends AbstractArchiveCommand {
 	@Override
 	public boolean execute() throws Exception {
         super.initialize();
-        String archivePathArg = requiredArgument(0, Messages.i18n.format("InvalidArgMsg.EntryPath")); //$NON-NLS-1$
+        String archivePathArg = requiredArgument(0, messages.format("InvalidArgMsg.EntryPath")); //$NON-NLS-1$
 
 
         if (!validate(archivePathArg)) {
@@ -50,9 +49,9 @@ public class RemoveEntryArchiveCommand extends AbstractArchiveCommand {
         } else {
 			boolean success = archive.removeEntry(archivePathArg);
 			if (success) {
-				print(Messages.i18n.format("RemoveEntry.EntryDeleted")); //$NON-NLS-1$
+                print(messages.format("RemoveEntry.EntryDeleted")); //$NON-NLS-1$
 			} else {
-				print(Messages.i18n.format("RemoveEntry.NoEntryFound", archivePathArg)); //$NON-NLS-1$
+                print(messages.format("RemoveEntry.NoEntryFound", archivePathArg)); //$NON-NLS-1$
 			}
 		}
         return true;

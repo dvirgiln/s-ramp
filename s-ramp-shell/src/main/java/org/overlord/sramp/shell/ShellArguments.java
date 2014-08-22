@@ -23,14 +23,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.overlord.sramp.shell.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
+
+
 
 /**
  * Encapsulates all possible shell arguments.
- * 
+ *
  * @author Brett Meyer
  */
 public class ShellArguments {
+
+    private final static Messages messages = Messages.getInstance();
 
     private boolean simple = false;
 
@@ -38,7 +42,7 @@ public class ShellArguments {
 
     private String logFilePath = null;
 
-    private Map<String, String> propertiesFromFile = new HashMap<String, String>();;
+    private final Map<String, String> propertiesFromFile = new HashMap<String, String>();;
 
     public ShellArguments(String[] args) {
         for (int i = 0; i < args.length; i++) {
@@ -61,7 +65,7 @@ public class ShellArguments {
 
     /**
      * Gets the properties from a file.
-     * 
+     *
      * @param filePath
      *            the file path
      * @throws ShellArgumentException
@@ -76,10 +80,10 @@ public class ShellArguments {
             props.load(new FileInputStream(f));
         } catch (FileNotFoundException e) {
             System.out.println("Error: " + filePath + " " //$NON-NLS-1$ //$NON-NLS-2$
-                    + Messages.i18n.format("InvalidArgMsg.propertiesFile.not.exist")); //$NON-NLS-1$
+                    + messages.format("InvalidArgMsg.propertiesFile.not.exist")); //$NON-NLS-1$
         } catch (IOException e) {
             System.out.println("Error: " + filePath + " " //$NON-NLS-1$ //$NON-NLS-2$
-                    + Messages.i18n.format("InvalidArgMsg.propertiesFile.error.reading") + ": " //$NON-NLS-1$
+                    + messages.format("InvalidArgMsg.propertiesFile.error.reading") + ": " //$NON-NLS-1$
                     + e.getMessage());
         }
         for (final String name : props.stringPropertyNames()) {

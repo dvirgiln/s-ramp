@@ -15,7 +15,7 @@
  */
 package org.overlord.sramp.shell.commands.archive;
 
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Closes the currently open S-RAMP archive.
@@ -39,7 +39,7 @@ public class CloseArchiveCommand extends AbstractArchiveCommand {
         if (!validate()) {
 			return false;
 		} else {
-			print(Messages.i18n.format("CloseArchive.Closed")); //$NON-NLS-1$
+            print(messages.format("CloseArchive.Closed")); //$NON-NLS-1$
 		}
         return true;
 	}

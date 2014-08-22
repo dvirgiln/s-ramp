@@ -34,7 +34,6 @@ import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.common.ArtifactTypeEnum;
 import org.overlord.sramp.common.visitors.ArtifactVisitorHelper;
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileNameCompleter;
 import org.overlord.sramp.shell.util.PrintArtifactMetaDataVisitor;
 
@@ -56,13 +55,13 @@ public class UploadArtifactCommand extends BuiltInShellCommand {
 	 */
 	@Override
 	public boolean execute() throws Exception {
-		String filePathArg = this.requiredArgument(0, Messages.i18n.format("Upload.InvalidArgMsg.LocalFile")); //$NON-NLS-1$
+        String filePathArg = this.requiredArgument(0, messages.format("Upload.InvalidArgMsg.LocalFile")); //$NON-NLS-1$
 		String artifactTypeArg = this.optionalArgument(1);
 
 		QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 		InputStream content = null;
@@ -94,11 +93,11 @@ public class UploadArtifactCommand extends BuiltInShellCommand {
 			// Put the artifact in the session as the active artifact
 			QName artifactVarName = new QName("s-ramp", "artifact"); //$NON-NLS-1$ //$NON-NLS-2$
 			getContext().setVariable(artifactVarName, artifact);
-			print(Messages.i18n.format("Upload.Success")); //$NON-NLS-1$
+            print(messages.format("Upload.Success")); //$NON-NLS-1$
 			PrintArtifactMetaDataVisitor visitor = new PrintArtifactMetaDataVisitor();
 			ArtifactVisitorHelper.visitArtifact(visitor, artifact);
 		} catch (Exception e) {
-			print(Messages.i18n.format("Upload.Failure")); //$NON-NLS-1$
+            print(messages.format("Upload.Failure")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
 			IOUtils.closeQuietly(content);
             return false;

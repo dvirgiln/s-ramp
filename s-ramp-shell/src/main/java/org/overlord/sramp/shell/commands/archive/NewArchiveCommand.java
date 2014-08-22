@@ -17,7 +17,7 @@ package org.overlord.sramp.shell.commands.archive;
 
 import org.overlord.sramp.atom.archive.SrampArchive;
 import org.overlord.sramp.shell.AbstractShellContextVariableLifecycleHandler;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Creates a new, empty s-ramp batch archive.
@@ -53,14 +53,14 @@ public class NewArchiveCommand extends AbstractArchiveCommand {
 				SrampArchive.closeQuietly((SrampArchive) object);
 			}
 		});
-		print(Messages.i18n.format("NewArchive.Opened")); //$NON-NLS-1$
+        print(messages.format("NewArchive.Opened")); //$NON-NLS-1$
         return true;
 	}
 
     @Override
     protected boolean validate(String... args) {
         if (archive != null) {
-            print(Messages.i18n.format("NewArchive.AlreadyOpen")); //$NON-NLS-1$
+            print(messages.format("NewArchive.AlreadyOpen")); //$NON-NLS-1$
             return false;
         }
         return true;

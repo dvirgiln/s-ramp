@@ -29,7 +29,7 @@ import org.overlord.sramp.common.ArtifactTypeEnum;
 import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.CompletionConstants;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Performs a query against the s-ramp server and displays the result.
@@ -49,29 +49,29 @@ public class QueryCommand extends BuiltInShellCommand {
 	 */
 	@Override
 	public boolean execute() throws Exception {
-		String queryArg = this.requiredArgument(0, Messages.i18n.format("Query.InvalidArgMsg.MissingQuery")); //$NON-NLS-1$
+        String queryArg = this.requiredArgument(0, messages.format("Query.InvalidArgMsg.MissingQuery")); //$NON-NLS-1$
 		String tooManyArgs = this.optionalArgument(1);
 		if (tooManyArgs != null) {
-            throw new InvalidCommandArgumentException(1, Messages.i18n.format("Query.TooManyArgs")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(1, messages.format("Query.TooManyArgs")); //$NON-NLS-1$
 		}
 
 		// Get the client out of the context and exec the query
 		QName varName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(varName);
 		if (client == null) {
-			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 		if (queryArg.endsWith("/")) { //$NON-NLS-1$
 			queryArg = queryArg.substring(0, queryArg.length() - 1);
 		}
 
-		print(Messages.i18n.format("Query.Querying")); //$NON-NLS-1$
+        print(messages.format("Query.Querying")); //$NON-NLS-1$
 		print("\t" + queryArg); //$NON-NLS-1$
 		try {
     		QueryResultSet rset = client.query(queryArg, 0, 100, "uuid", true); //$NON-NLS-1$
     		int entryIndex = 1;
-    		print(Messages.i18n.format("Query.AtomFeedSummary", rset.size())); //$NON-NLS-1$
+            print(messages.format("Query.AtomFeedSummary", rset.size())); //$NON-NLS-1$
     		print("  Idx                    Type Name"); //$NON-NLS-1$
     		print("  ---                    ---- ----"); //$NON-NLS-1$
     		for (ArtifactSummary summary : rset) {
@@ -85,7 +85,7 @@ public class QueryCommand extends BuiltInShellCommand {
     		}
     		getContext().setVariable(new QName("s-ramp", "feed"), rset); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (Exception e) {
-            print(Messages.i18n.format("Query.Failure")); //$NON-NLS-1$
+            print(messages.format("Query.Failure")); //$NON-NLS-1$
             print("\t" + e.getMessage()); //$NON-NLS-1$
             return false;
 		}

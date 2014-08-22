@@ -23,7 +23,7 @@ import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.client.ontology.OntologySummary;
 import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Deletes an ontology.
@@ -44,18 +44,18 @@ public class DeleteOntologyCommand extends BuiltInShellCommand {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute() throws Exception {
-		String ontologyIdArg = this.requiredArgument(0, Messages.i18n.format("DeleteOntology.InvalidArgMsg.OntologyId")); //$NON-NLS-1$
+        String ontologyIdArg = this.requiredArgument(0, messages.format("DeleteOntology.InvalidArgMsg.OntologyId")); //$NON-NLS-1$
 
 		QName feedVarName = new QName("ontology", "feed"); //$NON-NLS-1$ //$NON-NLS-2$
 		QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-            print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 
 		if (!ontologyIdArg.contains(":") || ontologyIdArg.endsWith(":")) { //$NON-NLS-1$ //$NON-NLS-2$
-            throw new InvalidCommandArgumentException(0, Messages.i18n.format("InvalidOntologyIdFormat")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(0, messages.format("InvalidOntologyIdFormat")); //$NON-NLS-1$
 		}
 		String ontologyUuid = null;
 		int colonIdx = ontologyIdArg.indexOf(':');
@@ -64,25 +64,25 @@ public class DeleteOntologyCommand extends BuiltInShellCommand {
 		if ("feed".equals(idType)) { //$NON-NLS-1$
 			List<OntologySummary> ontologies = (List<OntologySummary>) getContext().getVariable(feedVarName);
 			if (ontologies == null) {
-				throw new InvalidCommandArgumentException(0, Messages.i18n.format("DeleteOntology.NoOntologyFeed")); //$NON-NLS-1$
+                throw new InvalidCommandArgumentException(0, messages.format("DeleteOntology.NoOntologyFeed")); //$NON-NLS-1$
 			}
 			int feedIdx = Integer.parseInt(idValue) - 1;
 			if (feedIdx < 0 || feedIdx >= ontologies.size()) {
-                throw new InvalidCommandArgumentException(0, Messages.i18n.format("FeedIndexOutOfRange")); //$NON-NLS-1$
+                throw new InvalidCommandArgumentException(0, messages.format("FeedIndexOutOfRange")); //$NON-NLS-1$
 			}
 			OntologySummary summary = ontologies.get(feedIdx);
 			ontologyUuid = summary.getUuid();
 		} else if ("uuid".equals(idType)) { //$NON-NLS-1$
 			ontologyUuid = idValue;
 		} else {
-            throw new InvalidCommandArgumentException(0, Messages.i18n.format("InvalidIdFormat")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(0, messages.format("InvalidIdFormat")); //$NON-NLS-1$
 		}
 
 		try {
 			client.deleteOntology(ontologyUuid);
-			print(Messages.i18n.format("DeleteOntology.Deleted")); //$NON-NLS-1$
+            print(messages.format("DeleteOntology.Deleted")); //$NON-NLS-1$
 		} catch (Exception e) {
-			print(Messages.i18n.format("DeleteOntology.DeleteFailed")); //$NON-NLS-1$
+            print(messages.format("DeleteOntology.DeleteFailed")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
             return false;
 		}

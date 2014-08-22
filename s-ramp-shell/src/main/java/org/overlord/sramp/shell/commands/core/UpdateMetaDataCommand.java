@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Updates an artifact's meta-data in the s-ramp repository. This requires an active artifact to exist in the
@@ -47,21 +47,21 @@ public class UpdateMetaDataCommand extends BuiltInShellCommand {
 
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 
 		BaseArtifactType artifact = (BaseArtifactType) getContext().getVariable(artifactVarName);
 		if (artifact == null) {
-			print(Messages.i18n.format("NoActiveArtifact")); //$NON-NLS-1$
+            print(messages.format("NoActiveArtifact")); //$NON-NLS-1$
 			return false;
 		}
 
 		try {
 			client.updateArtifactMetaData(artifact);
-			print(Messages.i18n.format("UpdateMetaData.Success", artifact.getName())); //$NON-NLS-1$
+            print(messages.format("UpdateMetaData.Success", artifact.getName())); //$NON-NLS-1$
 		} catch (Exception e) {
-			print(Messages.i18n.format("UpdateMetaData.Failure")); //$NON-NLS-1$
+            print(messages.format("UpdateMetaData.Failure")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
 		}
         return true;

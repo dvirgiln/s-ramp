@@ -18,9 +18,10 @@ package org.overlord.sramp.shell;
 import java.io.IOException;
 import java.util.Locale;
 
+import org.overlord.commons.i18n.Messages;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
 import org.overlord.sramp.shell.api.ShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 
 /**
@@ -29,6 +30,8 @@ import org.overlord.sramp.shell.i18n.Messages;
  * @author eric.wittmann@redhat.com
  */
 public class SrampShell {
+
+    private final static Messages messages = Messages.getInstance();
 
     private static final String LOCALE_PROPERTY = "s-ramp.shell.locale"; //$NON-NLS-1$
 
@@ -67,7 +70,7 @@ public class SrampShell {
 			shell.run(args);
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
-			System.out.println(Messages.i18n.format("Shell.EXITING")); //$NON-NLS-1$
+            System.out.println(messages.format("Shell.EXITING")); //$NON-NLS-1$
 		}
 	}
 
@@ -106,9 +109,9 @@ public class SrampShell {
 					}
 				}
 			} catch (InvalidCommandArgumentException e) {
-				System.out.println(Messages.i18n.format("Shell.INVALID_ARG", e.getMessage())); //$NON-NLS-1$
+                System.out.println(messages.format("Shell.INVALID_ARG", e.getMessage())); //$NON-NLS-1$
 				if (command != null) {
-    				System.out.println(Messages.i18n.format("Shell.USAGE")); //$NON-NLS-1$
+                    System.out.println(messages.format("Shell.USAGE")); //$NON-NLS-1$
     				command.printUsage();
 				}
 				if (reader.isBatch())
@@ -125,10 +128,10 @@ public class SrampShell {
 	 * Shuts down the shell.
 	 */
 	public void shutdown() {
-		System.out.print(Messages.i18n.format("Shell.SHUTTING_DOWN")); //$NON-NLS-1$
+        System.out.print(messages.format("Shell.SHUTTING_DOWN")); //$NON-NLS-1$
 		try { this.reader.close(); } catch (IOException e) { }
 		this.context.destroy();
-		System.out.println(Messages.i18n.format("Shell.DONE")); //$NON-NLS-1$
+        System.out.println(messages.format("Shell.DONE")); //$NON-NLS-1$
 	}
 
 	/**

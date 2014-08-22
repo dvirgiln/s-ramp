@@ -16,7 +16,7 @@
 package org.overlord.sramp.shell.commands;
 
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Implements the 'exit' command.
@@ -51,7 +51,7 @@ public class ExitCommand extends BuiltInShellCommand {
 	 */
 	@Override
 	public boolean execute() throws Exception {
-		print(Messages.i18n.format("GOOD_BYE")); //$NON-NLS-1$
+        print(messages.format("GOOD_BYE")); //$NON-NLS-1$
 		System.exit(0);
         return true;
 	}

@@ -31,7 +31,6 @@ import org.overlord.sramp.atom.archive.SrampArchiveEntry;
 import org.overlord.sramp.common.SrampModelUtils;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
 import org.overlord.sramp.shell.api.ShellContext;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileEntryPathCompleter;
 
 /**
@@ -60,8 +59,8 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 	@Override
 	public boolean execute() throws Exception {
         super.initialize();
-        String archivePathArg = requiredArgument(0, Messages.i18n.format("InvalidArgMsg.EntryPath")); //$NON-NLS-1$
-		String subCommandArg = requiredArgument(1, Messages.i18n.format("UpdateEntry.InvalidArgMsg.SubCommand")); //$NON-NLS-1$
+        String archivePathArg = requiredArgument(0, messages.format("InvalidArgMsg.EntryPath")); //$NON-NLS-1$
+        String subCommandArg = requiredArgument(1, messages.format("UpdateEntry.InvalidArgMsg.SubCommand")); //$NON-NLS-1$
 
 
         if (!validate(archivePathArg)) {
@@ -88,10 +87,10 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 	 * @throws Exception
 	 */
 	private void executeSetContent(SrampArchive archive, String entryPath, ShellContext context) throws Exception {
-		String pathToContentArg = requiredArgument(2, Messages.i18n.format("UpdateEntry.InvalidArgMsg.MissingPath")); //$NON-NLS-1$
+        String pathToContentArg = requiredArgument(2, messages.format("UpdateEntry.InvalidArgMsg.MissingPath")); //$NON-NLS-1$
 		File file = new File(pathToContentArg);
 		if (!file.isFile()) {
-			throw new InvalidCommandArgumentException(2, Messages.i18n.format("UpdateEntry.FileNotFound", pathToContentArg)); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(2, messages.format("UpdateEntry.FileNotFound", pathToContentArg)); //$NON-NLS-1$
 		}
 
 		InputStream contentStream = null;
@@ -99,7 +98,7 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 			contentStream = FileUtils.openInputStream(file);
 			SrampArchiveEntry entry = archive.getEntry(entryPath);
 			archive.updateEntry(entry, contentStream);
-			print(Messages.i18n.format("UpdateEntry.SuccessMsg")); //$NON-NLS-1$
+            print(messages.format("UpdateEntry.SuccessMsg")); //$NON-NLS-1$
 		} finally {
 			IOUtils.closeQuietly(contentStream);
 		}
@@ -113,8 +112,8 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 	 * @throws Exception
 	 */
 	private void executeSetProperty(SrampArchive archive, String entryPath, ShellContext context) throws Exception {
-		String propNameArg = requiredArgument(2, Messages.i18n.format("UpdateEntry.InvalidArgMsg.PropertyName")); //$NON-NLS-1$
-		String propValArg = requiredArgument(3, Messages.i18n.format("UpdateEntry.InvalidArgMsg.PropertyValue")); //$NON-NLS-1$
+        String propNameArg = requiredArgument(2, messages.format("UpdateEntry.InvalidArgMsg.PropertyName")); //$NON-NLS-1$
+        String propValArg = requiredArgument(3, messages.format("UpdateEntry.InvalidArgMsg.PropertyValue")); //$NON-NLS-1$
 
 		SrampArchiveEntry entry = archive.getEntry(entryPath);
 		BaseArtifactType metaData = entry.getMetaData();
@@ -137,7 +136,7 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 
 		SrampModelUtils.setCustomProperty(metaData, propNameArg, propValArg);
 		archive.updateEntry(entry, null);
-		print(Messages.i18n.format("UpdateEntry.MetaDataSuccessMsg")); //$NON-NLS-1$
+        print(messages.format("UpdateEntry.MetaDataSuccessMsg")); //$NON-NLS-1$
 	}
 
 	/**
@@ -148,7 +147,7 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
 	 * @throws Exception
 	 */
 	private void executeSetRelationship(SrampArchive archive, String entryPath, ShellContext context) throws Exception {
-		throw new InvalidCommandArgumentException(0, Messages.i18n.format("UpdateEntry.NotYetImplemented.Relationships")); //$NON-NLS-1$
+        throw new InvalidCommandArgumentException(0, messages.format("UpdateEntry.NotYetImplemented.Relationships")); //$NON-NLS-1$
 	}
 
     /**
@@ -184,7 +183,7 @@ public class UpdateEntryArchiveCommand extends AbstractArchiveCommand {
             return false;
         }
         if (!archive.containsEntry(args[0])) {
-            throw new InvalidCommandArgumentException(0, Messages.i18n.format(
+            throw new InvalidCommandArgumentException(0, messages.format(
                     "UpdateEntry.EntryNotFound", args[0])); //$NON-NLS-1$
         }
         return true;

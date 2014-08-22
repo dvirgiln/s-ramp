@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
 
-import org.overlord.sramp.shell.api.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
 
 /**
  * A class that can parse the arguments that should be passed to a command.
@@ -29,6 +29,8 @@ import org.overlord.sramp.shell.api.i18n.Messages;
 public class Arguments extends ArrayList<String> {
 
 	private static final long serialVersionUID = 4475521615147664784L;
+
+    private final static Messages messages = Messages.getInstance();
 
 	private boolean partialLastArgumentAllowed = false;
 
@@ -88,7 +90,7 @@ public class Arguments extends ArrayList<String> {
 		} else if (state == ScannerState.scanningForEndQuote && partialLastArgumentAllowed) {
             add(arguments.substring(startPos+1));
 		} else if (state == ScannerState.scanningForEndQuote && !partialLastArgumentAllowed) {
-		    throw new InvalidCommandArgumentException(size(), Messages.i18n.format("INVALID_FINAL_ARG")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(size(), messages.format("INVALID_FINAL_ARG")); //$NON-NLS-1$
 		}
 	}
 

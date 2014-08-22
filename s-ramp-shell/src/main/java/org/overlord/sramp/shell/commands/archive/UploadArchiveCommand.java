@@ -15,7 +15,7 @@
  */
 package org.overlord.sramp.shell.commands.archive;
 
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Uploads an s-ramp archive to the repository.
@@ -46,9 +46,9 @@ public class UploadArchiveCommand extends AbstractArchiveCommand {
 	        client.uploadBatch(archive);
 	        // Success!  Close the archive.
 	        getContext().removeVariable(varName);
-	        print(Messages.i18n.format("UploadArchive.Success")); //$NON-NLS-1$
+            print(messages.format("UploadArchive.Success")); //$NON-NLS-1$
 		} catch (Exception e) {
-			print(Messages.i18n.format("UploadArchive.Failure")); //$NON-NLS-1$
+            print(messages.format("UploadArchive.Failure")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
             return false;
 		}
@@ -61,7 +61,7 @@ public class UploadArchiveCommand extends AbstractArchiveCommand {
             return false;
         }
         if (client == null) {
-            print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
             return false;
         }
         return true;

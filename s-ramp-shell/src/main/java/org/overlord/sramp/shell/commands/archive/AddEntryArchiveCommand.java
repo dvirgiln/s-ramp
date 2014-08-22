@@ -28,7 +28,6 @@ import org.overlord.sramp.atom.archive.SrampArchive;
 import org.overlord.sramp.atom.archive.SrampArchiveException;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.shell.CompletionConstants;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileEntryPathCompleter;
 import org.overlord.sramp.shell.util.FileNameCompleter;
 
@@ -57,8 +56,8 @@ public class AddEntryArchiveCommand extends AbstractArchiveCommand {
 	@Override
 	public boolean execute() throws Exception {
         super.initialize();
-		String archivePathArg = requiredArgument(0, Messages.i18n.format("InvalidArgMsg.EntryPath")); //$NON-NLS-1$
-		String artifactTypeArg = requiredArgument(1, Messages.i18n.format("AddEntry.InvalidArgMsg.ArtifactType")); //$NON-NLS-1$
+        String archivePathArg = requiredArgument(0, messages.format("InvalidArgMsg.EntryPath")); //$NON-NLS-1$
+        String artifactTypeArg = requiredArgument(1, messages.format("AddEntry.InvalidArgMsg.ArtifactType")); //$NON-NLS-1$
 		String pathToContent = optionalArgument(2);
 
         if (!this.validate(archivePathArg)) {
@@ -76,9 +75,9 @@ public class AddEntryArchiveCommand extends AbstractArchiveCommand {
 			BaseArtifactType artifact = type.newArtifactInstance();
 			artifact.setName(name);
 			archive.addEntry(archivePathArg, artifact, contentStream);
-			print(Messages.i18n.format("AddEntry.Added", archivePathArg)); //$NON-NLS-1$
+            print(messages.format("AddEntry.Added", archivePathArg)); //$NON-NLS-1$
         } catch (SrampArchiveException e) {
-            print(Messages.i18n.format("AddEntry.SrampArchiveException", e.getLocalizedMessage())); //$NON-NLS-1$
+            print(messages.format("AddEntry.SrampArchiveException", e.getLocalizedMessage())); //$NON-NLS-1$
         } finally {
 			IOUtils.closeQuietly(contentStream);
 		}

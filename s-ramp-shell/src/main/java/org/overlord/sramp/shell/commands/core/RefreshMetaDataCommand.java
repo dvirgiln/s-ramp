@@ -22,7 +22,6 @@ import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.common.visitors.ArtifactVisitorHelper;
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.PrintArtifactMetaDataVisitor;
 
 /**
@@ -49,13 +48,13 @@ public class RefreshMetaDataCommand extends BuiltInShellCommand {
 
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
             return false;
 		}
 
 		BaseArtifactType artifact = (BaseArtifactType) getContext().getVariable(artifactVarName);
 		if (artifact == null) {
-            print(Messages.i18n.format("NoActiveArtifact")); //$NON-NLS-1$
+            print(messages.format("NoActiveArtifact")); //$NON-NLS-1$
             return false;
 		}
 
@@ -63,13 +62,13 @@ public class RefreshMetaDataCommand extends BuiltInShellCommand {
 			ArtifactType type = ArtifactType.valueOf(artifact);
 			BaseArtifactType metaData = client.getArtifactMetaData(type, artifact.getUuid());
 			getContext().setVariable(artifactVarName, metaData);
-			print(Messages.i18n.format("RefreshMetaData.Success", artifact.getName())); //$NON-NLS-1$
-			print(Messages.i18n.format("RefreshMetaData.MetaDataFor", artifact.getUuid())); //$NON-NLS-1$
+            print(messages.format("RefreshMetaData.Success", artifact.getName())); //$NON-NLS-1$
+            print(messages.format("RefreshMetaData.MetaDataFor", artifact.getUuid())); //$NON-NLS-1$
 			print("--------------"); //$NON-NLS-1$
 			PrintArtifactMetaDataVisitor visitor = new PrintArtifactMetaDataVisitor();
 			ArtifactVisitorHelper.visitArtifact(visitor, artifact);
 		} catch (Exception e) {
-			print(Messages.i18n.format("RefreshMetaData.Failure")); //$NON-NLS-1$
+            print(messages.format("RefreshMetaData.Failure")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
             return false;
 		}

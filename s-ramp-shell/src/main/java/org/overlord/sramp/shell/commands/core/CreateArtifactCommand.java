@@ -22,14 +22,14 @@ import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
- * This CLI command is used to create a new artifact in the repository.  This 
+ * This CLI command is used to create a new artifact in the repository.  This
  * command creates non-Document style artifacts (artifacts with no content).
- * It complements the {@link UploadArtifactCommand}, which creates a new 
+ * It complements the {@link UploadArtifactCommand}, which creates a new
  * artifact *with* content.
- * 
+ *
  * @author David Virgil Naranjo
  */
 public class CreateArtifactCommand extends BuiltInShellCommand {
@@ -41,32 +41,32 @@ public class CreateArtifactCommand extends BuiltInShellCommand {
      */
     public CreateArtifactCommand() {
     }
-    
+
     /**
      * @see org.overlord.sramp.shell.api.ShellCommand#execute()
      */
     @Override
     public boolean execute() throws Exception {
-        String artifactTypeArg = this.requiredArgument(0, Messages.i18n.format("ArtifactModel.Mandatory")); //$NON-NLS-1$
-        String nameArg = this.requiredArgument(1, Messages.i18n.format("ArtifactName.Mandatory")); //$NON-NLS-1$
+        String artifactTypeArg = this.requiredArgument(0, messages.format("ArtifactModel.Mandatory")); //$NON-NLS-1$
+        String nameArg = this.requiredArgument(1, messages.format("ArtifactName.Mandatory")); //$NON-NLS-1$
         String descriptionArg = this.optionalArgument(2);
 
         QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
         client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
         if (client == null) {
-            print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
             return false;
         }
-        
+
         ArtifactType artifactType = ArtifactType.valueOf(artifactTypeArg);
         if (artifactType.isExtendedType()) {
             artifactType = ArtifactType.ExtendedArtifactType(artifactType.getExtendedType(), false);
         }
-        
+
         if (artifactType.isDerived()) {
-            throw new InvalidCommandArgumentException(0, Messages.i18n.format("ArtifactModel.isDerived")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(0, messages.format("ArtifactModel.isDerived")); //$NON-NLS-1$
         } else if (artifactType.isDocument()) {
-            throw new InvalidCommandArgumentException(0, Messages.i18n.format("ArtifactModel.isDocument")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(0, messages.format("ArtifactModel.isDocument")); //$NON-NLS-1$
         } else {
             BaseArtifactType artifact = artifactType.newArtifactInstance();
             artifact.setName(nameArg);
@@ -77,7 +77,7 @@ public class CreateArtifactCommand extends BuiltInShellCommand {
             getContext().setVariable(artifactVarName, artifact);
         }
 
-        print(Messages.i18n.format("CreateArtifactCommand.Successful", nameArg)); //$NON-NLS-1$
+        print(messages.format("CreateArtifactCommand.Successful", nameArg)); //$NON-NLS-1$
         return true;
     }
 

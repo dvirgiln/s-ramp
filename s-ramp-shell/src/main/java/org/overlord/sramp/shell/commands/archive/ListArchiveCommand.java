@@ -18,7 +18,7 @@ package org.overlord.sramp.shell.commands.archive;
 import java.util.Collection;
 
 import org.overlord.sramp.atom.archive.SrampArchiveEntry;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 
 /**
@@ -49,7 +49,7 @@ public class ListArchiveCommand extends AbstractArchiveCommand {
 	        return false;
 		}
 		Collection<SrampArchiveEntry> entries = archive.getEntries();
-		print(Messages.i18n.format("ENTRY_PATH")); //$NON-NLS-1$
+        print(messages.format("ENTRY_PATH")); //$NON-NLS-1$
 		print("  ----------"); //$NON-NLS-1$
 		for (SrampArchiveEntry entry : entries) {
 			String modifier = null;
@@ -61,13 +61,13 @@ public class ListArchiveCommand extends AbstractArchiveCommand {
 			print(modifier + entry.getPath());
 		}
 		print("  ----------"); //$NON-NLS-1$
-        print(Messages.i18n.format("ENTRY_LIST_SUMMARY", entries.size())); //$NON-NLS-1$
+        print(messages.format("ENTRY_LIST_SUMMARY", entries.size())); //$NON-NLS-1$
         return true;
 	}
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.overlord.sramp.shell.commands.archive.AbstractArchiveCommand#validate
      * (java.lang.String[])

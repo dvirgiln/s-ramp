@@ -23,7 +23,6 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.overlord.sramp.atom.archive.SrampArchive;
 import org.overlord.sramp.atom.archive.SrampArchiveEntry;
 import org.overlord.sramp.common.visitors.ArtifactVisitorHelper;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileEntryPathCompleter;
 import org.overlord.sramp.shell.util.PrintArtifactMetaDataVisitor;
 
@@ -46,7 +45,7 @@ public class ListEntryArchiveCommand extends AbstractArchiveCommand {
 	@Override
 	public boolean execute() throws Exception {
         super.initialize();
-        String archivePathArg = requiredArgument(0, Messages.i18n.format("InvalidArgMsg")); //$NON-NLS-1$
+        String archivePathArg = requiredArgument(0, messages.format("InvalidArgMsg")); //$NON-NLS-1$
 
         if (!validate(archivePathArg)) {
             return false;
@@ -54,12 +53,12 @@ public class ListEntryArchiveCommand extends AbstractArchiveCommand {
 			SrampArchiveEntry entry = archive.getEntry(archivePathArg);
             if (entry != null) {
                 BaseArtifactType metaData = entry.getMetaData();
-                print(Messages.i18n.format("ENTRY", archivePathArg)); //$NON-NLS-1$
+                print(messages.format("ENTRY", archivePathArg)); //$NON-NLS-1$
                 print("-----"); //$NON-NLS-1$
                 PrintArtifactMetaDataVisitor visitor = new PrintArtifactMetaDataVisitor();
                 ArtifactVisitorHelper.visitArtifact(visitor, metaData);
             } else {
-                print(Messages.i18n.format("ListEntryArchive.Entry.Not.Exist", archivePathArg)); //$NON-NLS-1$
+                print(messages.format("ListEntryArchive.Entry.Not.Exist", archivePathArg)); //$NON-NLS-1$
             }
 
 		}

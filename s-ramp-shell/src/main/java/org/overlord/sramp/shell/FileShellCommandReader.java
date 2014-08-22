@@ -24,22 +24,25 @@ import java.io.InputStreamReader;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.overlord.sramp.shell.i18n.Messages;
+import org.overlord.commons.i18n.Messages;
+
 
 /**
  * An implementation of the {@link ShellCommandReader} that reads data from a
  * file.
- * 
+ *
  * @author eric.wittmann@redhat.com
  */
 public class FileShellCommandReader extends AbstractShellCommandReader {
+
+    private final static Messages messages = Messages.getInstance();
 
     private final String filePath;
     private BufferedReader fileReader;
 
     /**
      * Constructor.
-     * 
+     *
      * @param factory the factory
      * @param context the context
      * @param args the args
@@ -51,7 +54,7 @@ public class FileShellCommandReader extends AbstractShellCommandReader {
 
     /**
      * Open.
-     * 
+     *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @see org.overlord.sramp.common.shell.AbstractShellCommandReader#open()
@@ -67,7 +70,7 @@ public class FileShellCommandReader extends AbstractShellCommandReader {
 
     /**
      * Read line.
-     * 
+     *
      * @return the string
      * @throws IOException Signals that an I/O exception has occurred.
      * @see org.overlord.sramp.common.shell.AbstractShellCommandReader#readLine()
@@ -85,7 +88,7 @@ public class FileShellCommandReader extends AbstractShellCommandReader {
 
     /**
      * Close.
-     * 
+     *
      * @throws IOException
      * @see org.overlord.sramp.common.shell.ShellCommandReader#close()
      */
@@ -96,7 +99,7 @@ public class FileShellCommandReader extends AbstractShellCommandReader {
 
     /**
      * Checks if is batch.
-     * 
+     *
      * @return true, if is batch
      * @see org.overlord.sramp.shell.ShellCommandReader#isBatch()
      */
@@ -107,7 +110,7 @@ public class FileShellCommandReader extends AbstractShellCommandReader {
 
     /**
      * Prompt for input.
-     * 
+     *
      * @param prompt the prompt
      * @return the string
      * @see org.overlord.sramp.shell.ShellCommandReader#promptForInput(java.lang.String)
@@ -118,13 +121,13 @@ public class FileShellCommandReader extends AbstractShellCommandReader {
         if (console != null) {
             return console.readLine(prompt);
         } else {
-            throw new RuntimeException(Messages.i18n.format("FileShellCommandReader.NoConsole")); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("FileShellCommandReader.NoConsole")); //$NON-NLS-1$
         }
     }
 
     /**
      * Prompt for password.
-     * 
+     *
      * @param prompt the prompt
      * @return the password
      * @see org.overlord.sramp.shell.ShellCommandReader#promptForPassword(java.lang.String)
@@ -135,7 +138,7 @@ public class FileShellCommandReader extends AbstractShellCommandReader {
         if (console != null) {
             return new String(console.readPassword(prompt));
         } else {
-            throw new RuntimeException(Messages.i18n.format("FileShellCommandReader.NoConsole")); //$NON-NLS-1$
+            throw new RuntimeException(messages.format("FileShellCommandReader.NoConsole")); //$NON-NLS-1$
         }
     }
 

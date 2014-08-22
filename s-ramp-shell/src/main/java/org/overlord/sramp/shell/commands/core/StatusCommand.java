@@ -22,7 +22,7 @@ import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.client.query.QueryResultSet;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Displays a summary of the current status, including what repository the
@@ -52,22 +52,22 @@ public class StatusCommand extends BuiltInShellCommand {
 		QueryResultSet feed = (QueryResultSet) getContext().getVariable(feedVarName);
 
 		if (client == null) {
-			print (Messages.i18n.format("Status.Status1")); //$NON-NLS-1$
+            print(messages.format("Status.Status1")); //$NON-NLS-1$
 		} else {
-			print (Messages.i18n.format("Status.Status2", client.getEndpoint())); //$NON-NLS-1$
+            print(messages.format("Status.Status2", client.getEndpoint())); //$NON-NLS-1$
 		}
 
 		if (artifact == null) {
-			print(Messages.i18n.format("Status.Status3")); //$NON-NLS-1$
+            print(messages.format("Status.Status3")); //$NON-NLS-1$
 		} else {
 			ArtifactType type = ArtifactType.valueOf(artifact);
-			print(Messages.i18n.format("Status.Status4", artifact.getName(), type.getType())); //$NON-NLS-1$
+            print(messages.format("Status.Status4", artifact.getName(), type.getType())); //$NON-NLS-1$
 		}
 
 		if (feed == null) {
-			print(Messages.i18n.format("Status.Status5")); //$NON-NLS-1$
+            print(messages.format("Status.Status5")); //$NON-NLS-1$
 		} else {
-			print(Messages.i18n.format("Status.Status6", feed.size())); //$NON-NLS-1$
+            print(messages.format("Status.Status6", feed.size())); //$NON-NLS-1$
 		}
         return true;
 	}

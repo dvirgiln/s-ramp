@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.CompletionConstants;
 import org.overlord.sramp.shell.api.ShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Implements the 'help' command.
@@ -103,7 +103,7 @@ public class HelpCommand extends BuiltInShellCommand {
 	 * Prints the generic help (lists all commands, etc).
 	 */
 	private void printHelpAll() {
-		print(Messages.i18n.format("Help.COMMAND_LIST_MSG")); //$NON-NLS-1$
+        print(messages.format("Help.COMMAND_LIST_MSG")); //$NON-NLS-1$
 		String currentNamespace = null;
 		int colCount = 0;
 		StringBuilder builder = new StringBuilder();
@@ -127,9 +127,9 @@ public class HelpCommand extends BuiltInShellCommand {
 		}
 		print(builder.toString());
 		print("\n"); //$NON-NLS-1$
-		print(Messages.i18n.format("Help.GET_HELP_1")); //$NON-NLS-1$
+        print(messages.format("Help.GET_HELP_1")); //$NON-NLS-1$
 		print(""); //$NON-NLS-1$
-		print(Messages.i18n.format("Help.GET_HELP_2")); //$NON-NLS-1$
+        print(messages.format("Help.GET_HELP_2")); //$NON-NLS-1$
 		print(""); //$NON-NLS-1$
 	}
 
@@ -140,7 +140,7 @@ public class HelpCommand extends BuiltInShellCommand {
      *            the namespace
      */
 	private void printHelpForNamespace(String namespace) {
-		print(Messages.i18n.format("Help.COMMAND_LIST_MSG_2", namespace)); //$NON-NLS-1$
+        print(messages.format("Help.COMMAND_LIST_MSG_2", namespace)); //$NON-NLS-1$
 		for (Entry<QName,Class<? extends ShellCommand>> entry : this.commands.entrySet()) {
 			QName cmdName = entry.getKey();
 			String ns = cmdName.getNamespaceURI();
@@ -150,7 +150,7 @@ public class HelpCommand extends BuiltInShellCommand {
 			}
 		}
 		print(""); //$NON-NLS-1$
-		print(Messages.i18n.format("Help.HELP_PER_CMD_MSG")); //$NON-NLS-1$
+        print(messages.format("Help.HELP_PER_CMD_MSG")); //$NON-NLS-1$
 	}
 
 	    /**
@@ -164,10 +164,10 @@ public class HelpCommand extends BuiltInShellCommand {
 	private void printHelpForCommand(QName cmdName) throws Exception {
 		Class<? extends ShellCommand> commandClass = this.commands.get(cmdName);
 		if (commandClass == null) {
-			print(Messages.i18n.format("Help.INVALID_COMMAND")); //$NON-NLS-1$
+            print(messages.format("Help.INVALID_COMMAND")); //$NON-NLS-1$
 		} else {
 			ShellCommand command = commandClass.newInstance();
-			print(Messages.i18n.format("Help.USAGE")); //$NON-NLS-1$
+            print(messages.format("Help.USAGE")); //$NON-NLS-1$
 			command.printUsage();
 			print(""); //$NON-NLS-1$
 			command.printHelp();

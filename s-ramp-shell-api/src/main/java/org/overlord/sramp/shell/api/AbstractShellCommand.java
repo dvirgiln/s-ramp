@@ -30,6 +30,7 @@ public abstract class AbstractShellCommand implements ShellCommand {
 	private Arguments arguments;
 	private Writer writer;
 
+
 	/**
 	 * Constructor.
 	 */

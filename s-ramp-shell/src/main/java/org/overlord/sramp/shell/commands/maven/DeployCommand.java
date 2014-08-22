@@ -50,7 +50,6 @@ import org.overlord.sramp.common.SrampModelUtils;
 import org.overlord.sramp.common.visitors.ArtifactVisitorHelper;
 import org.overlord.sramp.integration.java.model.JavaModel;
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileNameCompleter;
 import org.overlord.sramp.shell.util.PrintArtifactMetaDataVisitor;
 
@@ -79,7 +78,7 @@ public class DeployCommand extends BuiltInShellCommand {
 
     public static final String SEPARATOR_FULL_NAME = ":"; //$NON-NLS-1$
 
-    private boolean allowSnapshot;
+    private final boolean allowSnapshot;
 
     /**
      * Constructor.
@@ -94,21 +93,21 @@ public class DeployCommand extends BuiltInShellCommand {
      */
     @Override
     public boolean execute() throws Exception {
-        String filePathArg = this.requiredArgument(0, Messages.i18n.format("DeployCommand.InvalidArgMsg.LocalFile")); //$NON-NLS-1$
-        String gavArg = this.requiredArgument(1, Messages.i18n.format("DeployCommand.InvalidArgMsg.GAVInfo")); //$NON-NLS-1$
+        String filePathArg = this.requiredArgument(0, messages.format("DeployCommand.InvalidArgMsg.LocalFile")); //$NON-NLS-1$
+        String gavArg = this.requiredArgument(1, messages.format("DeployCommand.InvalidArgMsg.GAVInfo")); //$NON-NLS-1$
         String artifactTypeArg = this.optionalArgument(2);
 
         QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
         SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
         if (client == null) {
-            print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
             return false;
         }
 
         // Validate the file
         File file = new File(filePathArg);
         if (!file.isFile()) {
-            print(Messages.i18n.format("DeployCommand.FileNotFound", filePathArg)); //$NON-NLS-1$
+            print(messages.format("DeployCommand.FileNotFound", filePathArg)); //$NON-NLS-1$
             return false;
         }
 
@@ -128,18 +127,18 @@ public class DeployCommand extends BuiltInShellCommand {
             // Process GAV and other meta-data, then update the artifact
             MavenMetaData mmd = new MavenMetaData(gavArg, file);
             if (mmd.type == null) {
-                print(Messages.i18n.format("DeployCommand.TypeNotSet", file.getName())); //$NON-NLS-1$
+                print(messages.format("DeployCommand.TypeNotSet", file.getName())); //$NON-NLS-1$
                 IOUtils.closeQuietly(content);
                 return false;
             }
             if (!allowSnapshot && mmd.snapshot) {
-                print(Messages.i18n.format("DeployCommand.SnapshotNotAllowed", mmd.getFullName())); //$NON-NLS-1$
+                print(messages.format("DeployCommand.SnapshotNotAllowed", mmd.getFullName())); //$NON-NLS-1$
                 IOUtils.closeQuietly(content);
                 return false;
             }
             BaseArtifactType artifact = findExistingArtifactByGAV(client, mmd);
             if (artifact != null) {
-                    print(Messages.i18n.format("DeployCommand.Failure.ReleaseArtifact.Exist", mmd.getFullName())); //$NON-NLS-1$
+                print(messages.format("DeployCommand.Failure.ReleaseArtifact.Exist", mmd.getFullName())); //$NON-NLS-1$
                     IOUtils.closeQuietly(content);
                     return false;
             } else {
@@ -194,11 +193,11 @@ public class DeployCommand extends BuiltInShellCommand {
             // Put the artifact in the session as the active artifact
             QName artifactVarName = new QName("s-ramp", "artifact"); //$NON-NLS-1$ //$NON-NLS-2$
             getContext().setVariable(artifactVarName, artifact);
-            print(Messages.i18n.format("DeployCommand.Success")); //$NON-NLS-1$
+            print(messages.format("DeployCommand.Success")); //$NON-NLS-1$
             PrintArtifactMetaDataVisitor visitor = new PrintArtifactMetaDataVisitor();
             ArtifactVisitorHelper.visitArtifact(visitor, artifact);
         } catch (Exception e) {
-            print(Messages.i18n.format("DeployCommand.Failure")); //$NON-NLS-1$
+            print(messages.format("DeployCommand.Failure")); //$NON-NLS-1$
             print("\t" + e.getMessage()); //$NON-NLS-1$
             IOUtils.closeQuietly(content);
             return false;
@@ -297,7 +296,7 @@ public class DeployCommand extends BuiltInShellCommand {
         public MavenMetaData(String gavArg, File file) throws Exception {
             String [] split = gavArg.split(":"); //$NON-NLS-1$
             if (split.length < 3) {
-                throw new Exception(Messages.i18n.format("DeployCommand.InvalidArgMsg.GavFormat")); //$NON-NLS-1$
+                throw new Exception(messages.format("DeployCommand.InvalidArgMsg.GavFormat")); //$NON-NLS-1$
             }
             groupId = split[0];
             artifactId = split[1];
@@ -361,7 +360,7 @@ public class DeployCommand extends BuiltInShellCommand {
 
         /**
          * Obtain the type of file from its filename.
-         * 
+         *
          * @param filename
          */
         private String getType(String filename) {

@@ -22,11 +22,11 @@ import javax.xml.namespace.QName;
 import org.overlord.sramp.atom.archive.SrampArchive;
 import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Common class for all the archive commands.
- * 
+ *
  * @author David Virgil Naranjo
  */
 public abstract class AbstractArchiveCommand extends BuiltInShellCommand {
@@ -55,7 +55,7 @@ public abstract class AbstractArchiveCommand extends BuiltInShellCommand {
      */
     public boolean validateArchivePath(String archivePath) {
         if (archivePath.endsWith(File.separator)) {
-            print(Messages.i18n.format("Archive.Path.Arg.should.not.contain.slash.end")); //$NON-NLS-1$
+            print(messages.format("Archive.Path.Arg.should.not.contain.slash.end")); //$NON-NLS-1$
             return false;
         }
 
@@ -69,7 +69,7 @@ public abstract class AbstractArchiveCommand extends BuiltInShellCommand {
      */
     public boolean validateArchiveSession(){
         if (archive == null) {
-            print(Messages.i18n.format("NO_ARCHIVE_OPEN")); //$NON-NLS-1$
+            print(messages.format("NO_ARCHIVE_OPEN")); //$NON-NLS-1$
             return false;
         }
         return true;

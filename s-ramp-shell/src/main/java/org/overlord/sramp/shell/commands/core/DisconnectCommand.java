@@ -19,7 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Disconnects from the current S-RAMP repository.
@@ -42,11 +42,11 @@ public class DisconnectCommand extends BuiltInShellCommand {
 		QName varName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(varName);
 		if (client == null) {
-            print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 		getContext().removeVariable(varName);
-		print(Messages.i18n.format("Disconnect.Success")); //$NON-NLS-1$
+        print(messages.format("Disconnect.Success")); //$NON-NLS-1$
         return true;
 	}
 

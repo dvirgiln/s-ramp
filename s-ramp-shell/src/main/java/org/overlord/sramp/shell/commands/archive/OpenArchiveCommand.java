@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.overlord.sramp.atom.archive.SrampArchive;
 import org.overlord.sramp.shell.AbstractShellContextVariableLifecycleHandler;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileNameCompleter;
 
 /**
@@ -43,7 +42,7 @@ public class OpenArchiveCommand extends AbstractArchiveCommand {
 	public boolean execute() throws Exception {
         super.initialize();
         String pathToArchive = requiredArgument(0,
-                Messages.i18n.format("OpenArchive.InvalidArgMsg.PathToArchive")); //$NON-NLS-1$
+ messages.format("OpenArchive.InvalidArgMsg.PathToArchive")); //$NON-NLS-1$
 
         if (!validate()) {
 			return false;
@@ -62,7 +61,7 @@ public class OpenArchiveCommand extends AbstractArchiveCommand {
 				SrampArchive.closeQuietly((SrampArchive) object);
 			}
 		});
-		print(Messages.i18n.format("OpenArchive.Opened", archiveFile.getCanonicalPath())); //$NON-NLS-1$
+        print(messages.format("OpenArchive.Opened", archiveFile.getCanonicalPath())); //$NON-NLS-1$
         return true;
 	}
 

@@ -27,7 +27,6 @@ import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.overlord.sramp.client.SrampAtomApiClient;
 import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileNameCompleter;
 
 /**
@@ -49,34 +48,34 @@ public class UpdateContentCommand extends BuiltInShellCommand {
 	 */
 	@Override
 	public boolean execute() throws Exception {
-		String contentFilePathArg = requiredArgument(0, Messages.i18n.format("UpdateContent.InvalidArgMsg.PathToContent")); //$NON-NLS-1$
+        String contentFilePathArg = requiredArgument(0, messages.format("UpdateContent.InvalidArgMsg.PathToContent")); //$NON-NLS-1$
 		QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		QName artifactVarName = new QName("s-ramp", "artifact"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 
 		BaseArtifactType artifact = (BaseArtifactType) getContext().getVariable(artifactVarName);
 		if (artifact == null) {
-			print(Messages.i18n.format("NoActiveArtifact")); //$NON-NLS-1$
+            print(messages.format("NoActiveArtifact")); //$NON-NLS-1$
 			return false;
 		}
 
 		File file = new File(contentFilePathArg);
 		if (!file.isFile()) {
-			throw new InvalidCommandArgumentException(0, Messages.i18n.format("UpdateContent.InvalidArgMsg.PathToFile")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(0, messages.format("UpdateContent.InvalidArgMsg.PathToFile")); //$NON-NLS-1$
 		}
 
 		InputStream content = null;
 		try {
 			content = FileUtils.openInputStream(file);
 			client.updateArtifactContent(artifact, content);
-			print(Messages.i18n.format("UpdateContent.Success", artifact.getName())); //$NON-NLS-1$
+            print(messages.format("UpdateContent.Success", artifact.getName())); //$NON-NLS-1$
 		} catch (Exception e) {
-			print(Messages.i18n.format("UpdateContent.Failure")); //$NON-NLS-1$
+            print(messages.format("UpdateContent.Failure")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
 			IOUtils.closeQuietly(content);
             return false;

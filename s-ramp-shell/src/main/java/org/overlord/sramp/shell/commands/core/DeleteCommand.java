@@ -26,7 +26,6 @@ import org.overlord.sramp.client.query.QueryResultSet;
 import org.overlord.sramp.common.ArtifactType;
 import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileNameCompleter;
 
 /**
@@ -53,7 +52,7 @@ public class DeleteCommand extends BuiltInShellCommand {
 
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 
@@ -62,7 +61,7 @@ public class DeleteCommand extends BuiltInShellCommand {
         if (artifactIdArg == null) {
             artifact = (BaseArtifactType) getContext().getVariable(artifactVarName);
             if (artifact == null) {
-                print(Messages.i18n.format("NoActiveArtifact")); //$NON-NLS-1$
+                print(messages.format("NoActiveArtifact")); //$NON-NLS-1$
                 return false;
             }
         } else {
@@ -71,7 +70,7 @@ public class DeleteCommand extends BuiltInShellCommand {
     		    QueryResultSet rset = (QueryResultSet) getContext().getVariable(feedVarName);
     		    int feedIdx = Integer.parseInt(artifactIdArg.substring(artifactIdArg.indexOf(':')+1)) - 1;
     		    if (feedIdx < 0 || feedIdx >= rset.size()) {
-    		        throw new InvalidCommandArgumentException(0, Messages.i18n.format("FeedIndexOutOfRange")); //$NON-NLS-1$
+                    throw new InvalidCommandArgumentException(0, messages.format("FeedIndexOutOfRange")); //$NON-NLS-1$
     		    }
     		    ArtifactSummary summary = rset.get(feedIdx);
     		    String artifactUUID = summary.getUuid();
@@ -80,15 +79,15 @@ public class DeleteCommand extends BuiltInShellCommand {
                 String artifactUUID = artifactIdArg.substring(artifactIdArg.indexOf(':') + 1);
                 artifact = client.getArtifactMetaData(artifactUUID);
     		} else {
-    		    throw new InvalidCommandArgumentException(0, Messages.i18n.format("InvalidArtifactIdFormat")); //$NON-NLS-1$
+                throw new InvalidCommandArgumentException(0, messages.format("InvalidArtifactIdFormat")); //$NON-NLS-1$
     		}
 		}
 
 		try {
 			client.deleteArtifact(artifact.getUuid(), ArtifactType.valueOf(artifact));
-			print(Messages.i18n.format("Delete.Success", artifact.getName())); //$NON-NLS-1$
+            print(messages.format("Delete.Success", artifact.getName())); //$NON-NLS-1$
 		} catch (Exception e) {
-			print(Messages.i18n.format("Delete.Failure")); //$NON-NLS-1$
+            print(messages.format("Delete.Failure")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
 	        return false;
 		}

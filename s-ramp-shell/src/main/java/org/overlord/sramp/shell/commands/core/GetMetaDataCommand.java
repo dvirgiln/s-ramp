@@ -28,7 +28,6 @@ import org.overlord.sramp.client.query.QueryResultSet;
 import org.overlord.sramp.common.visitors.ArtifactVisitorHelper;
 import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileNameCompleter;
 import org.overlord.sramp.shell.util.PrintArtifactMetaDataVisitor;
 
@@ -50,16 +49,16 @@ public class GetMetaDataCommand extends BuiltInShellCommand {
 	 */
 	@Override
 	public boolean execute() throws Exception {
-		String artifactIdArg = this.requiredArgument(0, Messages.i18n.format("InvalidArgMsg.ArtifactId")); //$NON-NLS-1$
+        String artifactIdArg = this.requiredArgument(0, messages.format("InvalidArgMsg.ArtifactId")); //$NON-NLS-1$
 		String outputFilePathArg = this.optionalArgument(1);
 		if (!artifactIdArg.contains(":")) { //$NON-NLS-1$
-            throw new InvalidCommandArgumentException(0, Messages.i18n.format("InvalidArtifactIdFormat")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(0, messages.format("InvalidArtifactIdFormat")); //$NON-NLS-1$
 		}
 		QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		QName feedVarName = new QName("s-ramp", "feed"); //$NON-NLS-1$ //$NON-NLS-2$
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-			print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 
@@ -69,7 +68,7 @@ public class GetMetaDataCommand extends BuiltInShellCommand {
 			QueryResultSet rset = (QueryResultSet) getContext().getVariable(feedVarName);
 			int feedIdx = Integer.parseInt(artifactIdArg.substring(artifactIdArg.indexOf(':')+1)) - 1;
 			if (feedIdx < 0 || feedIdx >= rset.size()) {
-                throw new InvalidCommandArgumentException(0, Messages.i18n.format("FeedIndexOutOfRange")); //$NON-NLS-1$
+                throw new InvalidCommandArgumentException(0, messages.format("FeedIndexOutOfRange")); //$NON-NLS-1$
 			}
 			ArtifactSummary summary = rset.get(feedIdx);
 			String artifactUUID = summary.getUuid();
@@ -78,7 +77,7 @@ public class GetMetaDataCommand extends BuiltInShellCommand {
 			String artifactUUID = artifactIdArg.substring(artifactIdArg.indexOf(':') + 1);
             artifact = client.getArtifactMetaData(artifactUUID);
 		} else {
-            throw new InvalidCommandArgumentException(0, Messages.i18n.format("InvalidArtifactIdFormat")); //$NON-NLS-1$
+            throw new InvalidCommandArgumentException(0, messages.format("InvalidArtifactIdFormat")); //$NON-NLS-1$
 		}
 
 		// Store the artifact in the context, making it the active artifact.
@@ -87,21 +86,21 @@ public class GetMetaDataCommand extends BuiltInShellCommand {
 
 		if (outputFilePathArg == null) {
 			// Print out the meta-data information
-			print(Messages.i18n.format("GetMetaData.MetaDataLabel", artifact.getUuid())); //$NON-NLS-1$
+            print(messages.format("GetMetaData.MetaDataLabel", artifact.getUuid())); //$NON-NLS-1$
 			print("--------------"); //$NON-NLS-1$
 			PrintArtifactMetaDataVisitor visitor = new PrintArtifactMetaDataVisitor();
 			ArtifactVisitorHelper.visitArtifact(visitor, artifact);
 		} else {
 			File outFile = new File(outputFilePathArg);
 			if (outFile.isFile()) {
-				throw new InvalidCommandArgumentException(1, Messages.i18n.format("GetMetaData.OutputFileExists", outFile.getCanonicalPath())); //$NON-NLS-1$
+                throw new InvalidCommandArgumentException(1, messages.format("GetMetaData.OutputFileExists", outFile.getCanonicalPath())); //$NON-NLS-1$
 			} else if (outFile.isDirectory()) {
 				String fileName = artifact.getName() + "-metadata.xml"; //$NON-NLS-1$
 				outFile = new File(outFile, fileName);
 			}
 			outFile.getParentFile().mkdirs();
 			SrampArchiveJaxbUtils.writeMetaData(outFile, artifact, false);
-			print(Messages.i18n.format("GetMetaData.SavedTo", outFile.getCanonicalPath())); //$NON-NLS-1$
+            print(messages.format("GetMetaData.SavedTo", outFile.getCanonicalPath())); //$NON-NLS-1$
 		}
         return true;
 	}

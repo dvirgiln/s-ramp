@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.api.InvalidCommandArgumentException;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Command used to manipulate classifications on the currently active S-RAMP artifact.  This command
@@ -53,45 +53,45 @@ public class ClassificationCommand extends BuiltInShellCommand {
 	 */
 	@Override
 	public boolean execute() throws Exception {
-		String subcmdArg = requiredArgument(0, Messages.i18n.format("Classification.InvalidArgMsg")); //$NON-NLS-1$
+        String subcmdArg = requiredArgument(0, messages.format("Classification.InvalidArgMsg")); //$NON-NLS-1$
 		String classificationArg = null;
 		if ("add".equals(subcmdArg) || "remove".equals(subcmdArg)) { //$NON-NLS-1$ //$NON-NLS-2$
-			classificationArg = requiredArgument(1, Messages.i18n.format("Classification.InvalidArgMsg.ClassificationUri")); //$NON-NLS-1$
+            classificationArg = requiredArgument(1, messages.format("Classification.InvalidArgMsg.ClassificationUri")); //$NON-NLS-1$
 		}
 
 		QName artifactVarName = new QName("s-ramp", "artifact"); //$NON-NLS-1$ //$NON-NLS-2$
 		BaseArtifactType artifact = (BaseArtifactType) getContext().getVariable(artifactVarName);
 		if (artifact == null) {
-			print(Messages.i18n.format("NoActiveArtifact")); //$NON-NLS-1$
+            print(messages.format("NoActiveArtifact")); //$NON-NLS-1$
 			return false;
 		}
 
 		try {
 			if ("add".equals(subcmdArg)) { //$NON-NLS-1$
 				artifact.getClassifiedBy().add(classificationArg);
-				print(Messages.i18n.format("Classification.ClassificationAdded", classificationArg)); //$NON-NLS-1$
+                print(messages.format("Classification.ClassificationAdded", classificationArg)); //$NON-NLS-1$
 			} else if ("remove".equals(subcmdArg)) { //$NON-NLS-1$
 				if (artifact.getClassifiedBy().remove(classificationArg)) {
-					print(Messages.i18n.format("Classification.ClassificationRemoved"), classificationArg); //$NON-NLS-1$
+                    print(messages.format("Classification.ClassificationRemoved"), classificationArg); //$NON-NLS-1$
 				} else {
-					print(Messages.i18n.format("Classification.ClassificationDoesNotExist"), classificationArg); //$NON-NLS-1$
+                    print(messages.format("Classification.ClassificationDoesNotExist"), classificationArg); //$NON-NLS-1$
 					return false;
 				}
 			} else if ("clear".equals(subcmdArg)) { //$NON-NLS-1$
 				if (!artifact.getClassifiedBy().isEmpty()) {
 					artifact.getClassifiedBy().clear();
-					print(Messages.i18n.format("Classification.AllRemoved")); //$NON-NLS-1$
+                    print(messages.format("Classification.AllRemoved")); //$NON-NLS-1$
 				} else {
-					print(Messages.i18n.format("Classification.NoneExist")); //$NON-NLS-1$
+                    print(messages.format("Classification.NoneExist")); //$NON-NLS-1$
 					return false;
 				}
 			} else {
-				throw new InvalidCommandArgumentException(0, Messages.i18n.format("Classification.InvalidSubCommand")); //$NON-NLS-1$
+                throw new InvalidCommandArgumentException(0, messages.format("Classification.InvalidSubCommand")); //$NON-NLS-1$
 			}
 		} catch (InvalidCommandArgumentException e) {
 			throw e;
 		} catch (Exception e) {
-			print(Messages.i18n.format("Classification.ModificationFailed")); //$NON-NLS-1$
+            print(messages.format("Classification.ModificationFailed")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
 			return false;
 		}

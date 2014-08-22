@@ -19,7 +19,6 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileNameCompleter;
 
 /**
@@ -42,20 +41,20 @@ public class PackArchiveCommand extends AbstractArchiveCommand {
 	public boolean execute() throws Exception {
         super.initialize();
         String outputLocationArg = requiredArgument(0,
-                Messages.i18n.format("PackArchive.InvalidArgMsg.OutputLocation")); //$NON-NLS-1$
+ messages.format("PackArchive.InvalidArgMsg.OutputLocation")); //$NON-NLS-1$
         if (!validate()) {
             return false;
 		} else {
 			File outputFile = new File(outputLocationArg);
 			if (outputFile.exists()) {
-				print(Messages.i18n.format("PackArchive.OutputLocAlreadyExists")); //$NON-NLS-1$
+                print(messages.format("PackArchive.OutputLocAlreadyExists")); //$NON-NLS-1$
 			}
 			if (!outputFile.getParentFile().exists()) {
 				outputFile.mkdirs();
 			}
 			File packedFile = archive.pack();
 			FileUtils.copyFile(packedFile, outputFile);
-			print(Messages.i18n.format("PackArchive.Packaged", outputFile.getCanonicalPath())); //$NON-NLS-1$
+            print(messages.format("PackArchive.Packaged", outputFile.getCanonicalPath())); //$NON-NLS-1$
 		}
         return true;
 	}

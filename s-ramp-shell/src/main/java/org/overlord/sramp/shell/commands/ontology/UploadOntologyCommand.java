@@ -30,7 +30,6 @@ import org.overlord.sramp.shell.BuiltInShellCommand;
 import org.overlord.sramp.shell.api.Arguments;
 import org.overlord.sramp.shell.api.ShellContext;
 import org.overlord.sramp.shell.api.SimpleShellContext;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.FileNameCompleter;
 
 /**
@@ -84,12 +83,12 @@ public class UploadOntologyCommand extends BuiltInShellCommand {
 	 */
 	@Override
 	public boolean execute() throws Exception {
-		String filePathArg = this.requiredArgument(0, Messages.i18n.format("UploadOntology.InvalidArgMsg.MissingPath")); //$NON-NLS-1$
+        String filePathArg = this.requiredArgument(0, messages.format("UploadOntology.InvalidArgMsg.MissingPath")); //$NON-NLS-1$
 
 		QName clientVarName = new QName("s-ramp", "client"); //$NON-NLS-1$ //$NON-NLS-2$
 		SrampAtomApiClient client = (SrampAtomApiClient) getContext().getVariable(clientVarName);
 		if (client == null) {
-            print(Messages.i18n.format("MissingSRAMPConnection")); //$NON-NLS-1$
+            print(messages.format("MissingSRAMPConnection")); //$NON-NLS-1$
 			return false;
 		}
 		InputStream content = null;
@@ -100,16 +99,16 @@ public class UploadOntologyCommand extends BuiltInShellCommand {
 		    } else {
 		        URL url = this.getClass().getResource(filePathArg);
 		        if (url!=null) {
-		            print(Messages.i18n.format("UploadOntology.ReadingOntology", url.toExternalForm())); //$NON-NLS-1$
+                    print(messages.format("UploadOntology.ReadingOntology", url.toExternalForm())); //$NON-NLS-1$
 		            content = url.openStream();
 		        } else {
-		            print(Messages.i18n.format("UploadOntology.CannotFind", filePathArg)); //$NON-NLS-1$
+                    print(messages.format("UploadOntology.CannotFind", filePathArg)); //$NON-NLS-1$
 		        }
 		    }
 			client.uploadOntology(content);
-			print(Messages.i18n.format("UploadOntology.SuccessfulUpload")); //$NON-NLS-1$
+            print(messages.format("UploadOntology.SuccessfulUpload")); //$NON-NLS-1$
 		} catch (Exception e) {
-			print(Messages.i18n.format("UploadOntology.UploadFailed")); //$NON-NLS-1$
+            print(messages.format("UploadOntology.UploadFailed")); //$NON-NLS-1$
 			print("\t" + e.getMessage()); //$NON-NLS-1$
 			IOUtils.closeQuietly(content);
             return false;

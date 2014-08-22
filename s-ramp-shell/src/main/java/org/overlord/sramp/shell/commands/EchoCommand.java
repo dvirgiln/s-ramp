@@ -15,8 +15,9 @@
  */
 package org.overlord.sramp.shell.commands;
 
+
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
+
 
 /**
  * Implements the 'echo' command.
@@ -36,7 +37,7 @@ public class EchoCommand extends BuiltInShellCommand {
 	 */
 	@Override
 	public boolean execute() throws Exception {
-        String message = this.requiredArgument(0, Messages.i18n.format("Echo.InvalidArgMsg.NoMessage")); //$NON-NLS-1$
+        String message = this.requiredArgument(0, messages.format("Echo.InvalidArgMsg.NoMessage")); //$NON-NLS-1$
 		print(message);
         return true;
 	}

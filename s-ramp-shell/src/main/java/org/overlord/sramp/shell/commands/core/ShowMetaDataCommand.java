@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 import org.oasis_open.docs.s_ramp.ns.s_ramp_v1.BaseArtifactType;
 import org.overlord.sramp.common.visitors.ArtifactVisitorHelper;
 import org.overlord.sramp.shell.BuiltInShellCommand;
-import org.overlord.sramp.shell.i18n.Messages;
 import org.overlord.sramp.shell.util.PrintArtifactMetaDataVisitor;
 
 /**
@@ -45,12 +44,12 @@ public class ShowMetaDataCommand extends BuiltInShellCommand {
 		QName artifactVarName = new QName("s-ramp", "artifact"); //$NON-NLS-1$ //$NON-NLS-2$
 		BaseArtifactType artifact = (BaseArtifactType) getContext().getVariable(artifactVarName);
 		if (artifact == null) {
-			print(Messages.i18n.format("NoActiveArtifact")); //$NON-NLS-1$
+            print(messages.format("NoActiveArtifact")); //$NON-NLS-1$
 			return false;
 		}
 
 		// Print out the meta-data information
-		print(Messages.i18n.format("RefreshMetaData.MetaDataFor", artifact.getUuid())); //$NON-NLS-1$
+        print(messages.format("RefreshMetaData.MetaDataFor", artifact.getUuid())); //$NON-NLS-1$
 		print("--------------"); //$NON-NLS-1$
 		PrintArtifactMetaDataVisitor visitor = new PrintArtifactMetaDataVisitor();
 		ArtifactVisitorHelper.visitArtifact(visitor, artifact);
