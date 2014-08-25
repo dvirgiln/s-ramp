@@ -28,6 +28,14 @@
     </dependency>
     <dependency>
       <groupId>org.overlord</groupId>
+      <artifactId>overlord-commons-services</artifactId>
+    </dependency>    
+    <dependency>
+      <groupId>org.overlord</groupId>
+      <artifactId>overlord-commons-i18n</artifactId>
+    </dependency>    
+    <dependency>
+      <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-auth-jboss7</artifactId>
     </dependency>
     <dependency>

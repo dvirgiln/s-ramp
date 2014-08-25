@@ -16,6 +16,8 @@
   <property name="s-ramp-distro.libdir" location="${s-ramp-distro.rootdir}/lib" />
   <property name="s-ramp-distro.overlord-commons-installer.jar" location="${s-ramp-distro.bindir}/overlord-commons-installer-${version.org.overlord.overlord-commons}.jar" />
   <property name="s-ramp-distro.overlord-commons-ant.jar" location="${s-ramp-distro.bindir}/overlord-commons-ant-${version.org.overlord.overlord-commons}.jar" />
+  <property name="s-ramp-distro.overlord-commons-i18n.jar" location="${s-ramp-distro.bindir}/overlord-commons-i18n-${version.org.overlord.overlord-commons}.jar" />
+  <property name="s-ramp-distro.overlord-commons-services.jar" location="${s-ramp-distro.bindir}/overlord-commons-services-${version.org.overlord.overlord-commons}.jar" />
   <property name="s-ramp-distro.overlord-commons-codec.jar" location="${s-ramp-distro.bindir}/overlord-commons-codec-${version.org.overlord.overlord-commons}.jar" />	
   <property name="s-ramp-distro.s-ramp-installer.jar" location="${s-ramp-distro.bindir}/s-ramp-installer-${project.version}.jar" />
 
@@ -107,6 +109,8 @@
       <property name="s-ramp.appserver.dir" location="${s-ramp-distro.choices.platform.jboss-eap-6.path}" />
       <property name="s-ramp.overlord-commons.installer.jar" location="${s-ramp-distro.bindir}/overlord-commons-installer-${version.org.overlord.overlord-commons}.jar" />
       <property name="overlord-commons.ant.jar" location="${s-ramp-distro.overlord-commons-ant.jar}" />
+      <property name="overlord-commons.i18n.jar" location="${s-ramp-distro.overlord-commons-i18n.jar}" />
+      <property name="overlord-commons.services.jar" location="${s-ramp-distro.overlord-commons-services.jar}" />    	
       <property name="overlord-commons.idp.file" value="${s-ramp-distro.bindir}/overlord-commons-idp-eap6-${version.org.overlord.overlord-commons}.war" />
       <property name="overlord-commons.eap-dist.file" value="${s-ramp-distro.bindir}/overlord-commons-dist-eap6-${version.org.overlord.overlord-commons}.zip" />
       <property name="overlord-commons.auth.jboss7.file" location="${s-ramp-distro.bindir}/overlord-commons-auth-jboss7-${version.org.overlord.overlord-commons}.jar" />
