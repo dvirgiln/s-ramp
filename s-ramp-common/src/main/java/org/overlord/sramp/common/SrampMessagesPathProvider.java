@@ -3,8 +3,12 @@ package org.overlord.sramp.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
 import org.overlord.commons.i18n.MessagesPathProvider;
 
+@Component(name = "S-ramp Path Provider", immediate = true)
+@Service(value = org.overlord.commons.i18n.MessagesPathProvider.class)
 public class SrampMessagesPathProvider implements MessagesPathProvider {
 
     @Override
