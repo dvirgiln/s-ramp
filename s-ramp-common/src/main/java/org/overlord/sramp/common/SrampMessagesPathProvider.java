@@ -3,8 +3,10 @@ package org.overlord.sramp.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
+import org.overlord.commons.i18n.Messages;
 import org.overlord.commons.i18n.MessagesPathProvider;
 
 @Component(name = "S-ramp Path Provider", immediate = true)
@@ -30,6 +32,11 @@ public class SrampMessagesPathProvider implements MessagesPathProvider {
         paths.add("org.overlord.sramp.shell.i18n");
         paths.add("org.overlord.sramp.shell.api.i18n");
         return paths;
+    }
+
+    @Activate
+    void publishing() {
+        Messages.addPathProvider(this);
     }
 
 }
