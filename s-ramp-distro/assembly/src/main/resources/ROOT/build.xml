@@ -32,6 +32,7 @@
     <echo message="    1. Install into JBoss EAP 6" />
     <echo message="    2. Install into Apache Tomcat 7" />
     <echo message="    3. Install into Jetty 8" />
+    <echo message="    4. Install into Wildfly 8" />
     <echo message=" " />
     <input message="Choice: " addproperty="s-ramp-distro.choices.platform" />
 
@@ -44,10 +45,15 @@
     <condition property="s-ramp-distro.choices.platform.jetty-8">
       <equals arg1="${s-ramp-distro.choices.platform}" arg2="3" />
     </condition>
+    <condition property="s-ramp-distro.choices.platform.wildfly-8">
+      <equals arg1="${s-ramp-distro.choices.platform}" arg2="4" />
+    </condition>
+  	
 
     <antcall target="install-jboss-eap-6-wrapper" />
     <antcall target="install-tomcat-7-wrapper" />
     <antcall target="install-jetty-8-wrapper" />
+  	<antcall target="install-wildfly-8-wrapper" />
   </target>
 
   <target name="extract-installer">
@@ -90,7 +96,7 @@
         </then>
         <else>
             <!-- default to 6.2+ -->
-            <property name="s-ramp.modeshape-distribution.zip.path" location="${s-ramp-distro.rootdir}/AS/EAP/modeshape-distribution-${version.org.modeshape}-jbosseap-dist.zip" />
+            <property name="s-ramp.modeshape-distribution.zip.path" location="${s-ramp-distro.rootdir}/AS/EAP/modeshape-distribution-3.8.0.Final-jbosseap-dist.zip" />
         </else>
     </if>
 
@@ -261,4 +267,45 @@
     </ant>
   </target>
   
+	
+	<!-- Install into Wildfly  8 -->
+	  <target name="install-wildfly-8-wrapper" if="s-ramp-distro.choices.platform.wildfly-8">
+	    <echo message=" " />
+	    <echo message="#######################################################" />
+	    <echo message="# Installing S-RAMP into Wildfly 8 (great choice!).     #" />
+	    <echo message="#######################################################" />
+	    <echo message=" " />
+	    <echo message=" Please tell us where Wildfly 8 is located (full path)." />
+	    <echo message=" " />
+	    <input message="Path to Wildfly 8: " addproperty="s-ramp-distro.choices.platform.wildfly-8.path" />
+	    
+	    <antcall target="install-wildfly-8" />
+	  </target>
+
+	  <target name="install-wildfly-8" depends="extract-installer">
+	    <condition property="s-ramp-distro.choices.platform.wildfly-8.path.valid">
+	      <available file="jboss-modules.jar" filepath="${s-ramp-distro.choices.platform.wildfly-8.path}" />
+	    </condition>
+	    <fail message="Failed to find JBoss EAP 6 at: ${s-ramp-distro.choices.platform.wildfly-8.path}" 
+	              unless="s-ramp-distro.choices.platform.wildfly-8.path.valid" />
+	    <echo message="Installing into: ${s-ramp-distro.choices.platform.wildfly-8.path} " />
+	    
+	    <echo message="s-ramp-distro.choices.platform.wildfly-8.path: ${s-ramp-distro.choices.platform.wildfly-8.path}"/>
+	    
+	  	 <property name="s-ramp.modeshape-distribution.zip.path" location="${s-ramp-distro.rootdir}/wildfly/modeshape-distribution-${version.org.modeshape}-jboss-wf8-dist.zip" />
+	    <!-- Call the S-RAMP installer -->
+	    <ant antfile="${s-ramp-distro.s-ramp-installer.dir}/build.xml" inheritall="true" target="install" 
+	         dir="${s-ramp-distro.s-ramp-installer.dir}">
+	      <property name="appserver.id" value="wildfly" />
+	      <property name="s-ramp.install.dir" location="${s-ramp-distro.tempdir}" />
+	      <property name="s-ramp.appserver.dir" location="${s-ramp-distro.choices.platform.wildfly-8.path}" />
+	      <property name="s-ramp.overlord-commons.installer.jar" location="${s-ramp-distro.bindir}/overlord-commons-installer-${version.org.overlord.overlord-commons}.jar" />
+	      <property name="overlord-commons.ant.jar" location="${s-ramp-distro.overlord-commons-ant.jar}" />
+	      <property name="overlord-commons.eap-dist.file" value="${s-ramp-distro.bindir}/overlord-commons-dist-wildfly8-${version.org.overlord.overlord-commons}.zip" />
+	      <property name="overlord-commons.auth.jboss7.file" location="${s-ramp-distro.bindir}/overlord-commons-auth-wildfly8-${version.org.overlord.overlord-commons}.jar" />
+	    	<property name="s-ramp.s-ramp-server.war.path" location="${s-ramp-distro.bindir}/s-ramp-server-wildfly8-${s-ramp.version}.war" />
+	      <property name="s-ramp.s-ramp-ui.war.path" location="${s-ramp-distro.bindir}/s-ramp-ui-war-wildfly8-${s-ramp.version}.war" />
+	    </ant>
+	  </target>
+	
 </project>

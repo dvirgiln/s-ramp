@@ -10,7 +10,9 @@
   <packaging>bundle</packaging>
   <name>S-RAMP ATOM</name>
   <description>S-RAMP Atom API related shared code.</description>
-
+  <properties>
+	<enforcer.skip>true</enforcer.skip>
+  </properties>
   <dependencies>
     <!-- S-RAMP project dependencies -->
     <dependency>
@@ -21,7 +23,10 @@
       <groupId>org.overlord.sramp</groupId>
       <artifactId>s-ramp-common</artifactId>
     </dependency>
-
+      <dependency>
+      	<groupId>org.overlord</groupId>
+      	<artifactId>overlord-commons-resteasy-service</artifactId>
+      </dependency>
     <!-- REASTEasy -->
     <dependency>
       <groupId>org.jboss.resteasy</groupId>

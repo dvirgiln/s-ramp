@@ -39,6 +39,15 @@
       <scope>provided</scope>
     </dependency>
     
+    <dependency>
+		<groupId>org.infinispan</groupId>
+		<artifactId>infinispan-commons</artifactId>
+		<scope>test</scope>
+	</dependency>
+    <dependency>
+		<groupId>org.infinispan</groupId>
+		<artifactId>infinispan-core</artifactId>
+	</dependency>
     <!-- Servlets -->
     <dependency>
       <groupId>org.jboss.spec.javax.servlet</groupId>
@@ -58,6 +67,12 @@
     <dependency>
       <groupId>org.modeshape</groupId>
       <artifactId>modeshape-jcr</artifactId>
+      <exclusions>
+      	<exclusion>
+      		<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-core</artifactId>
+      	</exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jboss.marshalling</groupId>

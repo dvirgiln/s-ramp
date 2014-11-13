@@ -103,12 +103,13 @@
     <version.org.jboss.aesh>0.33.13</version.org.jboss.aesh>
     <version.org.jboss.errai>2.4.4.Final</version.org.jboss.errai>
     <version.org.jboss.spec.javax.faces.jboss-jsf-api_2.1_spec>2.1.19.Final</version.org.jboss.spec.javax.faces.jboss-jsf-api_2.1_spec>
-    <version.org.modeshape>3.8.0.Final</version.org.modeshape>
+    <version.org.modeshape>4.0.0.Final</version.org.modeshape>
+    <version.org.infinispan>6.0.2.Final</version.org.infinispan>
     <version.org.overlord.overlord-commons>2.0.12-SNAPSHOT</version.org.overlord.overlord-commons>
     <version.org.picketbox>4.0.19.SP4</version.org.picketbox>
     <version.org.picketlink>2.5.3.SP4</version.org.picketlink>
     <version.org.switchyard>2.0.0.Alpha1</version.org.switchyard>
-
+    <version.resteasy>3.0.8.Final</version.resteasy>
     <!-- BOM Overrides -->
     <version.joda-time>2.1</version.joda-time>
     <version.org.jboss.as>7.4.0.Final-redhat-19</version.org.jboss.as>
@@ -351,6 +352,12 @@
       </dependency>
       <dependency>
         <groupId>org.overlord.sramp</groupId>
+        <artifactId>s-ramp-server-wildfly8</artifactId>
+        <version>${project.version}</version>
+        <type>war</type>
+      </dependency>      
+      <dependency>
+        <groupId>org.overlord.sramp</groupId>
         <artifactId>s-ramp-server-fuse61</artifactId>
         <version>${project.version}</version>
         <type>war</type>
@@ -392,6 +399,12 @@
       <dependency>
         <groupId>org.overlord.sramp</groupId>
         <artifactId>s-ramp-ui-war-eap6</artifactId>
+        <version>${project.version}</version>
+        <type>war</type>
+      </dependency>
+      <dependency>
+        <groupId>org.overlord.sramp</groupId>
+        <artifactId>s-ramp-ui-war-wildfly8</artifactId>
         <version>${project.version}</version>
         <type>war</type>
       </dependency>
@@ -587,6 +600,11 @@
       </dependency>
       <dependency>
         <groupId>org.overlord</groupId>
+        <artifactId>overlord-commons-auth-wildfly8</artifactId>
+        <version>${version.org.overlord.overlord-commons}</version>
+      </dependency>      
+      <dependency>
+        <groupId>org.overlord</groupId>
         <artifactId>overlord-commons-auth-tomcat7</artifactId>
         <version>${version.org.overlord.overlord-commons}</version>
       </dependency>
@@ -616,6 +634,12 @@
         <version>${version.org.overlord.overlord-commons}</version>
         <type>zip</type>
       </dependency>
+      <dependency>
+        <groupId>org.overlord</groupId>
+        <artifactId>overlord-commons-dist-wildfly8</artifactId>
+        <version>${version.org.overlord.overlord-commons}</version>
+        <type>zip</type>
+      </dependency>      
       <dependency>
         <groupId>org.overlord</groupId>
         <artifactId>overlord-commons-errai-fuse-support</artifactId>
@@ -693,6 +717,21 @@
         <version>${version.org.overlord.overlord-commons}</version>
       </dependency>
 
+      <dependency>
+      	<groupId>org.overlord</groupId>
+      	<artifactId>overlord-commons-resteasy-service</artifactId>
+        <version>${version.org.overlord.overlord-commons}</version>
+      </dependency>
+      <dependency>
+      	<groupId>org.overlord</groupId>
+      	<artifactId>overlord-commons-resteasy-service-eap</artifactId>
+        <version>${version.org.overlord.overlord-commons}</version>
+      </dependency>
+      <dependency>
+      	<groupId>org.overlord</groupId>
+      	<artifactId>overlord-commons-resteasy-service-wildfly</artifactId>
+        <version>${version.org.overlord.overlord-commons}</version>
+      </dependency>
       <!-- Apache Commons -->
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -704,6 +743,34 @@
         <artifactId>commons-beanutils-core</artifactId>
         <version>${version.commons-beanutils}</version>
       </dependency>
+
+    <!-- RESTEasy -->
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-jaxrs</artifactId>
+      <version>${version.resteasy}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-atom-provider</artifactId>
+      <version>${version.resteasy}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-jaxb-provider</artifactId>
+      <version>${version.resteasy}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-multipart-provider</artifactId>
+      <version>${version.resteasy}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>jaxrs-api</artifactId>
+      <version>${version.resteasy}</version>
+    </dependency>
+    
 
       <!-- Switchyard -->
       <dependency>
@@ -795,15 +862,9 @@
         <artifactId>modeshape-distribution</artifactId>
         <version>${version.org.modeshape}</version>
         <type>zip</type>
-        <classifier>jbosseap-dist</classifier>
-      </dependency>
-      <dependency>
-        <groupId>org.modeshape</groupId>
-        <artifactId>modeshape-distribution</artifactId>
-        <version>${version.org.modeshape}</version>
-        <type>zip</type>
-        <classifier>jbossas-71-dist</classifier>
-      </dependency>
+        <classifier>jboss-wf8-dist</classifier>
+      </dependency>      
+
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric-api</artifactId>
@@ -975,11 +1036,7 @@
         <artifactId>jetty-util</artifactId>
         <version>${version.org.eclipse.jetty}</version>
       </dependency>
-      <dependency>
-        <groupId>org.jboss.errai</groupId>
-        <artifactId>errai-bus</artifactId>
-        <version>${version.org.jboss.errai}</version>
-      </dependency>
+
       
       <!-- UI -->
       <dependency>
@@ -1033,12 +1090,54 @@
         <version>${version.org.jboss.errai}</version>
       </dependency>
       
+          <dependency>
+	<groupId>org.infinispan</groupId>
+	<artifactId>infinispan-commons</artifactId>
+	<version>${version.org.infinispan}</version>
+		</dependency>
+     <dependency>
+		<groupId>org.infinispan</groupId>
+		<artifactId>infinispan-core</artifactId>
+		<version>${version.org.infinispan}</version>
+	</dependency>     
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-cachestore-jdbc</artifactId>
+      <version>${version.org.infinispan}</version>
+    </dependency>	
       <!-- Declarative Service Annotations -->
       <dependency>
         <groupId>org.apache.felix</groupId>
         <artifactId>org.apache.felix.scr.annotations</artifactId>
         <version>1.7.0</version>
       </dependency>
+      <!-- This libraries are not affecting anything. They are included because for modeshape 4.0.0 they are needed in the fuse deployment-->
+    <dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>javax.servlet-api</artifactId>
+		<version>3.1.0</version>
+	</dependency>      
+	<dependency>
+		<groupId>com.datastax.cassandra</groupId>
+		<artifactId>cassandra-driver-core</artifactId>
+		<version>2.0.0-rc2</version>
+	</dependency>
+		<dependency>
+	<groupId>io.netty</groupId>
+	<artifactId>netty</artifactId>
+	<version>3.7.0.Final</version>
+</dependency>
+		<dependency>
+	<groupId>org.jboss.spec.javax.security.jacc</groupId>
+	<artifactId>jboss-jacc-api_1.5_spec</artifactId>
+	<version>1.0.0.Final</version>
+</dependency>
+<dependency>
+	<groupId>org.apache.commons</groupId>
+	<artifactId>commons-compress</artifactId>
+	<version>1.8</version>
+</dependency>
+		
     </dependencies>
   </dependencyManagement>
 
@@ -1172,6 +1271,7 @@
     <module>s-ramp-server/fuse61</module>
     <module>s-ramp-server/jetty8</module>
     <module>s-ramp-server/tomcat7</module>
+    <module>s-ramp-server/wildfly8</module>
     <module>s-ramp-shell</module>
     <module>s-ramp-shell-api</module>
     <module>s-ramp-test</module>
@@ -1180,6 +1280,7 @@
     <module>s-ramp-ui-war/fuse61</module>
     <module>s-ramp-ui-war/jetty8</module>
     <module>s-ramp-ui-war/tomcat7</module>
+    <module>s-ramp-ui-war/wildfly8</module>
     <module>s-ramp-ui-widgets</module>
     <module>s-ramp-wagon</module>
   </modules>

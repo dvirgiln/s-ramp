@@ -10,7 +10,9 @@
   <artifactId>s-ramp-ui-war</artifactId>
   <packaging>war</packaging>
   <name>S-RAMP UI: Web App</name>
-  
+  <properties>
+	<enforcer.skip>true</enforcer.skip>
+  </properties>
   <dependencies>
     <!-- Project Dependencies -->
     <dependency>
@@ -73,7 +75,10 @@
       <groupId>org.overlord.sramp</groupId>
       <artifactId>s-ramp-integration-rtgov</artifactId>
     </dependency>
-
+      <dependency>
+      	<groupId>org.overlord</groupId>
+      	<artifactId>overlord-commons-resteasy-service-wildfly</artifactId>
+      </dependency>
     <!-- Overlord Commons -->
     <dependency>
       <groupId>org.overlord</groupId>

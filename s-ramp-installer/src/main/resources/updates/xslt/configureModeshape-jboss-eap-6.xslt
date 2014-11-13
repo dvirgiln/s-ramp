@@ -3,10 +3,12 @@
   xmlns:as="urn:jboss:domain:1.4"
   xmlns:as15="urn:jboss:domain:1.5"
   xmlns:as16="urn:jboss:domain:1.6"
+  xmlns:wildfly81="urn:jboss:domain:2.1"
   xmlns:inf="urn:jboss:domain:infinispan:1.4"
   xmlns:inf15="urn:jboss:domain:infinispan:1.5"
+  xmlns:inf2="urn:jboss:domain:infinispan:2.0"
   xmlns:xalan="http://xml.apache.org/xalan" 
-  exclude-result-prefixes="inf inf15 xalan as as15 as16" version="1.0">
+  exclude-result-prefixes="inf inf15 xalan as as15 as16 inf2" version="1.0">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
@@ -26,7 +28,7 @@
         <xsl:apply-templates select="@* | *" />
         <subsystem xmlns="urn:jboss:domain:modeshape:1.0">
             <repository name="sramp" cache-name="sramp" cache-container="modeshape" 
-                        security-domain="overlord-idp" use-anonymous-upon-failed-authentication="false"
+                        security-domain="overlord-basic" use-anonymous-upon-failed-authentication="false"
                         anonymous-roles="readonly">
             </repository>
         </subsystem>
@@ -135,6 +137,54 @@
             </cache-container>
         </subsystem>
   </xsl:template>
+
+
+  <!-- ************************* -->
+  <!-- Support for Wildfly 8.1 -->
+  <!-- ************************* -->
+
+  <xsl:template match="wildfly81:extensions" xmlns="urn:jboss:domain:2.1">
+      <extensions>
+        <xsl:apply-templates select="@* | *" />
+        <extension module="org.modeshape"/>
+      </extensions>
+  </xsl:template>
+
+  <xsl:template match="wildfly81:profile" xmlns="urn:jboss:domain:2.1">
+    <profile>
+        <xsl:apply-templates select="@* | *" />
+        <subsystem xmlns="urn:jboss:domain:modeshape:2.0">
+            <webapp name="modeshape-rest.war"/>
+            <webapp name="modeshape-webdav.war"/>
+            <repository name="sramp" cache-name="sramp" cache-container="modeshape" 
+                        security-domain="overlord-idp" use-anonymous-upon-failed-authentication="false"
+                        anonymous-roles="readonly">
+            </repository>
+            <webapp name="modeshape-cmis.war"/>
+            <webapp name="modeshape-explorer.war"/>            
+        </subsystem>
+    </profile>
+  </xsl:template>
+
+  <xsl:template match="wildfly81:profile/inf2:subsystem" xmlns="urn:jboss:domain:2.1">
+        <subsystem xmlns="urn:jboss:domain:infinispan:2.0" default-cache-container="hibernate">
+            <xsl:apply-templates select="@* | *" />
+            <cache-container name="modeshape">
+                <local-cache name="sramp">
+                    <locking isolation="NONE"/>
+                    <transaction mode="NON_XA"/>
+                    <string-keyed-jdbc-store datasource="java:jboss/datasources/srampDS">
+                        <string-keyed-table prefix="ispn_bucket">
+                            <id-column name="id" type="VARCHAR(500)"/>
+                            <data-column name="datum" type="VARBINARY(60000)"/>
+                            <timestamp-column name="version" type="BIGINT"/>
+                        </string-keyed-table>
+                    </string-keyed-jdbc-store>
+                </local-cache>
+            </cache-container>
+        </subsystem>
+  </xsl:template>
+
 
   <!-- Copy everything else. -->
   <xsl:template match="@*|node()|text()">

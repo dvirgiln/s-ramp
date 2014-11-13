@@ -24,12 +24,5 @@
             "dataSourceJndiName" : "java:comp/env/jdbc/sramp",
             "minimumBinarySizeInBytes" : "${application.min.binary.size:4096}"
         }
-    },"query" : {
-        "indexStorage" : {
-            "type" : "filesystem",
-            "location" : "overlord-data/index",
-            "lockingStrategy" : "simple",
-            "fileSystemAccessType" : "auto"
-        }
     }
 }

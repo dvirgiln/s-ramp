@@ -9,7 +9,9 @@
   <artifactId>s-ramp-distro-assembly</artifactId>
   <packaging>pom</packaging>
   <name>S-RAMP Distribution: Assembly</name>
-
+	<properties>
+		<enforcer.skip>true</enforcer.skip>
+	</properties>
   <dependencies>
     <!-- Overlord Commons -->
     <dependency>
@@ -24,12 +26,21 @@
     </dependency>
     <dependency>
       <groupId>org.overlord</groupId>
+      <artifactId>overlord-commons-dist-wildfly8</artifactId>
+      <type>zip</type>
+    </dependency>    
+    <dependency>
+      <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-ant</artifactId>
     </dependency>
     <dependency>
       <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-auth-jboss7</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.overlord</groupId>
+      <artifactId>overlord-commons-auth-wildfly8</artifactId>
+    </dependency>    
     <dependency>
       <groupId>org.overlord</groupId>
       <artifactId>overlord-commons-idp-eap6</artifactId>
@@ -80,6 +91,11 @@
       <artifactId>s-ramp-server-jetty8</artifactId>
       <type>war</type>
     </dependency>
+        <dependency>
+      <groupId>org.overlord.sramp</groupId>
+      <artifactId>s-ramp-server-wildfly8</artifactId>
+      <type>war</type>
+    </dependency>
     <dependency>
       <groupId>org.overlord.sramp</groupId>
       <artifactId>s-ramp-server-eap6</artifactId>
@@ -100,6 +116,11 @@
       <artifactId>s-ramp-ui-war-eap6</artifactId>
       <type>war</type>
     </dependency>
+    <dependency>
+      <groupId>org.overlord.sramp</groupId>
+      <artifactId>s-ramp-ui-war-wildfly8</artifactId>
+      <type>war</type>
+    </dependency>    
 
     <!-- S-RAMP Sources -->
     <dependency>
@@ -184,10 +205,16 @@
     <dependency>
       <groupId>org.modeshape</groupId>
       <artifactId>modeshape-distribution</artifactId>
-      <classifier>jbosseap-dist</classifier>
+      <classifier>jboss-wf8-dist</classifier>
       <type>zip</type>
     </dependency>
-    
+    <dependency>
+      <groupId>org.modeshape</groupId>
+      <artifactId>modeshape-distribution</artifactId>
+      <classifier>jbosseap-dist</classifier>
+      <version>3.8.0.Final</version>
+      <type>zip</type>
+    </dependency>    
     <dependency>
       <groupId>org.overlord.sramp</groupId>
       <artifactId>s-ramp-javadoc</artifactId>

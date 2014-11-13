@@ -145,9 +145,9 @@
       <artifactId>commons-io</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
-      <artifactId>jboss-jsp-api_2.2_spec</artifactId>
-    </dependency>    
+		<artifactId>javax.servlet-api</artifactId>
+          <groupId>javax.servlet</groupId>
+    </dependency>
     <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
@@ -239,9 +239,25 @@
       <artifactId>overlord-commons-osgi-weld</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>fabric-api</artifactId>
-   </dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric-api</artifactId>
+     </dependency>
+<dependency>
+	<groupId>com.datastax.cassandra</groupId>
+	<artifactId>cassandra-driver-core</artifactId>
+</dependency>   
+<dependency>
+	<groupId>io.netty</groupId>
+	<artifactId>netty</artifactId>
+</dependency>
+  <dependency>
+	<groupId>org.jboss.spec.javax.security.jacc</groupId>
+	<artifactId>jboss-jacc-api_1.5_spec</artifactId>
+</dependency>
+  <dependency>
+	<groupId>org.apache.commons</groupId>
+	<artifactId>commons-compress</artifactId>
+</dependency>
   </dependencies>
 
   <build>

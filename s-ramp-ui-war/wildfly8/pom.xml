@@ -6,9 +6,9 @@
     <version>0.7.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>s-ramp-ui-war-eap6</artifactId>
+  <artifactId>s-ramp-ui-war-wildfly8</artifactId>
   <packaging>war</packaging>
-  <name>S-RAMP UI: Web App (EAP 6)</name>
+  <name>S-RAMP UI: Web App (Wildfly 8)</name>
   
   <dependencies>
     <!-- The base WAR being extended -->
@@ -29,10 +29,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      	<groupId>org.overlord</groupId>
-      	<artifactId>overlord-commons-resteasy-service-eap</artifactId>
-    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -40,7 +36,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <warName>s-ramp-ui-eap6</warName>
+          <warName>s-ramp-ui-wildfly8</warName>
           <overlays>
             <overlay>
               <groupId>${project.groupId}</groupId>
@@ -59,9 +55,9 @@
                 <exclude>WEB-INF/lib/errai-cdi-jetty*.jar</exclude>
                 <exclude>WEB-INF/lib/errai-codegen-gwt-*.jar</exclude>
                 <exclude>WEB-INF/lib/errai-data-binding-*.jar</exclude>
-                <exclude>WEB-INF/lib/errai-ioc-*.jar</exclude>
                 <exclude>WEB-INF/lib/errai-navigation-*.jar</exclude>
-                <exclude>WEB-INF/lib/errai-tools*.jar</exclude>
+                <exclude>WEB-INF/lib/errai-tools*.jar</exclude>  
+                <exclude>WEB-INF/lib/errai-ui*.jar</exclude>                    
                 <exclude>WEB-INF/lib/geronimo-spec-jta*.jar</exclude>
                 <exclude>WEB-INF/lib/guava-*.jar</exclude>
                 <exclude>WEB-INF/lib/hsqldb*.jar</exclude>
@@ -79,7 +75,6 @@
                 <exclude>WEB-INF/lib/log4j-*.jar</exclude>
                 <exclude>WEB-INF/lib/mail*.jar</exclude>
                 <exclude>WEB-INF/lib/netty*.jar</exclude>
-                <exclude>WEB-INF/lib/resteasy*.jar</exclude>
                 <exclude>WEB-INF/lib/scannotation-*.jar</exclude>
                 <exclude>WEB-INF/lib/servlet-api*.jar</exclude>
                 <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
@@ -87,7 +82,11 @@
                 <exclude>WEB-INF/lib/weld*.jar</exclude>
                 <exclude>WEB-INF/lib/xercesImpl*.jar</exclude>
                 <exclude>WEB-INF/lib/xml-apis*.jar</exclude>
-                <exclude>WEB-INF/lib/overlord-commons-resteasy-service-wildfly*.jar</exclude>                
+                <exclude>WEB-INF/lib/picketlink*.jar</exclude>
+                <exclude>WEB-INF/lib/picketbox*.jar</exclude>
+                <exclude>WEB-INF/lib/overlord-commons-auth*.jar</exclude>
+                <exclude>WEB-INF/lib/resteasy-*.jar</exclude>
+                <exclude>WEB-INF/picketlink.xml</exclude>
               </excludes>
             </overlay>
           </overlays>
